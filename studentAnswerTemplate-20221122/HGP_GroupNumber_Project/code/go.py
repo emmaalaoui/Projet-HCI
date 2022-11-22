@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon
 from board import Board
 from score_board import ScoreBoard
 
@@ -25,7 +26,9 @@ class Go(QMainWindow):
 
         self.resize(800, 800)
         self.center()
-        self.setWindowTitle('Go')
+        self.setWindowTitle("Project - Go - Emma&Yann")
+        self.setWindowIcon(
+            QIcon("./icons/logo.png"))
         self.show()
 
     def center(self):

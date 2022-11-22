@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QDockWidget, QVBoxLayout, QWidget, QLabel #TODO import additional Widget classes as desired
+from PyQt6.QtWidgets import QDockWidget, QVBoxLayout, QPushButton, QWidget, QLabel #TODO import additional Widget classes as desired
 from PyQt6.QtCore import pyqtSlot
 
 class ScoreBoard(QDockWidget):
@@ -7,6 +7,11 @@ class ScoreBoard(QDockWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
+        '''mainMenu = self.menuBar()  # create a menu bar
+        mainMenu.setNativeMenuBar(False)
+        fileMenu = mainMenu.addMenu(
+            " File")  # add the file menu to the menu bar, the space is required as "File" is reserved in Mac
+        brushSizeMenu = mainMenu.addMenu(" Brush Size")'''
 
     def initUI(self):
         '''initiates ScoreBoard UI'''
@@ -23,6 +28,9 @@ class ScoreBoard(QDockWidget):
         self.mainWidget.setLayout(self.mainLayout)
         self.mainLayout.addWidget(self.label_clickLocation)
         self.mainLayout.addWidget(self.label_timeRemaining)
+        closeButton = QPushButton('END GAME')
+        closeButton.clicked.connect(self.buttonEnd_cliked)
+        self.mainLayout.addWidget(closeButton)
         self.setWidget(self.mainWidget)
         self.show()
 
@@ -49,4 +57,8 @@ class ScoreBoard(QDockWidget):
         self.label_timeRemaining.setText(update)
         print('slot '+update)
         # self.redraw()
+
+        # Here I made the buttonEnd_clicked method to close the window when a player cliks on the End button
+    def buttonEnd_cliked(self):
+        self.close()
 

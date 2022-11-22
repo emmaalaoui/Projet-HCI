@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QFrame
-from PyQt6.QtCore import Qt, QBasicTimer, pyqtSignal, QPointF
-from PyQt6.QtGui import QPainter
+from PyQt6.QtCore import Qt, QBasicTimer, pyqtSignal, QPointF, QPoint
+from PyQt6.QtGui import QPainter, QPixmap
 from PyQt6.QtTest import QTest
 from piece import Piece
 
@@ -9,14 +9,18 @@ class Board(QFrame):  # base the board on a QFrame widget
     clickLocationSignal = pyqtSignal(str) # signal sent when there is a new click location
 
     # TODO set the board width and height to be square
-    boardWidth  = 0     # board is 0 squares wide # TODO this needs updating
-    boardHeight = 0     #
-    timerSpeed  = 1     # the timer updates every 1 millisecond
-    counter     = 10    # the number the counter will count down from
+    boardWidth  = 100     # board is 0 squares wide # TODO this needs updating
+    boardHeight = 100     #
+    timerSpeed  = 1000     # the timer updates every 1 millisecond
+    counter     = 60    # the number the counter will count down from
+
 
     def __init__(self, parent):
         super().__init__(parent)
         self.initBoard()
+        self.image = QPixmap("./icons/Board.png")
+    def resizeEvent(self, event):
+        self.image = self.image.scaled(self.width(), self.height())
 
     def initBoard(self):
         '''initiates board'''
@@ -65,9 +69,10 @@ class Board(QFrame):  # base the board on a QFrame widget
 
     def paintEvent(self, event):
         '''paints the board and the pieces of the game'''
-        # painter = QPainter(self)
-        # self.drawBoardSquares(painter)
-        # self.drawPieces(painter)
+        painter = QPainter(self)
+        painter.drawPixmap(QPoint(), self.image)
+        #self.drawBoardSquares(painter)
+        self.drawPieces(painter)
 
     def mousePressEvent(self, event):
         '''this event is automatically called when the mouse is pressed'''
@@ -86,6 +91,10 @@ class Board(QFrame):  # base the board on a QFrame widget
     def drawBoardSquares(self, painter):
         '''draw all the square on the board'''
         # TODO set the default colour of the brush
+        # draw settings (default)
+        self.drawing = False
+        self.brushSize = 3
+        self.brushColor = Qt.GlobalColor.black  # documentation: https://doc.qt.io/qt-6/qt.html#GlobalColor-enum
         for row in range(0, Board.boardHeight):
             for col in range (0, Board.boardWidth):
                 painter.save()
@@ -106,6 +115,10 @@ class Board(QFrame):  # base the board on a QFrame widget
 
                 # TODO draw some the pieces as ellipses
                 # TODO choose your colour and set the painter brush to the correct colour
+                # draw settings (default)
+                self.drawing = False
+                self.brushSize = 3
+                colour = Qt.GlobalColor.black
                 radius = self.squareWidth() / 4
                 center = QPointF(radius, radius)
                 painter.drawEllipse(center, radius, radius)
