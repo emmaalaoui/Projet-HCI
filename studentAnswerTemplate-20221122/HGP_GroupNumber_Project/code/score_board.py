@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QDockWidget, QApplication, QToolBar, QProgressBar, QVBoxLayout, QPushButton, QWidget, QLabel #TODO import additional Widget classes as desired
 from PyQt6.QtCore import pyqtSlot, QSize, Qt
 from PyQt6.QtGui import QIcon, QAction
-#from board import Board
+#from board import Board Pourquoi ça ne fonctionne pas ?
 class ScoreBoard(QDockWidget):
     '''# base the score_board on a QDockWidget'''
 
