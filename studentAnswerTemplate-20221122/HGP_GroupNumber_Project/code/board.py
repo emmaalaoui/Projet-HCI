@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt, QBasicTimer, pyqtSignal, QPointF, QPoint
 from PyQt6.QtGui import QPainter, QPixmap, QPen, QBrush
 from PyQt6.QtTest import QTest
 from piece import Piece
-from score_board import ScoreBoard
+#from score_board import ScoreBoard
 
 class Board(QFrame):  # base the board on a QFrame widget
     updateTimerSignal = pyqtSignal(int) # signal sent when timer is updated
@@ -29,7 +29,7 @@ class Board(QFrame):  # base the board on a QFrame widget
         '''initiates board'''
         self.timer = QBasicTimer()  # create a timer for the game
         self.isStarted = False      # game is not currently started
-        self.start()                # start the game which will start the timer
+        #self.start()                # start the game which will start the timer
         #0 représente une case vide, 1 représente les noirs (ce joueur commence) et 2 représente les blancs
         self.a = 0
         self.b = 0
@@ -114,9 +114,7 @@ class Board(QFrame):  # base the board on a QFrame widget
         self.resetGame()                            # reset the game
         self.timer.start(self.timerSpeed, self)     # start the timer with the correct speed
         print("start () - timer is started")
-        '''ScoreBoard.pbar.setValue(0)
-        ScoreBoard.step = ScoreBoard.step + 1
-        ScoreBoard.pbar.setValue(ScoreBoard.step)'''
+
 
     def timerEvent(self, event):
         '''this event is automatically called when the timer is updated. based on the timerSpeed variable '''
@@ -126,6 +124,9 @@ class Board(QFrame):  # base the board on a QFrame widget
                 print("Game over")
                 self.timer.stop()
             self.counter -= 1
+            '''ScoreBoard.pbar.setValue(0)
+            ScoreBoard.step = ScoreBoard.step + 1
+            ScoreBoard.pbar.setValue(ScoreBoard.step)'''
             print('timerEvent()', self.counter)
             self.updateTimerSignal.emit(self.counter)
         else:

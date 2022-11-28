@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QDockWidget, QApplication, QToolBar, QProgressBar, QVBoxLayout, QPushButton, QWidget, QLabel #TODO import additional Widget classes as desired
-from PyQt6.QtCore import pyqtSlot, QSize, Qt
+from PyQt6.QtCore import pyqtSlot, QSize, Qt, QBasicTimer
 from PyQt6.QtGui import QIcon, QAction
-#from board import Board Pourquoi ça ne fonctionne pas ?
+from board import Board #Pourquoi ça ne fonctionne pas ?
 class ScoreBoard(QDockWidget):
     '''# base the score_board on a QDockWidget'''
 
@@ -48,6 +48,7 @@ class ScoreBoard(QDockWidget):
         self.timerButton.clicked.connect(self.buttonTimer_clicked)
         self.pbar = QProgressBar(self)
         self.step = 0
+        self.timer = QBasicTimer()
         self.pbar.setOrientation(Qt.Orientation.Vertical)
         self.mainLayout.addWidget(self.timerButton)
         self.mainLayout.addWidget(self.pbar)
@@ -89,7 +90,29 @@ class ScoreBoard(QDockWidget):
         #à retravailler
 
     def buttonTimer_clicked(self):
-        print("test")
-        #Board.start()
+        if self.timer.isActive():
+            self.timer.stop()
+            self.timerButton.setText('Start')
+        elif self.timerButton.text() == 'Time Over':
+            self.pbar.setValue(0)
+            self.step = 0
+            # I want that my progress bar updates during 1 minute (to do a 1-minute timer)
+            # So I choose to start my timer every 600 milliseconds because 600 milliseconds equal 0.6 seconds
+            # My progress bar max is 100 so 0.6*100 = 60 seconds --> 1 minute
+            self.timer.start(600, self)
+            self.timerButton.setText('Stop')
+        else:
+            self.timer.start(600, self)
+            self.timerButton.setText('Stop')
+            #Board.start() #Pourquoi ça ne fonctionne pas ??
+
+    def timerEvent(self, e):
+        if self.step >= 100:
+            self.timer.stop()
+            self.timerButton.setText('Time Over')
+
+        self.step = self.step + 1
+        self.pbar.setValue(self.step)
+
 
 
