@@ -1,17 +1,17 @@
 from PyQt6.QtWidgets import QFrame, QProgressBar
 from PyQt6.QtCore import Qt, QBasicTimer, pyqtSignal, QPointF, QPoint
-from PyQt6.QtGui import QPainter, QPixmap, QPen, QBrush
+from PyQt6.QtGui import QPainter, QPixmap, QPen, QBrush, QCursor
 from PyQt6.QtTest import QTest
 from piece import Piece
-#from score_board import ScoreBoard
+from game_logic import GameLogic
 
 class Board(QFrame):  # base the board on a QFrame widget
     updateTimerSignal = pyqtSignal(int) # signal sent when timer is updated
     clickLocationSignal = pyqtSignal(str) # signal sent when there is a new click location
 
     # TODO set the board width and height to be square
-    boardWidth  = 50     # board is 0 squares wide # TODO this needs updating
-    boardHeight = 50     #
+    boardWidth  = 6    # board is 0 squares wide # TODO this needs updating
+    boardHeight = 6     #
     timerSpeed  = 1000     # the timer updates every 1 millisecond
     counter     = 60    # the number the counter will count down from
 
@@ -24,14 +24,16 @@ class Board(QFrame):  # base the board on a QFrame widget
 
 
     def resizeEvent(self, event):
-        print("rr")
         self.image = self.image.scaled(self.width(), self.height())
 
     def initBoard(self):
         '''initiates board'''
         self.timer = QBasicTimer()  # create a timer for the game
         self.isStarted = False      # game is not currently started
-        #self.start()                # start the game which will start the timer
+        self.cursor = QCursor()
+        self.cursor.setShape(Qt.CursorShape.ForbiddenCursor)
+        print(self.cursor.shape())
+        '''#self.start()                # start the game which will start the timer
         #0 représente une case vide, 1 représente les noirs (ce joueur commence) et 2 représente les blancs
         self.a = 0
         self.b = 0
@@ -83,15 +85,15 @@ class Board(QFrame):  # base the board on a QFrame widget
         self.aw = 0
         self.ax = 0
         #il y'a 49 intersections donc on doit créer un tableau avc 49 cases et le remplir de 0, 1 ou 2
-        '''[self.a, self.b, self.c, self.d, self.e, self.f, self.g],
+        [self.a, self.b, self.c, self.d, self.e, self.f, self.g],
           [self.h, self.i, self.j, self.k, self.l, self.m, self.n],
           [self.o, self.p, self.q, self.r, self.s, self.t, self.u],
           [self.v, self.w, self.x, self.y, self.z, self.ab, self.ac],
           [self.ad, self.ae, self.af, self.ag, self.ah, self.ai, self.aj],
           [self.ak, self.al, self.am, self.an, self.ao, self.ap, self.aq],
           [self.ar, self.ay, self.at, self.au, self.av, self.aw, self.ax],'''
-
-        self.boardArray = []        # TODO - create a 2d int/Piece array to store the state of the game
+        gameLogic = GameLogic()
+        self.boardArray = gameLogic.boardState   # TODO - create a 2d int/Piece array to store the state of the game
         self.printBoardArray()    # TODO - uncomment this method after creating the array above
 
     def printBoardArray(self):
@@ -121,18 +123,17 @@ class Board(QFrame):  # base the board on a QFrame widget
     def timerEvent(self, event):
         '''this event is automatically called when the timer is updated. based on the timerSpeed variable '''
         # TODO adapt this code to handle your timers
-        print("aa")
         if event.timerId() == self.timer.timerId():  # if the timer that has 'ticked' is the one in this class
             if self.counter == 1:
                 print("Game over")
                 self.timer.stop()
             self.counter -= 1
-            #self.go.scoreBoard.setTimeRemaining(self.counter)
             '''ScoreBoard.pbar.setValue(0)
             ScoreBoard.step = ScoreBoard.step + 1
             ScoreBoard.pbar.setValue(ScoreBoard.step)'''
             print('timerEvent()', self.counter)
             self.updateTimerSignal.emit(self.counter)
+            #self.go.scoreBoard.setTimeRemaining(self.counter)
         else:
             super(Board, self).timerEvent(event)      # if we do not handle an event we should pass it to the super
                                                         # class for handling
@@ -141,12 +142,7 @@ class Board(QFrame):  # base the board on a QFrame widget
         '''paints the board and the pieces of the game'''
         painter = QPainter(self)
         painter.drawPixmap(QPoint(), self.image)
-        print("aa")
-        #self.drawBoardSquares(painter) #we don't draw the board bc we use a background
-        #self.drawing = False
-
-
-
+        #self.drawBoardSquares(painter) #we don't draw the board bc we use a background?
 
     def mousePressEvent(self, event):
         '''this event is automatically called when the mouse is pressed'''
@@ -157,7 +153,8 @@ class Board(QFrame):  # base the board on a QFrame widget
         print(self.mouseX, self.mouseY)
         # TODO you could call some game logic here
         self.clickLocationSignal.emit(clickLoc)
-        self.drawPieces()
+        #self.drawPieces()
+        self.tryMove()
 
     def resetGame(self):
         '''clears pieces from the board'''
@@ -169,8 +166,15 @@ class Board(QFrame):  # base the board on a QFrame widget
         self.image = self.image.scaled(width, height)
         '''
 
-    def tryMove(self, newX, newY):
+    def tryMove(self):
         '''tries to move a piece'''
+        for newX in range(146, 776):
+            for newY in range(176, 946):
+                if (self.mouseX - newX)**2 + (self.mouseY - newY)**2 == 100.0**2:
+                    self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
+                    self.drawPieces()
+                newX += 90.0
+                newY += 110.0
         '''
         Equation d'un cercle : (x−h)²+(y−k)²=r².
         Si newX et newY vérifie l'équation alors le point est dans la zone
@@ -187,37 +191,35 @@ class Board(QFrame):  # base the board on a QFrame widget
         self.brushColor = Qt.GlobalColor.black  # documentation: https://doc.qt.io/qt-6/qt.html#GlobalColor-enum
         for row in range(0, Board.boardHeight):
             for col in range (0, Board.boardWidth):
-                painter.save()
+                row += 1
+                col += 1
+                painter.drawRect(row, col, 100, 100)
+
+                '''painter.save()
                 colTransformation = self.squareWidth()* col # TODO set this value equal the transformation in the column direction
                 rowTransformation = 0                       # TODO set this value equal the transformation in the row direction
                 painter.translate(colTransformation,rowTransformation)
-                painter.fillRect()                          # TODO provide the required arguments
+                painter.fillRect(colTransformation, rowTransformation)     # TODO provide the required arguments
                 painter.restore()
                 # TODO change the colour of the brush so that a checkered board is drawn
+                self.brushColor = Qt.GlobalColor.white'''
 
     def drawPieces(self):
-        print("cc")
         '''draw the pieces on the board'''
         self.brushSize = 5
         painter = QPainter(self.image)
-        #if player 1 : Comment aller chercher l'attribut self.currentTurn de ScoreBoard ?
         painter.setPen(QPen(Qt.GlobalColor.black, self.brushSize))
         painter.setBrush(QBrush(Qt.GlobalColor.black, Qt.BrushStyle.SolidPattern))
+        if self.go.scoreBoard.currentTurn == "Player 1":
+            painter.drawEllipse(int(self.mouseX)-20, int(self.mouseY)-20, 50, 50)
+            self.update()
+        else:
+            painter.setPen(QPen(Qt.GlobalColor.white, self.brushSize))
+            painter.setBrush(QBrush(Qt.GlobalColor.white, Qt.BrushStyle.SolidPattern))
+            painter.drawEllipse(int(self.mouseX)-20, int(self.mouseY)-20, 50, 50)
+            self.update()
 
-        '''
-        if player 2 :
-        painter.setPen(QPen(Qt.GlobalColor.white, self.brushSize))
-        painter.setBrush(QBrush(Qt.GlobalColor.white, Qt.BrushStyle.SolidPattern))
-        
-        '''
-        radius = self.squareWidth() / 4
-        center = QPointF(radius, radius)
-        #painter.drawEllipse(center, radius, radius)
         #painter.drawEllipse(125, 155, 50, 50)
-        #A utiliser qu'à partir du moment où l'utilisateur clique sur la souris
-        painter.drawEllipse(int(self.mouseX), int(self.mouseY), 50, 50)
-        self.update()
-        print("dd")
         '''colour = Qt.GlobalColor.transparent # empty square could be modeled with transparent pieces
         for row in range(0, len(self.boardArray)):
             for col in range(0, len(self.boardArray[0])):

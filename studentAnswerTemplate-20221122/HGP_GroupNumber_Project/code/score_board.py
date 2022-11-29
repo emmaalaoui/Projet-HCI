@@ -5,7 +5,7 @@ from board import Board
 class ScoreBoard(QDockWidget):
     '''# base the score_board on a QDockWidget'''
 
-    def __init__(self,go):
+    def __init__(self, go):
         super().__init__()
         self.initUI()
         self.go = go
@@ -51,6 +51,9 @@ class ScoreBoard(QDockWidget):
         self.pbar.setOrientation(Qt.Orientation.Vertical)
         self.mainLayout.addWidget(self.timerButton)
         self.mainLayout.addWidget(self.pbar)
+        skipButton = QPushButton('Skip Turn')
+        skipButton.clicked.connect(self.buttonSkip_clicked)
+        self.mainLayout.addWidget(skipButton)
         closeButton = QPushButton('END GAME')
         closeButton.clicked.connect(self.buttonEnd_cliked)
         self.mainLayout.addWidget(closeButton)
@@ -120,6 +123,28 @@ class ScoreBoard(QDockWidget):
         width = self.width()  # get the width of the current QImage in your application
         height = self.height()  # get the height of the current QImage in your application
         self.image = self.image.scaled(width, height)
+
+    def buttonSkip_clicked(self, s):
+        if self.currentTurn == "Player 1":
+            self.currentTurn = "Player 2"
+            print(self.currentTurn)
+
+        else:
+            self.currentTurn = "Player 1"
+            print(self.currentTurn)
+        self.pbar.setValue(0)
+        self.step = 0
+        self.timer.stop()
+        self.timerButton.setText('One Minute Timer')
+        board = Board(self)
+        board.timer.stop() #ne fonctionne pas !
+        self.updateUi()
+
+        # Here I made the updateUI method to update the UI
+    def updateUi(self):
+        self.playerLabel.setText("Current Turn: " + self.currentTurn)
+        self.playerLabel.adjustSize()
+
 
 
 
