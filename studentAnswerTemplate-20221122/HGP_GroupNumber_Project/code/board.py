@@ -24,6 +24,7 @@ class Board(QFrame):  # base the board on a QFrame widget
 
 
     def resizeEvent(self, event):
+        print("rr")
         self.image = self.image.scaled(self.width(), self.height())
 
     def initBoard(self):
@@ -140,8 +141,12 @@ class Board(QFrame):  # base the board on a QFrame widget
         '''paints the board and the pieces of the game'''
         painter = QPainter(self)
         painter.drawPixmap(QPoint(), self.image)
+        print("aa")
         #self.drawBoardSquares(painter) #we don't draw the board bc we use a background
-        self.drawPieces(painter)
+        #self.drawing = False
+
+
+
 
     def mousePressEvent(self, event):
         '''this event is automatically called when the mouse is pressed'''
@@ -152,6 +157,7 @@ class Board(QFrame):  # base the board on a QFrame widget
         print(self.mouseX, self.mouseY)
         # TODO you could call some game logic here
         self.clickLocationSignal.emit(clickLoc)
+        self.drawPieces()
 
     def resetGame(self):
         '''clears pieces from the board'''
@@ -189,10 +195,11 @@ class Board(QFrame):  # base the board on a QFrame widget
                 painter.restore()
                 # TODO change the colour of the brush so that a checkered board is drawn
 
-    def drawPieces(self, painter):
+    def drawPieces(self):
+        print("cc")
         '''draw the pieces on the board'''
         self.brushSize = 5
-        #painter = QPainter(self.image)
+        painter = QPainter(self.image)
         #if player 1 : Comment aller chercher l'attribut self.currentTurn de ScoreBoard ?
         painter.setPen(QPen(Qt.GlobalColor.black, self.brushSize))
         painter.setBrush(QBrush(Qt.GlobalColor.black, Qt.BrushStyle.SolidPattern))
@@ -206,9 +213,11 @@ class Board(QFrame):  # base the board on a QFrame widget
         radius = self.squareWidth() / 4
         center = QPointF(radius, radius)
         #painter.drawEllipse(center, radius, radius)
-        painter.drawEllipse(125, 155, 50, 50)
+        #painter.drawEllipse(125, 155, 50, 50)
         #A utiliser qu'à partir du moment où l'utilisateur clique sur la souris
-        #painter.drawEllipse(self.X, self.Y, 400, 200)
+        painter.drawEllipse(int(self.mouseX), int(self.mouseY), 50, 50)
+        self.update()
+        print("dd")
         '''colour = Qt.GlobalColor.transparent # empty square could be modeled with transparent pieces
         for row in range(0, len(self.boardArray)):
             for col in range(0, len(self.boardArray[0])):
