@@ -7,11 +7,5 @@ class PieceGroup:
         self.numberPiece = 1
         self.liberties = 4
 
-    def getPieces(self):
-        return self.pieces
-
     def addPiece(self, newPiece):
         self.pieces.append(newPiece)
-
-    def setLiberties(self, board):
-        self.liberties
