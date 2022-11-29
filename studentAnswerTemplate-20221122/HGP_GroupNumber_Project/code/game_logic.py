@@ -17,7 +17,6 @@ class GameLogic:
         for i in range(0, self.dimensionBoard):
             for j in range(0, self.dimensionBoard):
                 self.boardState[i][j] = Piece(i, j, 0)
-        print(self.boardList)
         self.currentPlayer = 1
         self.placeForPlayer = [[[1] * self.dimensionBoard] * self.dimensionBoard] * 2
         self.groups = [[], []]
@@ -32,8 +31,7 @@ class GameLogic:
         top = False
         bottom = False
 
-        self.boardState[piece.x][
-            piece.y].owner = self.currentPlayer  # Change the owner of the piece (add the new piece to the board)
+        self.boardState[piece.x][piece.y].owner = self.currentPlayer  # Change the owner of the piece (add the new piece to the board)
 
         # Test if this new piece is near an existing piece (group)
         if piece.x != 0:

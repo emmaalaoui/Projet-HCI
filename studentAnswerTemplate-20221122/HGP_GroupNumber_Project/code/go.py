@@ -18,9 +18,9 @@ class Go(QMainWindow):
 
     def initUI(self):
         '''initiates application UI'''
+        self.scoreBoard = ScoreBoard(self)
         self.board = Board(self)
         self.setCentralWidget(self.board)
-        self.scoreBoard = ScoreBoard(self)
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.scoreBoard)
         self.scoreBoard.make_connection(self.board)
 

@@ -18,6 +18,7 @@ class Board(QFrame):  # base the board on a QFrame widget
 
     def __init__(self, parent):
         super().__init__(parent)
+        self.go = parent
         self.initBoard()
         self.image = QPixmap("./icons/Board.png")
 
@@ -119,11 +120,13 @@ class Board(QFrame):  # base the board on a QFrame widget
     def timerEvent(self, event):
         '''this event is automatically called when the timer is updated. based on the timerSpeed variable '''
         # TODO adapt this code to handle your timers
+        print("aa")
         if event.timerId() == self.timer.timerId():  # if the timer that has 'ticked' is the one in this class
             if self.counter == 1:
                 print("Game over")
                 self.timer.stop()
             self.counter -= 1
+            #self.go.scoreBoard.setTimeRemaining(self.counter)
             '''ScoreBoard.pbar.setValue(0)
             ScoreBoard.step = ScoreBoard.step + 1
             ScoreBoard.pbar.setValue(ScoreBoard.step)'''
@@ -144,9 +147,9 @@ class Board(QFrame):  # base the board on a QFrame widget
         '''this event is automatically called when the mouse is pressed'''
         clickLoc = "click location ["+str(event.position().x())+","+str(event.position().y())+"]"     # the location where a mouse click was registered
         print("mousePressEvent() - "+clickLoc)
-        self.X = event.position().x()
-        self.Y = event.position().y()
-        print(self.X, self.Y)
+        self.mouseX = event.position().x()
+        self.mouseY = event.position().y()
+        print(self.mouseX, self.mouseY)
         # TODO you could call some game logic here
         self.clickLocationSignal.emit(clickLoc)
 
