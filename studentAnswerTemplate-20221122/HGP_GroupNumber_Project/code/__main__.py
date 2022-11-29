@@ -3,9 +3,8 @@ from go import Go
 import sys
 from game_logic import GameLogic
 
-cc = GameLogic()
-"""
+#cc = GameLogic()
+
 app = QApplication([])
 myGo = Go()
 sys.exit(app.exec())
-"""
