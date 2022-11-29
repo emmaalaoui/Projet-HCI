@@ -1,17 +1,16 @@
-from PyQt6.QtWidgets import QDockWidget, QApplication, QToolBar, QProgressBar, QVBoxLayout, QPushButton, QWidget, QLabel #TODO import additional Widget classes as desired
+from PyQt6.QtWidgets import QDockWidget, QApplication, QMenuBar, QProgressBar, QVBoxLayout, QPushButton, QWidget, QLabel #TODO import additional Widget classes as desired
 from PyQt6.QtCore import pyqtSlot, QSize, Qt, QBasicTimer
-from PyQt6.QtGui import QIcon, QAction
-from board import Board #Pourquoi ça ne fonctionne pas ?
+from PyQt6.QtGui import QIcon, QAction, QPixmap
+from board import Board
 class ScoreBoard(QDockWidget):
     '''# base the score_board on a QDockWidget'''
 
-    def __init__(self):
+    def __init__(self,go):
         super().__init__()
         self.initUI()
+        self.go = go
 
-
-        #why it doesn't work ?
-        '''mainMenu = self.menuBar()  # create a menu bar
+        mainMenu = QMenuBar() # create a menu bar
         mainMenu.setNativeMenuBar(False)
         fileMenu = mainMenu.addMenu(
             " File")  # add the file menu to the menu bar, the space is required as "File" is reserved in Mac
@@ -19,7 +18,7 @@ class ScoreBoard(QDockWidget):
         clearAction = QAction(QIcon("./icons/clear.png"), "Clear", self)  # create a clear action with a png as an icon
         clearAction.setShortcut("Ctrl+C")  # connect this clear action to a keyboard shortcut
         fileMenu.addAction(clearAction)  # add this action to the file menu
-        clearAction.triggered.connect(self.clear)'''
+        clearAction.triggered.connect(self.clear)
 
     def initUI(self):
         '''initiates ScoreBoard UI'''
@@ -82,11 +81,11 @@ class ScoreBoard(QDockWidget):
         update = "Time Remaining:" + str(timeRemainng)
         self.label_timeRemaining.setText(update)
         print('slot '+update)
-        # self.redraw()
+        #self.redraw()
 
         # Here I made the buttonEnd_clicked method to close the window when a player cliks on the End button
     def buttonEnd_cliked(self):
-        self.close()
+        self.go.close()
         #à retravailler
 
     def buttonTimer_clicked(self):
@@ -104,7 +103,8 @@ class ScoreBoard(QDockWidget):
         else:
             self.timer.start(600, self)
             self.timerButton.setText('Stop')
-            #Board.start() #Pourquoi ça ne fonctionne pas ??
+            board = Board(self)
+            board.start()
 
     def timerEvent(self, e):
         if self.step >= 100:
@@ -113,6 +113,12 @@ class ScoreBoard(QDockWidget):
 
         self.step = self.step + 1
         self.pbar.setValue(self.step)
+
+    def clear(self):
+        self.image = QPixmap("./icons/Board.png")
+        width = self.width()  # get the width of the current QImage in your application
+        height = self.height()  # get the height of the current QImage in your application
+        self.image = self.image.scaled(width, height)
 
 
 

@@ -20,7 +20,7 @@ class Go(QMainWindow):
         '''initiates application UI'''
         self.board = Board(self)
         self.setCentralWidget(self.board)
-        self.scoreBoard = ScoreBoard()
+        self.scoreBoard = ScoreBoard(self)
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.scoreBoard)
         self.scoreBoard.make_connection(self.board)
 
@@ -40,3 +40,6 @@ class Go(QMainWindow):
         self.move(gr.topLeft())
         #size = self.geometry()
         #self.move((screen.width() - size.width()) / 2,(screen.height() - size.height()) / 2)
+
+
+
