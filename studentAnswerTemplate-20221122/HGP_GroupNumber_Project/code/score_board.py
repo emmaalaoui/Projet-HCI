@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QDockWidget, QApplication, QMenuBar, QProgressBar, QVBoxLayout, QPushButton, QWidget, QLabel #TODO import additional Widget classes as desired
 from PyQt6.QtCore import pyqtSlot, QSize, Qt, QBasicTimer
-from PyQt6.QtGui import QIcon, QAction, QPixmap
+from PyQt6.QtGui import QIcon, QAction, QPixmap, QCursor
 from board import Board
 class ScoreBoard(QDockWidget):
     '''# base the score_board on a QDockWidget'''
@@ -44,6 +44,7 @@ class ScoreBoard(QDockWidget):
         self.mainLayout.addWidget(self.label_timeRemaining)
         #self.toolbar.addWidget(self.label_timeRemaining)
         self.timerButton = QPushButton('One Minute Timer', self)
+        self.timerButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.timerButton.clicked.connect(self.buttonTimer_clicked)
         self.pbar = QProgressBar(self)
         self.step = 0
@@ -52,9 +53,11 @@ class ScoreBoard(QDockWidget):
         self.mainLayout.addWidget(self.timerButton)
         self.mainLayout.addWidget(self.pbar)
         skipButton = QPushButton('Skip Turn')
+        skipButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         skipButton.clicked.connect(self.buttonSkip_clicked)
         self.mainLayout.addWidget(skipButton)
         closeButton = QPushButton('END GAME')
+        closeButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         closeButton.clicked.connect(self.buttonEnd_cliked)
         self.mainLayout.addWidget(closeButton)
         #self.toolbar.addWidget(closeButton)

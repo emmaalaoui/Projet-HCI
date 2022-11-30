@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QFrame, QProgressBar
+from PyQt6.QtWidgets import QFrame, QProgressBar, QApplication, QMainWindow
 from PyQt6.QtCore import Qt, QBasicTimer, pyqtSignal, QPointF, QPoint
 from PyQt6.QtGui import QPainter, QPixmap, QPen, QBrush, QCursor
 from PyQt6.QtTest import QTest
@@ -21,6 +21,12 @@ class Board(QFrame):  # base the board on a QFrame widget
         self.go = parent
         self.initBoard()
         self.image = QPixmap("./icons/Board.png")
+        '''self.cursor = QCursor()
+        # self.image.setCursor(self.cursor)
+        #self.cursor.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.cursor.setShape(Qt.CursorShape.ArrowCursor)
+        QApplication.setOverrideCursor(self.cursor)
+        print(self.cursor.shape())'''
 
 
     def resizeEvent(self, event):
@@ -30,13 +36,12 @@ class Board(QFrame):  # base the board on a QFrame widget
             new_size = self.image.scaled(self.width(), self.width())'''
         self.image = self.image.scaled(self.width(), self.height())
 
+
     def initBoard(self):
         '''initiates board'''
         self.timer = QBasicTimer()  # create a timer for the game
         self.isStarted = False      # game is not currently started
-        self.cursor = QCursor()
-        self.cursor.setShape(Qt.CursorShape.ForbiddenCursor)
-        print(self.cursor.shape())
+
         '''#self.start()                # start the game which will start the timer
         #0 représente une case vide, 1 représente les noirs (ce joueur commence) et 2 représente les blancs
         self.a = 0
@@ -184,19 +189,12 @@ class Board(QFrame):  # base the board on a QFrame widget
         for newX in range(54, 774, 90):
             for newY in range(64, 944, 110):
                 if (self.mouseX - newX)**2 + (self.mouseY - newY)**2 <= 30.0**2:
-                    self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
+                    #self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
+                    #QApplication.setOverrideCursor(self.cursor)
                     col, row = self.pixelToInt(newX, newY)
-                    print("aaa")
-                    print(self.go.gameLogic.currentPlayer - 1)
-                    print(row)
-                    print(col)
-                    print("bbb")
-                    print(self.go.gameLogic.placeForPlayer[self.go.gameLogic.currentPlayer - 1][col][row])
-                    #if self.go.gameLogic.placeForPlayer[0][0][0]:
                     if self.go.gameLogic.placeForPlayer[self.go.gameLogic.currentPlayer - 1][col][row]:
-                        print("ccc")
                         self.drawPieces(newX, newY)
-                        self.pixelToInt(newX, newY)  # affiche la colonne et la ligne de la pièce
+                        #self.pixelToInt(newX, newY)  # affiche la colonne et la ligne de la pièce
                     if self.go.scoreBoard.currentTurn == "Player 1":
                         self.go.scoreBoard.currentTurn = "Player 2"
                     else:
@@ -216,14 +214,13 @@ class Board(QFrame):  # base the board on a QFrame widget
         for i in range(54, 774, 90):
             countC += 1
             if i == mouseX:
-                print(countC)
                 finalC = countC
 
         for j in range(64, 944, 110):
             countR += 1
             if j == mouseY:
-                print(countR)
                 finalR = countR
+        print(finalC, finalR)
         return finalC, finalR
 
     def drawBoardSquares(self, painter):
