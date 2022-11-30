@@ -19,7 +19,7 @@ class Go(QMainWindow):
 
     def initUI(self):
         '''initiates application UI'''
-        self.gameLogic = GameLogic(self)
+        self.gameLogic = GameLogic()
         self.scoreBoard = ScoreBoard(self)
         self.board = Board(self)
         self.setCentralWidget(self.board)

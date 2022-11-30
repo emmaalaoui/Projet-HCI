@@ -187,7 +187,13 @@ class Board(QFrame):  # base the board on a QFrame widget
                     self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
                     col, row = self.pixelToInt(newX, newY)
                     print("aaa")
-                    if self.go.gamelogic.placeforplayers[self.go.gameLogic.currentPlayer-1][col][row]:
+                    print(self.go.gameLogic.currentPlayer - 1)
+                    print(row)
+                    print(col)
+                    print("bbb")
+                    print(self.go.gameLogic.placeForPlayer[self.go.gameLogic.currentPlayer - 1][col][row])
+                    #if self.go.gameLogic.placeForPlayer[0][0][0]:
+                    if self.go.gameLogic.placeForPlayer[self.go.gameLogic.currentPlayer - 1][col][row]:
                         print("ccc")
                         self.drawPieces(newX, newY)
                         self.pixelToInt(newX, newY)  # affiche la colonne et la ligne de la pièce
@@ -205,16 +211,20 @@ class Board(QFrame):  # base the board on a QFrame widget
     def pixelToInt (self, mouseX, mouseY):
         countC = -1
         countR = -1
+        finalC = -1
+        finalR = -1
         for i in range(54, 774, 90):
             countC += 1
             if i == mouseX:
                 print(countC)
+                finalC = countC
 
         for j in range(64, 944, 110):
             countR += 1
             if j == mouseY:
                 print(countR)
-        return countC, countR
+                finalR = countR
+        return finalC, finalR
 
     def drawBoardSquares(self, painter):
         '''draw all the square on the board'''

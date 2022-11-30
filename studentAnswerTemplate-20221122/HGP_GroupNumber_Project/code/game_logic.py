@@ -10,9 +10,8 @@ class GameLogic:
     print("Game Logic Object Created")
 
     # TODO add code here to manage the logic of your game
-    def __init__(self, go):
+    def __init__(self):
         super().__init__()
-        self.go = go
         self.dimensionBoard = 7
         self.boardState = [[0] * self.dimensionBoard] * self.dimensionBoard
         for i in range(0, self.dimensionBoard):
@@ -20,6 +19,7 @@ class GameLogic:
                 self.boardState[i][j] = Piece(i, j, 0)
         self.currentPlayer = 1
         self.placeForPlayer = [[[True] * self.dimensionBoard] * self.dimensionBoard] * 2
+        print(self.placeForPlayer)
         self.groups = [[], []]
         self.captured = [0, 0]
         self.previousBoards = []
