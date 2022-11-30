@@ -182,13 +182,11 @@ class Board(QFrame):  # base the board on a QFrame widget
 
     def tryMove(self):
         '''tries to move a piece'''
-        for newX in range(146, 776):
-            for newY in range(176, 946):
+        for newX in range(146, 776, 90):
+            for newY in range(176, 946, 110):
                 if (self.mouseX - newX)**2 + (self.mouseY - newY)**2 <= 30.0**2:
                     self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
                     self.drawPieces(newX, newY)
-                newX += 90.0
-                newY += 110.0
 
         '''
         Equation d'un cercle : (x−h)²+(y−k)²=r².

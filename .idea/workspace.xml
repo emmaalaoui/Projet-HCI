@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="479b13f7-e2c4-4d1d-bb7d-065a8c4fcde2" name="Changes" comment="">
+    <list default="true" id="479b13f7-e2c4-4d1d-bb7d-065a8c4fcde2" name="Changes" comment="test">
       <change beforePath="$PROJECT_DIR$/.idea/Projet-HCI.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Projet-HCI.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_11_2022_11_38__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_11_2022_11_38__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/game_logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/game_logic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/board.py" beforeDir="false" afterPath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/board.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +141,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669811231638</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="test">
+      <created>1669819851440</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1669819851440</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
