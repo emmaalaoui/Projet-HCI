@@ -100,6 +100,16 @@ class Board(QFrame):  # base the board on a QFrame widget
         '''prints the boardArray in an attractive way'''
         print("boardArray:")
         print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.boardArray]))
+        '''
+        if gameLogic.boardState.owner == 1
+            painter.setPen(QPen(Qt.GlobalColor.white, self.brushSize))
+            painter.setBrush(QBrush(Qt.GlobalColor.white, Qt.BrushStyle.SolidPattern))
+            painter.drawEllipse(int(self.mouseX)-20, int(self.mouseY)-20, 50, 50)
+            self.update()
+        elif gameLogic.boardState.owner == 2
+            same in black    
+        
+        '''
 
     def mousePosToColRow(self, event):
         '''convert the mouse click event to a row and column'''
