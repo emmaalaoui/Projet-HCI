@@ -182,10 +182,12 @@ class Board(QFrame):  # base the board on a QFrame widget
 
     def tryMove(self):
         '''tries to move a piece'''
-        for newX in range(146, 776, 90):
-            for newY in range(176, 946, 110):
+        for newX in range(54, 776, 90):
+            for newY in range(64, 946, 110):
                 if (self.mouseX - newX)**2 + (self.mouseY - newY)**2 <= 30.0**2:
                     self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
+                    ''' if self.gamelogic.placeforplayers[self.currentPlayer-1][convertir(nexX)][convertir(newY] :
+                    drawPieces'''
                     self.drawPieces(newX, newY)
 
         '''
@@ -229,7 +231,7 @@ class Board(QFrame):  # base the board on a QFrame widget
         else:
             painter.setPen(QPen(Qt.GlobalColor.white, self.brushSize))
             painter.setBrush(QBrush(Qt.GlobalColor.white, Qt.BrushStyle.SolidPattern))
-            painter.drawEllipse(int(self.newX)-20, int(self.newY)-20, 50, 50)
+            painter.drawEllipse(int(newX)-20, int(newY)-20, 50, 50)
             self.update()
 
         #painter.drawEllipse(125, 155, 50, 50)
