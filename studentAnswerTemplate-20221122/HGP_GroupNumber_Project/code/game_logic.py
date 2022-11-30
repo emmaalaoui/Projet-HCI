@@ -18,7 +18,7 @@ class GameLogic:
             for j in range(0, self.dimensionBoard):
                 self.boardState[i][j] = Piece(i, j, 0)
         self.currentPlayer = 1
-        self.placeForPlayer = [[[1] * self.dimensionBoard] * self.dimensionBoard] * 2
+        self.placeForPlayer = [[[True] * self.dimensionBoard] * self.dimensionBoard] * 2
         self.groups = [[], []]
         self.captured = [0, 0]
         self.previousBoards = []
@@ -155,25 +155,25 @@ class GameLogic:
                     self.groups[k].remove(i)
 
         # Update the list of position where the players can play
-        self.placeForPlayer = [[[1] * self.dimensionBoard] * self.dimensionBoard] * 2
+        self.placeForPlayer = [[[True] * self.dimensionBoard] * self.dimensionBoard] * 2
 
         for i in self.boardState:
             for j in i:
                 if j.owner != 0:
                     for k in range(0, 2):
-                        self.placeForPlayer[k][j.x][j.y] = 0
+                        self.placeForPlayer[k][j.x][j.y] = False
 
         for i in suicideRule:
-            self.placeForPlayer[i[0]][i[1]][i[2]] = 0
+            self.placeForPlayer[i[0]][i[1]][i[2]] = False
 
         # Test the futures enbale positions for koRule
         for k in range(0, 2):
             for i in range(0, self.dimensionBoard):
                 for j in range(0, self.dimensionBoard):
-                    if self.placeForPlayer[k][i][j] == 1:
+                    if self.placeForPlayer[k][i][j]:
                         boardOwners[i][j] = k+1
                         if boardOwners in self.previousBoards:
-                            self.placeForPlayer[k][i][j] = 0
+                            self.placeForPlayer[k][i][j] = False
                         boardOwners[i][j] = 0
 
         # Change the current player
