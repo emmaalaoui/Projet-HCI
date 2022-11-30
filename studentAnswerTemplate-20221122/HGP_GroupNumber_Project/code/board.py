@@ -24,6 +24,10 @@ class Board(QFrame):  # base the board on a QFrame widget
 
 
     def resizeEvent(self, event):
+        '''if self.contentsRect().width() > self.contentsRect().height():
+            new_size = self.image.scaled(self.height(), self.height())
+        else:
+            new_size = self.image.scaled(self.width(), self.width())'''
         self.image = self.image.scaled(self.width(), self.height())
 
     def initBoard(self):
@@ -180,11 +184,12 @@ class Board(QFrame):  # base the board on a QFrame widget
         '''tries to move a piece'''
         for newX in range(146, 776):
             for newY in range(176, 946):
-                if (self.mouseX - newX)**2 + (self.mouseY - newY)**2 == 100.0**2:
+                if (self.mouseX - newX)**2 + (self.mouseY - newY)**2 <= 30.0**2:
                     self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
-                    self.drawPieces()
+                    self.drawPieces(newX, newY)
                 newX += 90.0
                 newY += 110.0
+
         '''
         Equation d'un cercle : (x−h)²+(y−k)²=r².
         Si newX et newY vérifie l'équation alors le point est dans la zone
@@ -214,19 +219,19 @@ class Board(QFrame):  # base the board on a QFrame widget
                 # TODO change the colour of the brush so that a checkered board is drawn
                 self.brushColor = Qt.GlobalColor.white'''
 
-    def drawPieces(self):
+    def drawPieces(self, newX, newY):
         '''draw the pieces on the board'''
         self.brushSize = 5
         painter = QPainter(self.image)
         painter.setPen(QPen(Qt.GlobalColor.black, self.brushSize))
         painter.setBrush(QBrush(Qt.GlobalColor.black, Qt.BrushStyle.SolidPattern))
         if self.go.scoreBoard.currentTurn == "Player 1":
-            painter.drawEllipse(int(self.mouseX)-20, int(self.mouseY)-20, 50, 50)
+            painter.drawEllipse(int(newX)-20, int(newY)-20, 50, 50)
             self.update()
         else:
             painter.setPen(QPen(Qt.GlobalColor.white, self.brushSize))
             painter.setBrush(QBrush(Qt.GlobalColor.white, Qt.BrushStyle.SolidPattern))
-            painter.drawEllipse(int(self.mouseX)-20, int(self.mouseY)-20, 50, 50)
+            painter.drawEllipse(int(self.newX)-20, int(self.newY)-20, 50, 50)
             self.update()
 
         #painter.drawEllipse(125, 155, 50, 50)
