@@ -36,6 +36,13 @@ class GameLogic:
 
         self.boardState[piece.x][piece.y].owner = self.currentPlayer  # Change the owner of the piece (add the new piece to the board)
 
+        #Save the owners for the koRule
+        for i in self.boardState:
+            for j in i:
+                boardOwners[j.x][j.y] = j.owner
+
+        self.previousBoards.append(boardOwners)
+
         # Test if this new piece is near an existing piece (group)
         if piece.x != 0:
             if self.boardState[piece.x - 1][piece.y].owner == self.currentPlayer:
@@ -147,12 +154,6 @@ class GameLogic:
                         j.owner = 0
                     self.groups[k].remove(i)
 
-        for i in self.boardState:
-            for j in i:
-                boardOwners[j.x][j.y] = j.owner
-
-        self.previousBoards.append(boardOwners)
-
         # Update the list of position where the players can play
         self.placeForPlayer = [[[1] * self.dimensionBoard] * self.dimensionBoard] * 2
 
@@ -165,124 +166,18 @@ class GameLogic:
         for i in suicideRule:
             self.placeForPlayer[i[0]][i[1]][i[2]] = 0
 
+        # Test the futures enbale positions for koRule
+        for k in range(0, 2):
+            for i in range(0, self.dimensionBoard):
+                for j in range(0, self.dimensionBoard):
+                    if self.placeForPlayer[k][i][j] == 1:
+                        boardOwners[i][j] = k+1
+                        if boardOwners in self.previousBoards:
+                            self.placeForPlayer[k][i][j] = 0
+                        boardOwners[i][j] = 0
+
         # Change the current player
         if self.currentPlayer == 1:
             self.currentPlayer = 2
         else:
             self.currentPlayer = 1
-
-    def koRule(self, piece):  # When the player plays, test first the ko rule
-        """"
-        ça va peut être pas marcher, faut peut-être recréer entièrement testBoardState et testGroups
-        mais là il est 3h41 et g la flemme
-        """
-
-        # Create some variables to check the state of the board at every updates
-        neighbour = 0
-        left = False
-        right = False
-        top = False
-        bottom = False
-        testBoardState = self.boardState
-        testGroups = self.groups
-        testBoardOwner = [[0] * self.dimensionBoard] * self.dimensionBoard
-
-        testBoardState[piece.x][piece.y].owner = self.currentPlayer  # Change the owner of the piece (add the new piece to the board)
-
-        # Test if this new piece is near an existing piece (group)
-        if piece.x != 0:
-            if testBoardState[piece.x - 1][piece.y].owner == self.currentPlayer:
-                neighbour = neighbour + 1
-                left = True
-        if piece.x != self.dimensionBoard - 1:
-            if testBoardState[piece.x + 1][piece.y].owner == self.currentPlayer:
-                neighbour = neighbour + 1
-                right = True
-        if piece.y != 0:
-            if testBoardState[piece.x][piece.y - 1].owner == self.currentPlayer:
-                neighbour = neighbour + 1
-                top = True
-        if piece.y != self.dimensionBoard - 1:
-            if testBoardState[piece.x][piece.y + 1].owner == self.currentPlayer:
-                neighbour = neighbour + 1
-                bottom = True
-
-        # If the piece is near an existed group, add it to it
-        if neighbour > 0:
-            for i in testGroups[self.currentPlayer - 1]:
-                if testBoardState[piece.x - 1][piece.y] in i.pieces or testBoardState[piece.x + 1][piece.y] in i.pieces or testBoardState[piece.x][piece.y - 1] in i.pieces or testBoardState[piece.x][piece.y + 1] in i.pieces:
-                    i.addPiece(piece)
-
-            # Fusion 2 groups if a piece makes the link between them
-            if neighbour > 1:
-                fusions = []
-                if top:
-                    for i in testGroups[self.currentPlayer - 1]:
-                        if testBoardState[piece.x][piece.y - 1] in i.pieces:
-                            fusions.append(i)
-                if bottom:
-                    for i in testGroups[self.currentPlayer - 1]:
-                        if testBoardState[piece.x][piece.y + 1] in i.pieces:
-                            fusions.append(i)
-                if left:
-                    for i in testGroups[self.currentPlayer - 1]:
-                        if testBoardState[piece.x - 1][piece.y] in i.pieces:
-                            fusions.append(i)
-                if right:
-                    for i in testGroups[self.currentPlayer - 1]:
-                        if testBoardState[piece.x + 1][piece.y] in i.pieces:
-                            fusions.append(i)
-
-                fusions = set(fusions)
-                print(fusions)
-
-                for i in range(1, len(fusions)):
-                    for j in fusions[i].pieces:
-                        fusions[0].addPiece(j)
-                    fusions.pop(i)
-
-        # If there is no groups near the new piece, create a new piece group
-        else:
-            testGroups[self.currentPlayer - 1].append(testBoardState[piece.x][piece.y])
-
-        # Reset the liberties of each piece groups for each player
-        for k in range(0, 2):
-            for i in testGroups[k]:
-                i.liberties = 0
-                libertiescoord = []
-                for j in i.pieces:
-                    if j.x != 0:
-                        if testBoardState[j.x - 1][j.y].owner == 0:
-                            if [j.x - 1, j.y] in libertiescoord:
-                                libertiescoord.append([j.x - 1, j.y])
-                                i.liberties = i.liberties + 1
-                    if j.x != self.dimensionBoard - 1:
-                        if testBoardState[j.x + 1][j.y].owner == 0:
-                            if [j.x + 1, j.y] in libertiescoord:
-                                libertiescoord.append([j.x + 1, j.y])
-                                i.liberties = i.liberties + 1
-                    if j.y != 0:
-                        if testBoardState[j.x][j.y - 1].owner == 0:
-                            if [j.x, j.y - 1] in libertiescoord:
-                                libertiescoord.append([j.x, j.y - 1])
-                                i.liberties = i.liberties + 1
-                    if j.y != self.dimensionBoard - 1:
-                        if testBoardState[j.x][j.y + 1].owner == 0:
-                            if [j.x, j.y + 1] in libertiescoord:
-                                libertiescoord.append([j.x, j.y + 1])
-                                i.liberties = i.liberties + 1
-
-                # If liberties goes to 0, the other player get the pieces and the group is deleted
-                if i.liberties == 0:
-                    for j in i.pieces:
-                        j.owner = 0
-                    testGroups[k].remove(i)
-
-        for i in testBoardState:
-            for j in i:
-                testBoardOwner[j.x][j.y] = j.owner
-
-        if self.previousBoards.count(testBoardOwner) == 0:
-            self.update(piece)
-        else:
-            print("déjà vu, I've just been in this place before")
