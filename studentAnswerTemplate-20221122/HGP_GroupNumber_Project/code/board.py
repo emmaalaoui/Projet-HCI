@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt, QBasicTimer, pyqtSignal, QPointF, QPoint
 from PyQt6.QtGui import QPainter, QPixmap, QPen, QBrush, QCursor
 from PyQt6.QtTest import QTest
 from piece import Piece
-from game_logic import GameLogic
+
 
 class Board(QFrame):  # base the board on a QFrame widget
     updateTimerSignal = pyqtSignal(int) # signal sent when timer is updated
@@ -96,8 +96,7 @@ class Board(QFrame):  # base the board on a QFrame widget
           [self.ad, self.ae, self.af, self.ag, self.ah, self.ai, self.aj],
           [self.ak, self.al, self.am, self.an, self.ao, self.ap, self.aq],
           [self.ar, self.ay, self.at, self.au, self.av, self.aw, self.ax],'''
-        gameLogic = GameLogic()
-        self.boardArray = gameLogic.boardState   # TODO - create a 2d int/Piece array to store the state of the game
+        self.boardArray = self.go.gameLogic.boardState   # TODO - create a 2d int/Piece array to store the state of the game
         self.printBoardArray()    # TODO - uncomment this method after creating the array above
 
     def printBoardArray(self):
@@ -182,20 +181,40 @@ class Board(QFrame):  # base the board on a QFrame widget
 
     def tryMove(self):
         '''tries to move a piece'''
-        for newX in range(54, 776, 90):
-            for newY in range(64, 946, 110):
+        for newX in range(54, 774, 90):
+            for newY in range(64, 944, 110):
                 if (self.mouseX - newX)**2 + (self.mouseY - newY)**2 <= 30.0**2:
                     self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
-                    ''' if self.gamelogic.placeforplayers[self.currentPlayer-1][convertir(nexX)][convertir(newY] :
-                    drawPieces'''
-                    self.drawPieces(newX, newY)
-
+                    col, row = self.pixelToInt(newX, newY)
+                    print("aaa")
+                    if self.go.gamelogic.placeforplayers[self.go.gameLogic.currentPlayer-1][col][row]:
+                        print("ccc")
+                        self.drawPieces(newX, newY)
+                        self.pixelToInt(newX, newY)  # affiche la colonne et la ligne de la pièce
+                    if self.go.scoreBoard.currentTurn == "Player 1":
+                        self.go.scoreBoard.currentTurn = "Player 2"
+                    else:
+                        self.go.scoreBoard.currentTurn = "Player 1"
+                    self.go.scoreBoard.updateUi()
         '''
         Equation d'un cercle : (x−h)²+(y−k)²=r².
         Si newX et newY vérifie l'équation alors le point est dans la zone
         h : commence à 146 puis on ajoute 90 à chaque fois qu'on se décale sur la droite
         y : commence à 176 puis on ajoute 110 à chaque fois qu'on se décale vers le bas
         '''
+    def pixelToInt (self, mouseX, mouseY):
+        countC = -1
+        countR = -1
+        for i in range(54, 774, 90):
+            countC += 1
+            if i == mouseX:
+                print(countC)
+
+        for j in range(64, 944, 110):
+            countR += 1
+            if j == mouseY:
+                print(countR)
+        return countC, countR
 
     def drawBoardSquares(self, painter):
         '''draw all the square on the board'''

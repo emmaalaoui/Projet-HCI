@@ -3,6 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
 from board import Board
 from score_board import ScoreBoard
+from game_logic import GameLogic
 
 class Go(QMainWindow):
 
@@ -18,6 +19,7 @@ class Go(QMainWindow):
 
     def initUI(self):
         '''initiates application UI'''
+        self.gameLogic = GameLogic(self)
         self.scoreBoard = ScoreBoard(self)
         self.board = Board(self)
         self.setCentralWidget(self.board)

@@ -10,8 +10,9 @@ class GameLogic:
     print("Game Logic Object Created")
 
     # TODO add code here to manage the logic of your game
-    def __init__(self):
+    def __init__(self, go):
         super().__init__()
+        self.go = go
         self.dimensionBoard = 7
         self.boardState = [[0] * self.dimensionBoard] * self.dimensionBoard
         for i in range(0, self.dimensionBoard):
