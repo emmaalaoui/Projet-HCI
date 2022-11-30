@@ -111,7 +111,7 @@ class Board(QFrame):  # base the board on a QFrame widget
             painter.drawEllipse(int(self.mouseX)-20, int(self.mouseY)-20, 50, 50)
             self.update()
         elif gameLogic.boardState.owner == 2
-            same in black    
+            same in black..  
         
         '''
 
