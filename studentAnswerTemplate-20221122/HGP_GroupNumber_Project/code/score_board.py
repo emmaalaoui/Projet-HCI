@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QDockWidget, QApplication, QMenuBar, QProgressBar, QVBoxLayout, QPushButton, QWidget, QLabel #TODO import additional Widget classes as desired
+from PyQt6.QtWidgets import QApplication, QDockWidget, QGroupBox, QMenuBar, QProgressBar, QVBoxLayout, QPushButton, QWidget, QLabel #TODO import additional Widget classes as desired
 from PyQt6.QtCore import pyqtSlot, QSize, Qt, QBasicTimer
 from PyQt6.QtGui import QIcon, QAction, QPixmap, QCursor
 from board import Board
@@ -10,7 +10,7 @@ class ScoreBoard(QDockWidget):
         self.initUI()
         self.go = go
 
-        mainMenu = QMenuBar() # create a menu bar
+        '''mainMenu = QMenuBar() # create a menu bar
         mainMenu.setNativeMenuBar(False)
         fileMenu = mainMenu.addMenu(
             " File")  # add the file menu to the menu bar, the space is required as "File" is reserved in Mac
@@ -18,7 +18,7 @@ class ScoreBoard(QDockWidget):
         clearAction = QAction(QIcon("./icons/clear.png"), "Clear", self)  # create a clear action with a png as an icon
         clearAction.setShortcut("Ctrl+C")  # connect this clear action to a keyboard shortcut
         fileMenu.addAction(clearAction)  # add this action to the file menu
-        clearAction.triggered.connect(self.clear)
+        clearAction.triggered.connect(self.clear)'''
 
     def initUI(self):
         '''initiates ScoreBoard UI'''
@@ -26,43 +26,61 @@ class ScoreBoard(QDockWidget):
         self.center()
         self.setWindowTitle('ScoreBoard')
         #create a widget to hold other widgets
-        self.mainWidget = QWidget()
-        self.mainLayout = QVBoxLayout()
-        self.mainWidget.setMaximumSize(220, self.height())
-        #self.toolbar = QToolBar("My main toolbar")
-        #self.toolbar.setIconSize(QSize(16, 16))
+        self.mainWidgetB = QGroupBox()
+        self.mainWidgetB.setStyleSheet("color: white;"
+                        "background-color: black")
+        self.mainWidgetW = QGroupBox()
+        self.mainWidgetW.setStyleSheet("color: white;"
+                                       "background-color: black")
+        self.mainLayoutB = QVBoxLayout()
+        self.mainLayoutW = QVBoxLayout()
+
+        self.mainWidgetB.setMaximumSize(self.width(), 250)
+        self.mainWidgetW.setMaximumSize(self.width(), 250)
 
         #create two labels which will be updated by signals
         self.label_clickLocation = QLabel("Click Location: ")
         self.label_timeRemaining = QLabel("Time remaining: ")
         self.currentTurn = "Player 1"
         self.playerLabel = QLabel("Current Turn: " + self.currentTurn)
-        self.mainLayout.addWidget(self.playerLabel)
-        self.mainWidget.setLayout(self.mainLayout)
+        self.mainLayoutB.addWidget(self.playerLabel)
+        self.mainLayoutW.addWidget(self.playerLabel)
+        self.mainWidgetB.setLayout(self.mainLayoutB)
+        self.mainWidgetW.setLayout(self.mainLayoutW)
         #self.mainLayout.addWidget(self.label_clickLocation)
-        #self.toolbar.addWidget(self.label_clickLocation)
-        self.mainLayout.addWidget(self.label_timeRemaining)
-        #self.toolbar.addWidget(self.label_timeRemaining)
+        self.mainLayoutB.addWidget(self.label_timeRemaining)
+        self.mainLayoutW.addWidget(self.label_timeRemaining)
         self.timerButton = QPushButton('One Minute Timer', self)
+        self.timerButton.setStyleSheet("color: black;"
+                                       "background-color: white;"
+                                       #"border-style: outset;"
+                                       "border-width: 2px;"
+                                       "border-radius: 10px;"
+                                       #"border-color: beige;"
+                                       "font: bold 14px")
+
         self.timerButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.timerButton.clicked.connect(self.buttonTimer_clicked)
         self.pbar = QProgressBar(self)
         self.step = 0
         self.timer = QBasicTimer()
         self.pbar.setOrientation(Qt.Orientation.Vertical)
-        self.mainLayout.addWidget(self.timerButton)
-        self.mainLayout.addWidget(self.pbar)
+        self.mainLayoutB.addWidget(self.timerButton)
+        self.mainLayoutW.addWidget(self.timerButton)
+        self.mainLayoutB.addWidget(self.pbar)
+        self.mainLayoutW.addWidget(self.pbar)
         skipButton = QPushButton('Skip Turn')
         skipButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         skipButton.clicked.connect(self.buttonSkip_clicked)
-        self.mainLayout.addWidget(skipButton)
+        self.mainLayoutB.addWidget(skipButton)
+        self.mainLayoutW.addWidget(skipButton)
         closeButton = QPushButton('END GAME')
         closeButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         closeButton.clicked.connect(self.buttonEnd_cliked)
-        self.mainLayout.addWidget(closeButton)
-        #self.toolbar.addWidget(closeButton)
-        #self.setWidget(self.toolbar)
-        self.setWidget(self.mainWidget)
+        self.mainLayoutB.addWidget(closeButton)
+        self.mainLayoutW.addWidget(closeButton)
+        #self.setWidget(self.mainWidgetB) #commenter pour afficher la box blanche
+        self.setWidget(self.mainWidgetW) #commenter pour afficher la box noire
         self.show()
 
     def center(self):
