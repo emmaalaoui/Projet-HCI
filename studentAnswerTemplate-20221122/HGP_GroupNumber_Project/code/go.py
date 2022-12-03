@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtWidgets import QMainWindow, QHBoxLayout
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
 from board import Board
@@ -23,11 +23,16 @@ class Go(QMainWindow):
         self.scoreBoard = ScoreBoard(self)
         self.board = Board(self)
         self.setCentralWidget(self.board)
-        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.scoreBoard)
+        #self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.scoreBoard)
+        self.myScoreBoard = QHBoxLayout()
+        self.myScoreBoard.addWidget(self.scoreBoard)
+        self.myScoreBoard.addLayout(self.scoreBoard.grid)
+        self.setLayout(self.myScoreBoard)
         self.scoreBoard.make_connection(self.board)
 
         self.resize(800, 800)
         self.center()
+        self.setStyleSheet("background-color: brown")
         self.setWindowTitle("Project - Go - Emma&Yann")
         self.setWindowIcon(
             QIcon("./icons/logo.png"))

@@ -1,8 +1,8 @@
-from PyQt6.QtWidgets import QApplication, QDockWidget, QGroupBox, QMenuBar, QProgressBar, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QLabel #TODO import additional Widget classes as desired
+from PyQt6.QtWidgets import QApplication, QDockWidget, QGridLayout, QGroupBox, QMenuBar, QProgressBar, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QLabel #TODO import additional Widget classes as desired
 from PyQt6.QtCore import pyqtSlot, QSize, Qt, QBasicTimer
 from PyQt6.QtGui import QIcon, QAction, QPixmap, QCursor
 from board import Board
-class ScoreBoard(QDockWidget):
+class ScoreBoard(QWidget):
     '''# base the score_board on a QDockWidget'''
 
     def __init__(self, go):
@@ -10,96 +10,143 @@ class ScoreBoard(QDockWidget):
         self.initUI()
         self.go = go
 
-        '''mainMenu = QMenuBar() # create a menu bar
-        mainMenu.setNativeMenuBar(False)
-        fileMenu = mainMenu.addMenu(
-            " File")  # add the file menu to the menu bar, the space is required as "File" is reserved in Mac
-
-        clearAction = QAction(QIcon("./icons/clear.png"), "Clear", self)  # create a clear action with a png as an icon
-        clearAction.setShortcut("Ctrl+C")  # connect this clear action to a keyboard shortcut
-        fileMenu.addAction(clearAction)  # add this action to the file menu
-        clearAction.triggered.connect(self.clear)'''
-
     def initUI(self):
         '''initiates ScoreBoard UI'''
-        self.resize(200, 200)
-        self.center()
-        self.setWindowTitle('ScoreBoard')
+        ''''IMPORTANT '''
+        # pour t'expliquer, j'aimerai créer 3 QGroupBox : une pour le player 1, une pour le player 2 et une autre pour les
+        # match details sauf que pour avoir 3 QGroupBox à la suite il faut créer une GridLayout et y ajouter les QGroupBox
+        # sauf que pour l'instant la grid se créée dans une nouvelle fenêtre au lieu de se mettre à droite du plateau
+        # peux-tu regarder dans la classe go stp ? Merci :)
+        # B pour black, W pour white, M pour match et R pour rules
+
+        self.grid = QGridLayout()
+        self.setLayout(self.grid)
+
+        #self.resize(200, 200)
+        #self.center()
+        #self.setWindowTitle('ScoreBoard')
+
         #create a widget to hold other widgets
         self.mainWidgetB = QGroupBox()
+        self.mainWidgetB.setTitle("Player 1 - Black Stones")
         self.mainWidgetB.setStyleSheet("color: white;"
                                        "background-color: black")
 
         self.mainWidgetW = QGroupBox()
+        self.mainWidgetW.setTitle("Player 2 - White Stones")
         self.mainWidgetW.setStyleSheet("color: black;"
+                                       "background-color: white")
+        self.mainWidgetM = QGroupBox()
+        self.mainWidgetM.setTitle("Match Details")
+        self.mainWidgetM.setStyleSheet("color: black;"
+                                       "background-color: white")
+        self.mainWidgetR = QGroupBox()
+        self.mainWidgetR.setTitle("Rules of Go")
+        self.mainWidgetR.setStyleSheet("color: black;"
                                        "background-color: white")
         self.mainLayoutB = QVBoxLayout()
         self.mainLayoutW = QVBoxLayout()
+        self.mainLayoutM = QVBoxLayout()
+        self.mainLayoutR = QVBoxLayout()
+
+
 
         #self.mainWidgetB.setMaximumSize(self.width(), 250)
-        self.mainWidgetW.setMaximumSize(self.width(), 300)
+        #self.mainWidgetW.setMaximumSize(self.width(), 300)
 
         #create two labels which will be updated by signals
         self.label_clickLocation = QLabel("Click Location: ")
-        self.label_timeRemaining = QLabel("Time remaining: ")
+        self.label_timeRemainingW = QLabel("Time remaining: ")
+        self.label_timeRemainingB = QLabel("Time remaining: ")
         self.currentTurn = "Player 1"
         self.playerLabelB = QLabel("Current Turn: " + self.currentTurn)
         self.playerLabelW = QLabel("Current Turn: " + self.currentTurn)
-        #self.mainLayoutB.addWidget(self.playerLabelB)
+        self.mainLayoutB.addWidget(self.playerLabelB)
         self.mainLayoutW.addWidget(self.playerLabelW)
         self.scoreW = QLabel("Score : ")
-        #self.scoreB = QLabel("Score : ")
+        self.scoreB = QLabel("Score : ")
         self.captureW = QLabel("Captures : ")
-        #self.captureB= QLabel("Captures : ")
+        self.captureB= QLabel("Captures : ")
         #self.mainLayout.addWidget(self.label_clickLocation)
-        #self.mainLayoutB.addWidget(self.label_timeRemaining)
-        self.mainLayoutW.addWidget(self.label_timeRemaining)
+        self.mainLayoutB.addWidget(self.label_timeRemainingB)
+        self.mainLayoutW.addWidget(self.label_timeRemainingW)
         self.mainLayoutW.addWidget(self.scoreW)
-        #self.mainLayoutB.addWidget(self.scoreB)
+        self.mainLayoutB.addWidget(self.scoreB)
         self.mainLayoutW.addWidget(self.captureW)
-        #self.mainLayoutB.addWidget(self.captureB)
+        self.mainLayoutB.addWidget(self.captureB)
         self.details = QLabel("Match Details :"+"\n"+self.matchDetails())
-        self.mainLayoutW.addWidget(self.details)
-        #self.timerButtonB = QPushButton('One Minute Timer', self)
+        resetGame = QPushButton('Reset Game')
+        resetGame.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.mainLayoutM.addWidget(self.details)
+        self.mainLayoutM.addWidget(resetGame)
+        self.timerButtonB = QPushButton('One Minute Timer', self)
         self.timerButtonW = QPushButton('One Minute Timer', self)
-
-        '''self.timerButtonB.setStyleSheet("color: black;"
-                                       "background-color: white;"
-                                       #"border-style: outset;"
+        self.timerButtonB.setStyleSheet("color: white;"
+                                       "background-color: black;"
+                                       "border-style: outset;"
                                        "border-width: 2px;"
-                                       "border-radius: 10px;"
-                                       #"border-color: beige;"
-                                       "font: bold 14px")'''
+                                       #"border-radius: 10px;"
+                                       "border-color: white")
+                                       #"font: bold 14px")
 
-        #self.timerButtonB.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.timerButtonB.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.timerButtonW.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        #self.timerButtonB.clicked.connect(self.buttonTimer_clicked)
+        self.timerButtonB.clicked.connect(self.buttonTimer_clicked)
         self.timerButtonW.clicked.connect(self.buttonTimer_clicked)
-        self.pbar = QProgressBar(self)
+        self.pbarB = QProgressBar(self)
+        self.pbarW = QProgressBar(self)
         self.step = 0
         self.timer = QBasicTimer()
-        self.pbar.setOrientation(Qt.Orientation.Vertical)
-        #self.mainLayoutB.addWidget(self.timerButtonB)
+        self.pbarB.setOrientation(Qt.Orientation.Vertical)
+        self.pbarW.setOrientation(Qt.Orientation.Vertical)
+        self.mainLayoutB.addWidget(self.timerButtonB)
         self.mainLayoutW.addWidget(self.timerButtonW)
-        #self.mainLayoutB.addWidget(self.pbar)
-        self.mainLayoutW.addWidget(self.pbar)
-        #skipButtonB = QPushButton('Skip Turn')
+        self.mainLayoutB.addWidget(self.pbarB)
+        self.mainLayoutW.addWidget(self.pbarW)
+        skipButtonB = QPushButton('Skip Turn')
         skipButtonW = QPushButton('Skip Turn')
-        #skipButtonB.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        skipButtonB.setStyleSheet("color: white;"
+                                        "background-color: black;"
+                                        "border-style: outset;"
+                                        "border-width: 2px;"
+                                        # "border-radius: 10px;"
+                                        "border-color: white")
+        # "font: bold 14px")
+        skipButtonB.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         skipButtonW.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        #skipButtonB.clicked.connect(self.buttonSkip_clicked)
+        skipButtonB.clicked.connect(self.buttonSkip_clicked)
         skipButtonW.clicked.connect(self.buttonSkip_clicked)
-        #self.mainLayoutB.addWidget(skipButtonB)
+        self.mainLayoutB.addWidget(skipButtonB)
         self.mainLayoutW.addWidget(skipButtonW)
-        closeButton = QPushButton('END GAME')
-        closeButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        closeButton.clicked.connect(self.buttonEnd_cliked)
-        #self.mainLayoutB.addWidget(closeButton)
-        self.mainLayoutW.addWidget(closeButton)
-        # self.mainWidgetB.setLayout(self.mainLayoutB)
+        closeButtonB = QPushButton('END GAME')
+        closeButtonB.setStyleSheet("color: white;"
+                                        "background-color: black;"
+                                        "border-style: outset;"
+                                        "border-width: 2px;"
+                                        # "border-radius: 10px;"
+                                        "border-color: white")
+        # "font: bold 14px")
+        closeButtonB.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        closeButtonB.clicked.connect(self.buttonEnd_cliked)
+        closeButtonW = QPushButton('END GAME')
+        closeButtonW.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        closeButtonW.clicked.connect(self.buttonEnd_cliked)
+        self.mainLayoutB.addWidget(closeButtonB)
+        self.mainLayoutW.addWidget(closeButtonW)
+        self.rules = QLabel("How To Play:"+"\n"+self.rules())
+        self.mainLayoutR.addWidget(self.rules)
+
+        #self.setWidget(self.mainWidgetB)
+        #self.setWidget(self.mainWidgetW)
+
+        self.mainWidgetB.setLayout(self.mainLayoutB)
         self.mainWidgetW.setLayout(self.mainLayoutW)
-        #self.setWidget(self.mainWidgetB) #commenter pour afficher la box blanche
-        self.setWidget(self.mainWidgetW) #commenter pour afficher la box noire
+        self.mainWidgetM.setLayout(self.mainLayoutM)
+        self.mainWidgetR.setLayout(self.mainLayoutR)
+        self.grid.addWidget(self.mainWidgetB, 0, 0)
+        self.grid.addWidget(self.mainWidgetW, 1, 0)
+        self.grid.addWidget(self.mainWidgetM, 2, 0)
+        self.grid.addWidget(self.mainWidgetR, 3, 0)
         self.show()
 
     def center(self):
@@ -190,13 +237,30 @@ class ScoreBoard(QDockWidget):
         count = 0
         #board = Board(self)
         for i in range(0, 100, 1):
+            # if board.tryMove():
             count = i
             self.text = str(count) + "."
-            #if board.tryMove():
+
 
 
         self.text += self.currentTurn
         return self.text
+
+    def rules(self):
+
+        text1 = "A game of Go starts with an empty board. Each player has an effectively unlimited supply of pieces"
+        text2 = " (called stones), one taking the black stones, the other taking white." + "\n"
+        text3 = "The main object of the game is to use your stones to form territories by surrounding vacant areas of the board." + "\n"
+        text4 = "It is also possible to capture your opponent's stones by completely surrounding them."+"\n"
+        text5 ="Players take turns, placing one of their stones on a vacant point at each turn, with Black playing first."+"\n"
+        text6 = "Note that stones are placed on the intersections of the lines rather than in the squares and once played stones are not moved."+"\n"
+        text7 = "However they may be captured, in which case they are removed from the board, and kept by the capturing player as prisoners."
+        text8= "\n" + "Let the games begin ! 😊"
+
+        text = text1+text2+text3+text4+text5+text6+text7+text8
+        return text
+
+
 
 
         # Here I made the updateUI method to update the UI
