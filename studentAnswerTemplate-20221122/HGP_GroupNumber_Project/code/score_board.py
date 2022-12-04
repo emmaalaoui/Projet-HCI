@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QDockWidget, QGridLayout, QGroupBox, QMenuBar, QProgressBar, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QLabel, QScrollArea
+from PyQt6.QtWidgets import QApplication, QDockWidget, QGridLayout, QMessageBox, QGroupBox, QMenuBar, QProgressBar, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QLabel, QScrollArea
 from PyQt6.QtCore import pyqtSlot, QSize, Qt, QBasicTimer
 from PyQt6.QtGui import QIcon, QAction, QPixmap, QCursor
 from board import Board
@@ -7,14 +7,15 @@ class ScoreBoard(QWidget):
 
     def __init__(self, go):
         super().__init__()
-        self.initUI()
         self.go = go
+        self.initUI()
+
 
     def initUI(self):
         '''initiates ScoreBoard UI'''
         ''''IMPORTANT '''
-        # pour t'expliquer, j'aimerai créer 3 QGroupBox : une pour le player 1, une pour le player 2 et une autre pour les
-        # match details sauf que pour avoir 3 QGroupBox à la suite il faut créer une GridLayout et y ajouter les QGroupBox
+        # pour t'expliquer, j'aimerai créer 4 QGroupBox : une pour le player 1, une pour le player 2 et une autre pour les
+        # match details sauf que pour avoir 4 QGroupBox à la suite il faut créer une GridLayout et y ajouter les QGroupBox
         # sauf que pour l'instant la grid se créée dans une nouvelle fenêtre au lieu de se mettre à droite du plateau
         # peux-tu regarder dans la classe go stp ? Merci :)
         # B pour black, W pour white, M pour match et R pour rules
@@ -38,15 +39,15 @@ class ScoreBoard(QWidget):
         self.mainWidgetM = QGroupBox()
         self.mainWidgetM.setTitle("Match Details")
         self.mainWidgetM.setStyleSheet("color: black;"
-                                       "background-color: white")
-        self.mainWidgetR = QGroupBox()
+                                       "background-color: grey")
+        '''self.mainWidgetR = QGroupBox()
         self.mainWidgetR.setTitle("Rules of Go")
         self.mainWidgetR.setStyleSheet("color: black;"
-                                       "background-color: white")
+                                       "background-color: grey")'''
         self.mainLayoutB = QVBoxLayout()
         self.mainLayoutW = QVBoxLayout()
         self.mainLayoutM = QVBoxLayout()
-        self.mainLayoutR = QVBoxLayout()
+        #self.mainLayoutR = QVBoxLayout()
 
 
 
@@ -64,17 +65,16 @@ class ScoreBoard(QWidget):
         self.mainLayoutW.addWidget(self.playerLabelW)
         self.scoreW = QLabel("Score : ")
         self.scoreB = QLabel("Score : ")
-        self.captureW = QLabel("Captures : ")
-        self.captureB= QLabel("Captures : ")
+        self.captureW = QLabel("Captures : " + str(self.go.gameLogic.captured[0]))
+        self.captureB= QLabel("Captures : "+ str(self.go.gameLogic.captured[1]))
         #self.mainLayout.addWidget(self.label_clickLocation)
-        self.mainLayoutB.addWidget(self.label_timeRemainingB)
-        self.mainLayoutW.addWidget(self.label_timeRemainingW)
         self.mainLayoutW.addWidget(self.scoreW)
         self.mainLayoutB.addWidget(self.scoreB)
         self.mainLayoutW.addWidget(self.captureW)
         self.mainLayoutB.addWidget(self.captureB)
         self.details = QLabel("Match Details :"+"\n"+self.matchDetails())
         resetGame = QPushButton('Reset Game')
+        resetGame.clicked.connect(self.clear)
         resetGame.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.mainLayoutM.addWidget(self.details)
         self.mainLayoutM.addWidget(resetGame)
@@ -96,12 +96,14 @@ class ScoreBoard(QWidget):
         self.pbarW = QProgressBar(self)
         self.step = 0
         self.timer = QBasicTimer()
-        self.pbarB.setOrientation(Qt.Orientation.Vertical)
-        self.pbarW.setOrientation(Qt.Orientation.Vertical)
+        #self.pbarB.setOrientation(Qt.Orientation.Vertical)
+        #self.pbarW.setOrientation(Qt.Orientation.Vertical)
         self.mainLayoutB.addWidget(self.timerButtonB)
         self.mainLayoutW.addWidget(self.timerButtonW)
         self.mainLayoutB.addWidget(self.pbarB)
         self.mainLayoutW.addWidget(self.pbarW)
+        self.mainLayoutB.addWidget(self.label_timeRemainingB)
+        self.mainLayoutW.addWidget(self.label_timeRemainingW)
         skipButtonB = QPushButton('Skip Turn')
         skipButtonW = QPushButton('Skip Turn')
         skipButtonB.setStyleSheet("color: white;"
@@ -132,11 +134,15 @@ class ScoreBoard(QWidget):
         closeButtonW.clicked.connect(self.buttonEnd_cliked)
         self.mainLayoutB.addWidget(closeButtonB)
         self.mainLayoutW.addWidget(closeButtonW)
-        self.scroll = QScrollArea()
+        '''self.scroll = QScrollArea()
         self.scroll.setWidget(QLabel("How To Play:"+"\n"+self.rules()))
         self.scroll.setWidgetResizable(True)
         #self.rules = QLabel("How To Play:"+"\n"+self.rules())
-        self.mainLayoutR.addWidget(self.scroll)
+        self.mainLayoutR.addWidget(self.scroll)'''
+        self.rulesButton = QPushButton('How To Play', self)
+        self.rulesButton.clicked.connect(self.rules)
+        self.mainLayoutM.addWidget(self.rulesButton)
+        self.rulesButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         #self.setWidget(self.mainWidgetB)
         #self.setWidget(self.mainWidgetW)
@@ -144,11 +150,11 @@ class ScoreBoard(QWidget):
         self.mainWidgetB.setLayout(self.mainLayoutB)
         self.mainWidgetW.setLayout(self.mainLayoutW)
         self.mainWidgetM.setLayout(self.mainLayoutM)
-        self.mainWidgetR.setLayout(self.mainLayoutR)
+        #self.mainWidgetR.setLayout(self.mainLayoutR)
         self.vboxMain.addWidget(self.mainWidgetB)
         self.vboxMain.addWidget(self.mainWidgetW)
         self.vboxMain.addWidget(self.mainWidgetM)
-        self.vboxMain.addWidget(self.mainWidgetR)
+        #self.vboxMain.addWidget(self.mainWidgetR)
         self.setLayout(self.vboxMain)
 
     def center(self):
@@ -179,7 +185,6 @@ class ScoreBoard(QWidget):
         # Here I made the buttonEnd_clicked method to close the window when a player cliks on the End button
     def buttonEnd_cliked(self):
         self.go.close()
-        #à retravailler
 
     def buttonTimer_clicked(self):
         if self.timer.isActive():
@@ -187,7 +192,7 @@ class ScoreBoard(QWidget):
             self.timerButtonB.setText('Start')
             self.timerButtonW.setText('Start')
         elif self.timerButtonB.text() == 'Time Over' | self.timerButtonW.text() == 'Time Over':
-            self.pbar.setValue(0)
+            self.pbarW.setValue(0)
             self.step = 0
             # I want that my progress bar updates during 1 minute (to do a 1-minute timer)
             # So I choose to start my timer every 600 milliseconds because 600 milliseconds equal 0.6 seconds
@@ -199,8 +204,6 @@ class ScoreBoard(QWidget):
             self.timer.start(600, self)
             self.timerButtonB.setText('Stop')
             self.timerButtonW.setText('Stop')
-            board = Board(self)
-            board.start()
 
     def timerEvent(self, e):
         if self.step >= 100:
@@ -209,13 +212,17 @@ class ScoreBoard(QWidget):
             self.timerButtonW.setText('Time Over')
 
         self.step = self.step + 1
-        self.pbar.setValue(self.step)
+        self.pbarW.setValue(self.step)
 
     def clear(self):
-        self.image = QPixmap("./icons/Board.png")
-        width = self.width()  # get the width of the current QImage in your application
+        self.go.board.image = QPixmap("./icons/Board.png")
+        self.go.board.resize(650, 800) #à retravailler !
+        self.currentTurn = "Player 1"
+        '''width = self.width()  # get the width of the current QImage in your application
         height = self.height()  # get the height of the current QImage in your application
-        self.image = self.image.scaled(width, height)
+        self.go.board.image = image.scaled(height, height)'''
+        self.update()
+        self.updateUi()
 
     def buttonSkip_clicked(self, s):
         if self.currentTurn == "Player 1":
@@ -225,31 +232,29 @@ class ScoreBoard(QWidget):
         else:
             self.currentTurn = "Player 1"
             print(self.currentTurn)
-        self.pbar.setValue(0)
+        self.pbarW.setValue(0)
+        self.pbarB.setValue(0)
         self.step = 0
         self.timer.stop()
-        #self.timerButtonB.setText('One Minute Timer')
+        self.timerButtonB.setText('One Minute Timer')
         self.timerButtonW.setText('One Minute Timer')
-        board = Board(self)
-        board.timer.stop() #ne fonctionne pas !
         self.updateUi()
 
     def matchDetails(self):
-        self.text = ""
+        text = ""
         count = 0
-        #board = Board(self)
         for i in range(0, 100, 1):
-            # if board.tryMove():
-            count = i
-            self.text = str(count) + "."
+            #if self.go.board.tryMove():
+                count = i
+                text = str(count) + "."
 
-
-
-        self.text += self.currentTurn
-        return self.text
+        text += self.currentTurn
+        return text
 
     def rules(self):
-
+        dialog = QMessageBox(self)
+        dialog.setWindowTitle("Rules")
+        dialog.setWindowIcon(QIcon("./icons/rules.png"))
         text = "A game of Go starts with an empty board.\n" \
                 "Each player has an effectively unlimited supply\n" \
                 "of pieces (called stones), one taking the black stones,\n" \
@@ -265,15 +270,16 @@ class ScoreBoard(QWidget):
                 "and kept by the capturing player as prisoners.\n" \
                 "Let the games begin ! 😊"
 
-        return text
+        dialog.setText(text)
+        button = dialog.exec()
 
-
-
+        if button == QMessageBox.StandardButton.Ok:
+            print("OK!")
 
         # Here I made the updateUI method to update the UI
     def updateUi(self):
-        #self.playerLabelB.setText("Current Turn: " + self.currentTurn)
-        #self.playerLabelB.adjustSize()
+        self.playerLabelB.setText("Current Turn: " + self.currentTurn)
+        self.playerLabelB.adjustSize()
         self.playerLabelW.setText("Current Turn: " + self.currentTurn)
         self.playerLabelW.adjustSize()
 
