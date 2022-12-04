@@ -1,11 +1,11 @@
-from PyQt6.QtWidgets import QFrame, QProgressBar, QApplication, QMainWindow
+from PyQt6.QtWidgets import QWidget, QProgressBar, QApplication, QMainWindow, QLabel, QVBoxLayout
 from PyQt6.QtCore import Qt, QBasicTimer, pyqtSignal, QPointF, QPoint
 from PyQt6.QtGui import QPainter, QPixmap, QPen, QBrush, QCursor
 from PyQt6.QtTest import QTest
 from piece import Piece
 
 
-class Board(QFrame):  # base the board on a QFrame widget
+class Board(QWidget):  # base the board on a QFrame widget
     updateTimerSignal = pyqtSignal(int) # signal sent when timer is updated
     clickLocationSignal = pyqtSignal(str) # signal sent when there is a new click location
 
@@ -21,6 +21,11 @@ class Board(QFrame):  # base the board on a QFrame widget
         self.go = parent
         self.initBoard()
         self.image = QPixmap("./icons/Board.png")
+        self.mainLabel = QLabel()
+        self.mainLabel.setPixmap(self.image)
+        self.mainLayout = QVBoxLayout()
+        self.setLayout(self.mainLayout)
+        self.resize(800, 1000)
         '''self.cursor = QCursor()
         # self.image.setCursor(self.cursor)
         #self.cursor.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))

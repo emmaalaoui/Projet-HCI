@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QDockWidget, QGridLayout, QGroupBox, QMenuBar, QProgressBar, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QLabel #TODO import additional Widget classes as desired
+from PyQt6.QtWidgets import QApplication, QDockWidget, QGridLayout, QGroupBox, QMenuBar, QProgressBar, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QLabel, QScrollArea
 from PyQt6.QtCore import pyqtSlot, QSize, Qt, QBasicTimer
 from PyQt6.QtGui import QIcon, QAction, QPixmap, QCursor
 from board import Board
@@ -19,8 +19,7 @@ class ScoreBoard(QWidget):
         # peux-tu regarder dans la classe go stp ? Merci :)
         # B pour black, W pour white, M pour match et R pour rules
 
-        self.grid = QGridLayout()
-        self.setLayout(self.grid)
+        self.vboxMain = QVBoxLayout()
 
         #self.resize(200, 200)
         #self.center()
@@ -133,8 +132,11 @@ class ScoreBoard(QWidget):
         closeButtonW.clicked.connect(self.buttonEnd_cliked)
         self.mainLayoutB.addWidget(closeButtonB)
         self.mainLayoutW.addWidget(closeButtonW)
-        self.rules = QLabel("How To Play:"+"\n"+self.rules())
-        self.mainLayoutR.addWidget(self.rules)
+        self.scroll = QScrollArea()
+        self.scroll.setWidget(QLabel("How To Play:"+"\n"+self.rules()))
+        self.scroll.setWidgetResizable(True)
+        #self.rules = QLabel("How To Play:"+"\n"+self.rules())
+        self.mainLayoutR.addWidget(self.scroll)
 
         #self.setWidget(self.mainWidgetB)
         #self.setWidget(self.mainWidgetW)
@@ -143,11 +145,11 @@ class ScoreBoard(QWidget):
         self.mainWidgetW.setLayout(self.mainLayoutW)
         self.mainWidgetM.setLayout(self.mainLayoutM)
         self.mainWidgetR.setLayout(self.mainLayoutR)
-        self.grid.addWidget(self.mainWidgetB, 0, 0)
-        self.grid.addWidget(self.mainWidgetW, 1, 0)
-        self.grid.addWidget(self.mainWidgetM, 2, 0)
-        self.grid.addWidget(self.mainWidgetR, 3, 0)
-        self.show()
+        self.vboxMain.addWidget(self.mainWidgetB)
+        self.vboxMain.addWidget(self.mainWidgetW)
+        self.vboxMain.addWidget(self.mainWidgetM)
+        self.vboxMain.addWidget(self.mainWidgetR)
+        self.setLayout(self.vboxMain)
 
     def center(self):
         '''centers the window on the screen, you do not need to implement this method'''
@@ -248,16 +250,21 @@ class ScoreBoard(QWidget):
 
     def rules(self):
 
-        text1 = "A game of Go starts with an empty board. Each player has an effectively unlimited supply of pieces"
-        text2 = " (called stones), one taking the black stones, the other taking white." + "\n"
-        text3 = "The main object of the game is to use your stones to form territories by surrounding vacant areas of the board." + "\n"
-        text4 = "It is also possible to capture your opponent's stones by completely surrounding them."+"\n"
-        text5 ="Players take turns, placing one of their stones on a vacant point at each turn, with Black playing first."+"\n"
-        text6 = "Note that stones are placed on the intersections of the lines rather than in the squares and once played stones are not moved."+"\n"
-        text7 = "However they may be captured, in which case they are removed from the board, and kept by the capturing player as prisoners."
-        text8= "\n" + "Let the games begin ! 😊"
+        text = "A game of Go starts with an empty board.\n" \
+                "Each player has an effectively unlimited supply\n" \
+                "of pieces (called stones), one taking the black stones,\n" \
+                "the other taking white ones. The main object of the game\n" \
+                "is to use your stones to form territories by surrounding\n" \
+                "vacant areas of the board. It is also possible to capture\n" \
+                "your opponent's stones by completely surrounding them.\n" \
+                "Players take turns, placing one of their stones\n" \
+                "on a vacant point at each turn, with Black playing first.\n" \
+                "Note that stones are placed on the intersections of the lines\n" \
+                "rather than in the squares and once played stones are not moved.\n" \
+                "However they may be captured, in which case they are removed,\n" \
+                "and kept by the capturing player as prisoners.\n" \
+                "Let the games begin ! 😊"
 
-        text = text1+text2+text3+text4+text5+text6+text7+text8
         return text
 
 

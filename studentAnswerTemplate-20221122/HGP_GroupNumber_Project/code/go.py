@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMainWindow, QHBoxLayout
+from PyQt6.QtWidgets import QMainWindow, QHBoxLayout, QWidget,QLayout
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
 from board import Board
@@ -22,12 +22,13 @@ class Go(QMainWindow):
         self.gameLogic = GameLogic()
         self.scoreBoard = ScoreBoard(self)
         self.board = Board(self)
-        self.setCentralWidget(self.board)
         #self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.scoreBoard)
         self.myScoreBoard = QHBoxLayout()
-        self.myScoreBoard.addWidget(self.scoreBoard)
-        self.myScoreBoard.addLayout(self.scoreBoard.grid)
-        self.setLayout(self.myScoreBoard)
+        self.myScoreBoard.addWidget(self.board, 6)
+        self.myScoreBoard.addWidget(self.scoreBoard, 1)
+        mainWidget = QWidget()
+        mainWidget.setLayout(self.myScoreBoard)
+        self.setCentralWidget(mainWidget)
         self.scoreBoard.make_connection(self.board)
 
         self.resize(800, 800)
