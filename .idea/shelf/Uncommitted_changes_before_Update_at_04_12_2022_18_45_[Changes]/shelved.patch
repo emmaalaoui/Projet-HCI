@@ -1,0 +1,55 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -3,8 +3,6 @@
+   <component name="ChangeListManager">
+     <list default="true" id="479b13f7-e2c4-4d1d-bb7d-065a8c4fcde2" name="Changes" comment="cc">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/BSC-HGP - GroupProject - Specification.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/BSC-HGP - GroupProject - Specification.pdf" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/go.py" beforeDir="false" afterPath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/go.py" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py" beforeDir="false" afterPath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+@@ -24,14 +22,14 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "codeWithMe.voiceChat.enabledByDefault": "false",
+-    "last_opened_file_path": "C:/Users/user/Desktop/HCI&GUI/Assignment01-Files-20221011/Assignment01-Files/CryptoTradeProfitCalculator.py"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/Desktop/HCI&amp;GUI/Assignment01-Files-20221011/Assignment01-Files/CryptoTradeProfitCalculator.py&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="RunManager">
+     <configuration name="__main__" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+       <module name="Projet-HCI" />
+@@ -204,7 +202,14 @@
+       <option name="project" value="LOCAL" />
+       <updated>1669986070156</updated>
+     </task>
+-    <option name="localTasksCounter" value="21" />
++    <task id="LOCAL-00021" summary="cc">
++      <created>1670096580211</created>
++      <option name="number" value="00021" />
++      <option name="presentableId" value="LOCAL-00021" />
++      <option name="project" value="LOCAL" />
++      <updated>1670096580211</updated>
++    </task>
++    <option name="localTasksCounter" value="22" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">

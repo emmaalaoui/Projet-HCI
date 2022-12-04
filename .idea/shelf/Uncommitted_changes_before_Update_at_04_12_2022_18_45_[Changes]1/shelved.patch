@@ -1,0 +1,19 @@
+Index: studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py b/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py
+--- a/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py	
++++ b/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py	
+@@ -13,8 +13,8 @@
+     def initUI(self):
+         '''initiates ScoreBoard UI'''
+         ''''IMPORTANT '''
+-        # pour t'expliquer, j'aimerai créer 3 QGroupBox : une pour le player 1, une pour le player 2 et une autre pour les
+-        # match details sauf que pour avoir 3 QGroupBox à la suite il faut créer une GridLayout et y ajouter les QGroupBox
++        # pour t'expliquer, j'aimerai créer 4 QGroupBox : une pour le player 1, une pour le player 2 et une autre pour les
++        # match details sauf que pour avoir 4 QGroupBox à la suite il faut créer une GridLayout et y ajouter les QGroupBox
+         # sauf que pour l'instant la grid se créée dans une nouvelle fenêtre au lieu de se mettre à droite du plateau
+         # peux-tu regarder dans la classe go stp ? Merci :)
+         # B pour black, W pour white, M pour match et R pour rules
