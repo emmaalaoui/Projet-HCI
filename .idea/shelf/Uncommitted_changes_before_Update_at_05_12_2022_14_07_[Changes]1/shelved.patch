@@ -1,0 +1,196 @@
+Index: studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py b/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py
+--- a/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py	
++++ b/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py	
+@@ -13,12 +13,6 @@
+ 
+     def initUI(self):
+         '''initiates ScoreBoard UI'''
+-        ''''IMPORTANT '''
+-        # pour t'expliquer, j'aimerai créer 4 QGroupBox : une pour le player 1, une pour le player 2 et une autre pour les
+-        # match details sauf que pour avoir 4 QGroupBox à la suite il faut créer une GridLayout et y ajouter les QGroupBox
+-        # sauf que pour l'instant la grid se créée dans une nouvelle fenêtre au lieu de se mettre à droite du plateau
+-        # peux-tu regarder dans la classe go stp ? Merci :)
+-        # B pour black, W pour white, M pour match et R pour rules
+ 
+         self.vboxMain = QVBoxLayout()
+ 
+@@ -37,7 +31,7 @@
+         self.mainWidgetW.setStyleSheet("color: black;"
+                                        "background-color: white")
+         self.mainWidgetM = QGroupBox()
+-        self.mainWidgetM.setTitle("Match Details")
++        self.mainWidgetM.setTitle("Others")
+         self.mainWidgetM.setStyleSheet("color: black;"
+                                        "background-color: grey")
+         '''self.mainWidgetR = QGroupBox()
+@@ -59,10 +53,8 @@
+         self.label_timeRemainingW = QLabel("Time remaining: ")
+         self.label_timeRemainingB = QLabel("Time remaining: ")
+         self.currentTurn = "Player 1"
+-        self.playerLabelB = QLabel("Current Turn: " + self.currentTurn)
+-        self.playerLabelW = QLabel("Current Turn: " + self.currentTurn)
+-        self.mainLayoutB.addWidget(self.playerLabelB)
+-        self.mainLayoutW.addWidget(self.playerLabelW)
++        self.playerLabel = QLabel("Current Turn: " + self.currentTurn)
++        self.mainLayoutM.addWidget(self.playerLabel)
+         self.scoreW = QLabel("Score : ")
+         self.scoreB = QLabel("Score : ")
+         self.captureW = QLabel("Captures : " + str(self.go.gameLogic.captured[0]))
+@@ -72,11 +64,13 @@
+         self.mainLayoutB.addWidget(self.scoreB)
+         self.mainLayoutW.addWidget(self.captureW)
+         self.mainLayoutB.addWidget(self.captureB)
+-        self.details = QLabel("Match Details :"+"\n"+self.matchDetails())
++        self.matchButton = QPushButton("Match Details", self)
++        self.matchButton.clicked.connect(self.matchDetails)
++        self.matchButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+         resetGame = QPushButton('Reset Game')
+         resetGame.clicked.connect(self.clear)
+         resetGame.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+-        self.mainLayoutM.addWidget(self.details)
++        self.mainLayoutM.addWidget(self.matchButton)
+         self.mainLayoutM.addWidget(resetGame)
+         self.timerButtonB = QPushButton('One Minute Timer', self)
+         self.timerButtonW = QPushButton('One Minute Timer', self)
+@@ -110,30 +104,26 @@
+                                         "background-color: black;"
+                                         "border-style: outset;"
+                                         "border-width: 2px;"
+-                                        # "border-radius: 10px;"
++                                        #"border-radius: 10px;"
+                                         "border-color: white")
+-        # "font: bold 14px")
++                                        #"font: bold 14px")
+         skipButtonB.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+-        skipButtonW.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+         skipButtonB.clicked.connect(self.buttonSkip_clicked)
+-        skipButtonW.clicked.connect(self.buttonSkip_clicked)
+         self.mainLayoutB.addWidget(skipButtonB)
++        skipButtonW.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
++        skipButtonW.clicked.connect(self.buttonSkip_clicked)
+         self.mainLayoutW.addWidget(skipButtonW)
+-        closeButtonB = QPushButton('END GAME')
+-        closeButtonB.setStyleSheet("color: white;"
++        closeButton = QPushButton('END GAME')
++        '''closeButton.setStyleSheet("color: white;"
+                                         "background-color: black;"
+                                         "border-style: outset;"
+                                         "border-width: 2px;"
+-                                        # "border-radius: 10px;"
++                                        "border-radius: 10px;"
+                                         "border-color: white")
+-        # "font: bold 14px")
+-        closeButtonB.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+-        closeButtonB.clicked.connect(self.buttonEnd_cliked)
+-        closeButtonW = QPushButton('END GAME')
+-        closeButtonW.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+-        closeButtonW.clicked.connect(self.buttonEnd_cliked)
+-        self.mainLayoutB.addWidget(closeButtonB)
+-        self.mainLayoutW.addWidget(closeButtonW)
++                                        # "font: bold 14px")'''
++        closeButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
++        closeButton.clicked.connect(self.buttonEnd_cliked)
++
+         '''self.scroll = QScrollArea()
+         self.scroll.setWidget(QLabel("How To Play:"+"\n"+self.rules()))
+         self.scroll.setWidgetResizable(True)
+@@ -142,6 +132,7 @@
+         self.rulesButton = QPushButton('How To Play', self)
+         self.rulesButton.clicked.connect(self.rules)
+         self.mainLayoutM.addWidget(self.rulesButton)
++        self.mainLayoutM.addWidget(closeButton)
+         self.rulesButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+ 
+         #self.setWidget(self.mainWidgetB)
+@@ -216,7 +207,7 @@
+ 
+     def clear(self):
+         self.go.board.image = QPixmap("./icons/Board.png")
+-        self.go.board.resize(650, 800) #à retravailler !
++        self.go.board.resize(800, 1000) #à retravailler !
+         self.currentTurn = "Player 1"
+         '''width = self.width()  # get the width of the current QImage in your application
+         height = self.height()  # get the height of the current QImage in your application
+@@ -232,15 +223,12 @@
+         else:
+             self.currentTurn = "Player 1"
+             print(self.currentTurn)
+-        self.pbarW.setValue(0)
+-        self.pbarB.setValue(0)
+-        self.step = 0
+-        self.timer.stop()
+-        self.timerButtonB.setText('One Minute Timer')
+-        self.timerButtonW.setText('One Minute Timer')
+         self.updateUi()
+ 
+     def matchDetails(self):
++        dialog = QMessageBox(self)
++        dialog.setWindowTitle("Match Details")
++        dialog.setWindowIcon(QIcon("./icons/compare-match-icon.webp"))
+         text = ""
+         count = 0
+         for i in range(0, 100, 1):
+@@ -249,7 +237,11 @@
+                 text = str(count) + "."
+ 
+         text += self.currentTurn
+-        return text
++        dialog.setText(text)
++        button = dialog.exec()
++
++        if button == QMessageBox.StandardButton.Ok:
++            print("OK!")
+ 
+     def rules(self):
+         dialog = QMessageBox(self)
+@@ -278,10 +270,8 @@
+ 
+         # Here I made the updateUI method to update the UI
+     def updateUi(self):
+-        self.playerLabelB.setText("Current Turn: " + self.currentTurn)
+-        self.playerLabelB.adjustSize()
+-        self.playerLabelW.setText("Current Turn: " + self.currentTurn)
+-        self.playerLabelW.adjustSize()
++        self.playerLabel.setText("Current Turn: " + self.currentTurn)
++        self.playerLabel.adjustSize()
+ 
+ 
+ 
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	
++++ b/.idea/misc.xml	
+@@ -1,4 +1,4 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (hgp)" project-jdk-type="Python SDK" />
++  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (hgp2)" project-jdk-type="Python SDK" />
+ </project>
+\ No newline at end of file
+Index: .idea/Projet-HCI.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/Projet-HCI.iml b/.idea/Projet-HCI.iml
+--- a/.idea/Projet-HCI.iml	
++++ b/.idea/Projet-HCI.iml	
+@@ -2,7 +2,7 @@
+ <module type="PYTHON_MODULE" version="4">
+   <component name="NewModuleRootManager">
+     <content url="file://$MODULE_DIR$" />
+-    <orderEntry type="jdk" jdkName="Python 3.10 (hgp)" jdkType="Python SDK" />
++    <orderEntry type="jdk" jdkName="Python 3.10 (hgp2)" jdkType="Python SDK" />
+     <orderEntry type="sourceFolder" forTests="false" />
+   </component>
+ </module>
+\ No newline at end of file
