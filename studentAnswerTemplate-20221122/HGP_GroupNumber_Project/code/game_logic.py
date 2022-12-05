@@ -22,6 +22,7 @@ class GameLogic:
         self.groups = [[], []]
         self.captured = [0, 0]
         self.previousBoards = []
+        self.scores = [0, 0]
 
     def update(self, piece):
 
@@ -100,7 +101,7 @@ class GameLogic:
 
         # If there is no groups near the new piece, create a new piece group
         else:
-            self.groups[self.currentPlayer - 1].append(pieceGroup(self.boardState[piece.x][piece.y]))
+            self.groups[self.currentPlayer - 1].append(PieceGroup(self.boardState[piece.x][piece.y]))
 
         # Reset the liberties of each piece groups for each player
         for k in range(0, 2):
@@ -193,17 +194,17 @@ class GameLogic:
                 left = False
                 if self.boardState[i][j].owner == 0:
                     if i == 0 and j == 0:
-                            voidGroups.append(self.boardState[i][j])
+                            voidGroups.append(PieceGroup(self.boardState[i][j]))
                     elif i == 0:
                         if self.boardState[i][j-1].owner != 0:
-                            voidGroups.append(self.boardState[i][j])
+                            voidGroups.append(PieceGroup(self.boardState[i][j]))
                         else:
                             for k in voidGroups:
                                 if k.pieces.count(self.boardState[i][j-1]) != 0:
                                     k.addPiece(self.boardState[i][j])
                     elif j == 0:
                         if self.boardState[i-1][j].owner != 0:
-                            voidGroups.append(self.boardState[i][j])
+                            voidGroups.append(PieceGroup(self.boardState[i][j]))
                         else:
                             for k in voidGroups:
                                 if k.pieces.count(self.boardState[i-1][j]) != 0:
@@ -233,10 +234,20 @@ class GameLogic:
                                                     k.addPiece(m)
                                                 voidGroups.remove(l)
                         else:
-                            voidGroups.append(self.boardState[i][j])
+                            voidGroups.append(PieceGroup(self.boardState[i][j]))
 
         for i in voidGroups:
             for j in i.pieces:
                 if j.x != 0:
-                    self.boardState[]
+                    if self.boardState[j.x-1][j.y].owner != 0:
+                        i.owners[self.boardState[j.x-1][j.y].owner-1] = i.owners[self.boardState[j.x-1][j.y].owner-1] + 1
+                if j.x != self.boardState - 1:
+                    if self.boardState[j.x+1][j.y].owner != 0:
+                        i.owners[self.boardState[j.x+1][j.y].owner-1] = i.owners[self.boardState[j.x+1][j.y].owner-1] + 1
+                if j.y != 0:
+                    if self.boardState[j.x][j.y-1].owner != 0:
+                        i.owners[self.boardState[j.x][j.y-1].owner-1] = i.owners[self.boardState[j.x][j.y-1].owner-1] + 1
+                if j.y != self.boardState - 1:
+                    if self.boardState[j.x][j.y+1].owner != 0:
+                        i.owners[self.boardState[j.x][j.y+1].owner-1] = i.owners[self.boardState[j.x][j.y+1].owner-1] + 1
 
