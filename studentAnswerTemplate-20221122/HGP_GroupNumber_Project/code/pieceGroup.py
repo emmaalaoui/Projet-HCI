@@ -5,6 +5,7 @@ class PieceGroup:
         super().__init__()
         self.pieces = [originalPiece]
         self.liberties = 4
+        self.owner = 0
 
     def addPiece(self, newPiece):
         self.pieces.append(newPiece)

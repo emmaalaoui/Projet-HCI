@@ -3,7 +3,6 @@ from piece import Piece
 
 
 class GameLogic:
-
     # The pieces are undeletable and uncreable, it is only their owner who will change :
     # 0 for nothing, 1 for player 1 and 2 for player 2
 
@@ -35,9 +34,10 @@ class GameLogic:
         boardOwners = [[0] * self.dimensionBoard] * self.dimensionBoard
         suicideRule = []
 
-        self.boardState[piece.x][piece.y].owner = self.currentPlayer  # Change the owner of the piece (add the new piece to the board)
+        self.boardState[piece.x][
+            piece.y].owner = self.currentPlayer  # Change the owner of the piece (add the new piece to the board)
 
-        #Save the owners for the koRule
+        # Save the owners for the koRule
         for i in self.boardState:
             for j in i:
                 boardOwners[j.x][j.y] = j.owner
@@ -49,7 +49,7 @@ class GameLogic:
             if self.boardState[piece.x - 1][piece.y].owner == self.currentPlayer:
                 neighbour = neighbour + 1
                 left = True
-        if piece.x != self.dimensionBoard-1:
+        if piece.x != self.dimensionBoard - 1:
             if self.boardState[piece.x + 1][piece.y].owner == self.currentPlayer:
                 neighbour = neighbour + 1
                 right = True
@@ -57,7 +57,7 @@ class GameLogic:
             if self.boardState[piece.x][piece.y - 1].owner == self.currentPlayer:
                 neighbour = neighbour + 1
                 top = True
-        if piece.y != self.dimensionBoard-1:
+        if piece.y != self.dimensionBoard - 1:
             if self.boardState[piece.x][piece.y + 1].owner == self.currentPlayer:
                 neighbour = neighbour + 1
                 bottom = True
@@ -100,7 +100,7 @@ class GameLogic:
 
         # If there is no groups near the new piece, create a new piece group
         else:
-            self.groups[self.currentPlayer - 1].append(self.boardState[piece.x][piece.y])
+            self.groups[self.currentPlayer - 1].append(pieceGroup(self.boardState[piece.x][piece.y]))
 
         # Reset the liberties of each piece groups for each player
         for k in range(0, 2):
@@ -113,7 +113,7 @@ class GameLogic:
                             if [j.x - 1, j.y] in libertiescoord:
                                 libertiescoord.append([j.x - 1, j.y])
                                 i.liberties = i.liberties + 1
-                    if j.x != self.dimensionBoard-1:
+                    if j.x != self.dimensionBoard - 1:
                         if self.boardState[j.x + 1][j.y].owner == 0:
                             if [j.x + 1, j.y] in libertiescoord:
                                 libertiescoord.append([j.x + 1, j.y])
@@ -123,7 +123,7 @@ class GameLogic:
                             if [j.x, j.y - 1] in libertiescoord:
                                 libertiescoord.append([j.x, j.y - 1])
                                 i.liberties = i.liberties + 1
-                    if j.y != self.dimensionBoard-1:
+                    if j.y != self.dimensionBoard - 1:
                         if self.boardState[j.x][j.y + 1].owner == 0:
                             if [j.x, j.y + 1] in libertiescoord:
                                 libertiescoord.append([j.x, j.y + 1])
@@ -134,16 +134,16 @@ class GameLogic:
                     playable = False
                     toCheck = [self.boardState[libertiescoord[0][0]], self.boardState[libertiescoord[0][1]]]
                     if toCheck[0] != 0:
-                        if self.boardState[toCheck[0]-1][toCheck[1]].owner == 0:
+                        if self.boardState[toCheck[0] - 1][toCheck[1]].owner == 0:
                             playable = True
-                    if toCheck[0] != self.dimensionBoard-1:
-                        if self.boardState[toCheck[0]+1][toCheck[1]].owner == 0:
+                    if toCheck[0] != self.dimensionBoard - 1:
+                        if self.boardState[toCheck[0] + 1][toCheck[1]].owner == 0:
                             playable = True
                     if toCheck[1] != 0:
-                        if self.boardState[toCheck[0]][toCheck[1]-1].owner == 0:
+                        if self.boardState[toCheck[0]][toCheck[1] - 1].owner == 0:
                             playable = True
-                    if toCheck[1] != self.dimensionBoard-1:
-                        if self.boardState[toCheck[0]][toCheck[1]+1].owner == 0:
+                    if toCheck[1] != self.dimensionBoard - 1:
+                        if self.boardState[toCheck[0]][toCheck[1] + 1].owner == 0:
                             playable = True
                     if not playable:
                         suicideRule.append([k, toCheck[0]], toCheck[1])
@@ -172,13 +172,71 @@ class GameLogic:
             for i in range(0, self.dimensionBoard):
                 for j in range(0, self.dimensionBoard):
                     if self.placeForPlayer[k][i][j]:
-                        boardOwners[i][j] = k+1
+                        boardOwners[i][j] = k + 1
                         if boardOwners in self.previousBoards:
                             self.placeForPlayer[k][i][j] = False
                         boardOwners[i][j] = 0
 
-        # Change the current player
+        self.changePlayer()
+    def changePlayer(self):  # Change the current player
         if self.currentPlayer == 1:
             self.currentPlayer = 2
         else:
             self.currentPlayer = 1
+
+    def scoreCount(self): #AVANT D'APPELER CETTE FONCTION, FAIRE RETIRER DU PLATEAU LES PIECES DE TROP PAR LES JOUEURS !!!
+        voidGroups = []
+        for i in range(0, self.dimensionBoard):
+            for j in range(0, self.dimensionBoard):
+                neighbour = 0
+                top = False
+                left = False
+                if self.boardState[i][j].owner == 0:
+                    if i == 0 and j == 0:
+                            voidGroups.append(self.boardState[i][j])
+                    elif i == 0:
+                        if self.boardState[i][j-1].owner != 0:
+                            voidGroups.append(self.boardState[i][j])
+                        else:
+                            for k in voidGroups:
+                                if k.pieces.count(self.boardState[i][j-1]) != 0:
+                                    k.addPiece(self.boardState[i][j])
+                    elif j == 0:
+                        if self.boardState[i-1][j].owner != 0:
+                            voidGroups.append(self.boardState[i][j])
+                        else:
+                            for k in voidGroups:
+                                if k.pieces.count(self.boardState[i-1][j]) != 0:
+                                    k.addPiece(self.boardState[i][j])
+                    else:
+                        if self.boardState[i-1][j].owner != 0:
+                            neighbour = neighbour + 1
+                            top = True
+                        if self.boardState[i][j-1].owner != 0:
+                            neighbour = neighbour + 1
+                            left = True
+                        if neighbour >= 1:
+                            if top:
+                                for k in voidGroups:
+                                    if k.pieces.count(self.boardState[i-1][j]) != 0:
+                                        k.addPiece(self.boardState[i][j])
+                            else:
+                                for k in voidGroups:
+                                    if k.pieces.count(self.boardState[i][j-1]) != 0:
+                                        k.addPiece(self.boardState[i][j])
+                            if neighbour>1:
+                                for k in voidGroups:
+                                    if k.pieces.count(self.boardState[i-1][j]) != 0:
+                                        for l in voidGroups:
+                                            if l.pieces.count(self.boardState[i][j-1]) != 0:
+                                                for m in l.pieces:
+                                                    k.addPiece(m)
+                                                voidGroups.remove(l)
+                        else:
+                            voidGroups.append(self.boardState[i][j])
+
+        for i in voidGroups:
+            for j in i.pieces:
+                if j.x != 0:
+                    self.boardState[]
+
