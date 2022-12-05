@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QVBoxLayout, QWidget, QLabel
-from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QIcon, QFont
 
 class EndGameWindow(QWidget):
     print("A group of piece has been created")
@@ -27,7 +27,7 @@ class EndGameWindow(QWidget):
             self.text1 = QLabel("You are both winners !!!")
         else:
             self.text1 = QLabel("The winner is " + self.winner + " !!!")
-        self.text2 = QLabel("Scores: " + str(self.main.score1) + " vs " + str(self.main.score2))
+        self.text2 = QLabel("Scores: " + str(self.go.gameLogic.scores[0]) + " vs " + str(self.go.gameLogic.scores[1]))
         self.text3 = QLabel("Congratulations !")
         self.text1.setFont(self.fontTitle)
         self.text3.setFont(self.fontTitle)
@@ -42,7 +42,7 @@ class EndGameWindow(QWidget):
 
         # Set this window layout
         self.setFixedSize(300, 100)
-        self.main.center()
+        self.go.center()
         self.setWindowTitle("And the winner is...")
         self.setWindowIcon(QIcon("./icons/win.png"))
         self.setLayout(self.vbox)
