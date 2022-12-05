@@ -4,6 +4,7 @@ from PyQt6.QtGui import QIcon
 from board import Board
 from score_board import ScoreBoard
 from game_logic import GameLogic
+from endGameWindow import EndGameWindow
 
 class Go(QMainWindow):
 
@@ -22,6 +23,7 @@ class Go(QMainWindow):
         self.gameLogic = GameLogic()
         self.scoreBoard = ScoreBoard(self)
         self.board = Board(self)
+        self.endGameWindow = EndGameWindow(self)
         #self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.scoreBoard)
         self.myScoreBoard = QHBoxLayout()
         self.myScoreBoard.addWidget(self.board, 6)
@@ -39,6 +41,9 @@ class Go(QMainWindow):
             QIcon("./icons/logo.png"))
         self.show()
 
+    def showEndWindow(self):
+        self.hide()
+        self.endGameWindow.show()
     def center(self):
         '''centers the window on the screen'''
         gr = self.frameGeometry()
