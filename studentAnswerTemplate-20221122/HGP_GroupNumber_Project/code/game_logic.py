@@ -14,17 +14,28 @@ class GameLogic:
         self.dimensionBoard = 7
         self.scores = [0, 0]
 
-        self.boardState = [[0] * self.dimensionBoard] * self.dimensionBoard
+        self.boardState = []
+        for i in range(0, self.dimensionBoard):
+            array = [0] * self.dimensionBoard
+            self.boardState.append(array)
         for i in range(0, self.dimensionBoard):
             for j in range(0, self.dimensionBoard):
                 self.boardState[i][j] = Piece(i, j, 0)
+        self.placeForPlayer = []
+        for k in range(0, 2):
+            array2 = []
+            for i in range(0, self.dimensionBoard):
+                array = [True] * self.dimensionBoard
+                array2.append(array)
+            self.placeForPlayer.append(array2)
         self.currentPlayer = 1
-        self.placeForPlayer = [[[True] * self.dimensionBoard] * self.dimensionBoard] * 2
         self.groups = [[], []]
         self.captured = [0, 0]
         self.previousBoards = []
 
+
     def update(self, piece):
+        print("new move !!!!!!!!!!!!!!!!!")
 
         # Create some variables to check the state of the board at every updates
         neighbour = 0
@@ -32,17 +43,41 @@ class GameLogic:
         right = False
         top = False
         bottom = False
-        boardOwners = [[0] * self.dimensionBoard] * self.dimensionBoard
         suicideRule = []
+        boardOwners = []
+        for i in range(0, self.dimensionBoard):
+            array = [0]*self.dimensionBoard
+            boardOwners.append(array)
+
+        aa = []
+        print("before")
+        for i in range(0, self.dimensionBoard):
+            array = [0] * self.dimensionBoard
+            aa.append(array)
+        for i in range(0, 7):
+            for j in range(0, 7):
+                aa[i][j] = self.boardState[i][j].owner
+        print(aa)
 
         self.boardState[piece.x][piece.y].owner = self.currentPlayer  # Change the owner of the piece (add the new piece to the board)
+        print("position gamelogic:", piece.x, piece.y)
 
         # Save the owners for the koRule
         for i in self.boardState:
             for j in i:
                 boardOwners[j.x][j.y] = j.owner
 
-        self.previousBoards.append(boardOwners)
+        aa = []
+        print("just after the placement of the piece")
+        for i in range(0, self.dimensionBoard):
+            array = [0] * self.dimensionBoard
+            aa.append(array)
+        for i in range(0, 7):
+            for j in range(0, 7):
+                aa[i][j] = self.boardState[i][j].owner
+        print(aa)
+
+        temporaryPreviousBoard = boardOwners
 
         # Test if this new piece is near an existing piece (group)
         if piece.x != 0:
@@ -91,8 +126,9 @@ class GameLogic:
                             fusions.append(i)
 
                 fusions = set(fusions)
-                print(fusions)
-
+                fusions = list(fusions)
+                print(fusions[0])
+                #ON PEUT PAS INDEXER UN SET !!!!!!!
                 for i in range(1, len(fusions)):
                     for j in fusions[i].pieces:
                         fusions[0].addPiece(j)
@@ -110,29 +146,30 @@ class GameLogic:
                 for j in i.pieces:
                     if j.x != 0:
                         if self.boardState[j.x - 1][j.y].owner == 0:
-                            if [j.x - 1, j.y] in libertiescoord:
+                            if [j.x - 1, j.y] not in libertiescoord:
                                 libertiescoord.append([j.x - 1, j.y])
                                 i.liberties = i.liberties + 1
                     if j.x != self.dimensionBoard - 1:
                         if self.boardState[j.x + 1][j.y].owner == 0:
-                            if [j.x + 1, j.y] in libertiescoord:
+                            if [j.x + 1, j.y] not in libertiescoord:
                                 libertiescoord.append([j.x + 1, j.y])
                                 i.liberties = i.liberties + 1
                     if j.y != 0:
                         if self.boardState[j.x][j.y - 1].owner == 0:
-                            if [j.x, j.y - 1] in libertiescoord:
+                            if [j.x, j.y - 1] not in libertiescoord:
                                 libertiescoord.append([j.x, j.y - 1])
                                 i.liberties = i.liberties + 1
                     if j.y != self.dimensionBoard - 1:
                         if self.boardState[j.x][j.y + 1].owner == 0:
-                            if [j.x, j.y + 1] in libertiescoord:
+                            if [j.x, j.y + 1] not in libertiescoord:
                                 libertiescoord.append([j.x, j.y + 1])
                                 i.liberties = i.liberties + 1
 
                 # If liberties goes to 1, the player can't play to this last liberties if this place blocks all liberties (KO rule)
+                print("pieces in the grid: ",i.pieces[0].x, i.pieces[0].y,"liberties: ",i.liberties)
                 if i.liberties == 1:
                     playable = False
-                    toCheck = [self.boardState[libertiescoord[0][0]], self.boardState[libertiescoord[0][1]]]
+                    toCheck = [libertiescoord[0][0], libertiescoord[0][1]]
                     if toCheck[0] != 0:
                         if self.boardState[toCheck[0] - 1][toCheck[1]].owner == 0:
                             playable = True
@@ -154,19 +191,40 @@ class GameLogic:
                     for j in i.pieces:
                         j.owner = 0
                     self.groups[k].remove(i)
+                    print("deleted")
+                    print(self.groups[k][0].pieces[0].x)
 
         # Update the list of position where the players can play
-        self.placeForPlayer = [[[True] * self.dimensionBoard] * self.dimensionBoard] * 2
+        self.placeForPlayer = []
+        for k in range(0, 2):
+            array2 = []
+            for i in range(0, self.dimensionBoard):
+                array = [True] * self.dimensionBoard
+                array2.append(array)
+            self.placeForPlayer.append(array2)
+
+        aa = []
+        print("After everything")
+        for i in range(0, self.dimensionBoard):
+            array = [0] * self.dimensionBoard
+            aa.append(array)
+        for i in range(0, self.dimensionBoard):
+            for j in range(0, self.dimensionBoard):
+                aa[i][j] = self.boardState[i][j].owner
+        print(aa)
 
         for i in self.boardState:
             for j in i:
                 if j.owner != 0:
                     for k in range(0, 2):
                         self.placeForPlayer[k][j.x][j.y] = False
+        print("place For players after already placed:")
+        print(self.placeForPlayer)
 
         for i in suicideRule:
             self.placeForPlayer[i[0]][i[1]][i[2]] = False
-
+        print("place For players after suicide rule:")
+        print(self.placeForPlayer)
         # Test the futures enbale positions for koRule
         for k in range(0, 2):
             for i in range(0, self.dimensionBoard):
@@ -176,7 +234,9 @@ class GameLogic:
                         if boardOwners in self.previousBoards:
                             self.placeForPlayer[k][i][j] = False
                         boardOwners[i][j] = 0
-
+        self.previousBoards.append(temporaryPreviousBoard)
+        print("place For players after ko rule:")
+        print(self.placeForPlayer)
         self.changePlayer()
 
     def changePlayer(self):  # Change the current player

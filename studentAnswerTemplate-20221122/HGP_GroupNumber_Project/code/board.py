@@ -39,7 +39,8 @@ class Board(QWidget):  # base the board on a QFrame widget
             new_size = self.image.scaled(self.height(), self.height())
         else:
             new_size = self.image.scaled(self.width(), self.width())'''
-        self.image = self.image.scaled(self.width(), self.height())
+        self.image = self.image.scaled(self.width(), self.width())
+
 
 
     def initBoard(self):
@@ -177,6 +178,7 @@ class Board(QWidget):  # base the board on a QFrame widget
         # TODO you could call some game logic here
         self.clickLocationSignal.emit(clickLoc)
         #self.drawPieces()
+
         self.tryMove()
 
     def resetGame(self):
@@ -191,14 +193,18 @@ class Board(QWidget):  # base the board on a QFrame widget
 
     def tryMove(self):
         '''tries to move a piece'''
+        countX = -1
         for newX in range(54, 774, 90):
+            countY = -1
+            countX = countX + 1
             for newY in range(64, 944, 110):
+                countY = countY + 1
                 if (self.mouseX - newX)**2 + (self.mouseY - newY)**2 <= 30.0**2:
                     #self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
                     #QApplication.setOverrideCursor(self.cursor)
                     col, row = self.pixelToInt(newX, newY)
                     if self.go.gameLogic.placeForPlayer[self.go.gameLogic.currentPlayer - 1][col][row]:
-                        self.drawPieces(newX, newY)
+                        self.drawPieces(newX, newY, countX, countY)
                         #self.pixelToInt(newX, newY)  # affiche la colonne et la ligne de la pièce
                     if self.go.scoreBoard.currentTurn == "Player 1":
                         self.go.scoreBoard.currentTurn = "Player 2"
@@ -225,7 +231,7 @@ class Board(QWidget):  # base the board on a QFrame widget
             countR += 1
             if j == mouseY:
                 finalR = countR
-        print(finalC, finalR)
+        print("positon:", finalC, finalR)
         return finalC, finalR
 
     def drawBoardSquares(self, painter):
@@ -250,7 +256,7 @@ class Board(QWidget):  # base the board on a QFrame widget
                 # TODO change the colour of the brush so that a checkered board is drawn
                 self.brushColor = Qt.GlobalColor.white'''
 
-    def drawPieces(self, newX, newY):
+    def drawPieces(self, newX, newY, countX, countY):
         '''draw the pieces on the board'''
         self.brushSize = 5
         painter = QPainter(self.image)
@@ -264,6 +270,7 @@ class Board(QWidget):  # base the board on a QFrame widget
             painter.setBrush(QBrush(Qt.GlobalColor.white, Qt.BrushStyle.SolidPattern))
             painter.drawEllipse(int(newX)-20, int(newY)-20, 50, 50)
             self.update()
+        self.go.gameLogic.update(Piece(countX, countY, self.go.gameLogic.currentPlayer))
 
         #painter.drawEllipse(125, 155, 50, 50)
         '''colour = Qt.GlobalColor.transparent # empty square could be modeled with transparent pieces
