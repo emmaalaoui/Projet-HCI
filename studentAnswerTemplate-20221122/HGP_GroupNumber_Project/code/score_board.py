@@ -134,7 +134,7 @@ class ScoreBoard(QWidget):
         self.mainLayoutM.addWidget(self.rulesButton)
         self.mainLayoutM.addWidget(closeButton)
         self.rulesButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-
+        self.borderRed()
         #self.setWidget(self.mainWidgetB)
         #self.setWidget(self.mainWidgetW)
 
@@ -243,6 +243,20 @@ class ScoreBoard(QWidget):
         if button == QMessageBox.StandardButton.Ok:
             print("OK!")
 
+    def borderRed(self):
+        if self.currentTurn == "Player 1":
+            self.mainWidgetB.setObjectName("ColoredGroupBox")
+            self.mainWidgetB.setStyleSheet("QGroupBox#ColoredGroupBox { border: 1px solid red;}")
+            #self.mainWidgetB.setStyleSheet('QGroupBox:title {'
+                             #'color: red; }')
+            self.mainWidgetW.setObjectName("ColoredGroupBox")
+            self.mainWidgetW.setStyleSheet("QGroupBox#ColoredGroupBox { border: 1px solid white;}")
+        else:
+            self.mainWidgetW.setObjectName("ColoredGroupBox")
+            self.mainWidgetW.setStyleSheet("QGroupBox#ColoredGroupBox { border: 1px solid red;}")
+            self.mainWidgetB.setObjectName("ColoredGroupBox")
+            self.mainWidgetB.setStyleSheet("QGroupBox#ColoredGroupBox { border: 1px solid black;}")
+
     def rules(self):
         dialog = QMessageBox(self)
         dialog.setWindowTitle("Rules")
@@ -272,6 +286,8 @@ class ScoreBoard(QWidget):
     def updateUi(self):
         self.playerLabel.setText("Current Turn: " + self.currentTurn)
         self.playerLabel.adjustSize()
+        self.borderRed()
+
 
 
 
