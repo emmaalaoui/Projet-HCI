@@ -34,7 +34,7 @@ class Go(QMainWindow):
         self.scoreBoard.make_connection(self.board)
 
         self.resize(850, 850)
-        self.center()
+        #self.center()
         self.setStyleSheet("background-color: light grey")
         self.setWindowTitle("Project - Go - Emma&Yann")
         self.setWindowIcon(
