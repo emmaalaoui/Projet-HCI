@@ -13,7 +13,7 @@ class Board(QWidget):  # base the board on a QFrame widget
     boardWidth  = 6    # board is 0 squares wide # TODO this needs updating
     boardHeight = 6     #
     timerSpeed  = 1000     # the timer updates every 1 millisecond
-    counter     = 60    # the number the counter will count down from
+    counter     = 120    # the number the counter will count down from
 
 
     def __init__(self, parent):
@@ -26,6 +26,7 @@ class Board(QWidget):  # base the board on a QFrame widget
         self.mainLayout = QVBoxLayout()
         self.setLayout(self.mainLayout)
         self.resize(800, 1000)
+        self.draw = True
         '''self.cursor = QCursor()
         # self.image.setCursor(self.cursor)
         #self.cursor.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
@@ -151,9 +152,6 @@ class Board(QWidget):  # base the board on a QFrame widget
                 print("Game over")
                 self.timer.stop()
             self.counter -= 1
-            '''ScoreBoard.pbar.setValue(0)
-            ScoreBoard.step = ScoreBoard.step + 1
-            ScoreBoard.pbar.setValue(ScoreBoard.step)'''
             print('timerEvent()', self.counter)
             self.updateTimerSignal.emit(self.counter)
             #self.go.scoreBoard.setTimeRemaining(self.counter)
@@ -191,20 +189,21 @@ class Board(QWidget):  # base the board on a QFrame widget
 
     def tryMove(self):
         '''tries to move a piece'''
-        for newX in range(54, 774, 90):
-            for newY in range(64, 944, 110):
-                if (self.mouseX - newX)**2 + (self.mouseY - newY)**2 <= 30.0**2:
-                    #self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
-                    #QApplication.setOverrideCursor(self.cursor)
-                    col, row = self.pixelToInt(newX, newY)
-                    if self.go.gameLogic.placeForPlayer[self.go.gameLogic.currentPlayer - 1][col][row]:
-                        self.drawPieces(newX, newY)
-                        #self.pixelToInt(newX, newY)  # affiche la colonne et la ligne de la pièce
-                    if self.go.scoreBoard.currentTurn == "Player 1":
-                        self.go.scoreBoard.currentTurn = "Player 2"
-                    else:
-                        self.go.scoreBoard.currentTurn = "Player 1"
-                    self.go.scoreBoard.updateUi()
+        if self.draw:
+            for newX in range(54, 774, 90):
+                for newY in range(64, 944, 110):
+                    if (self.mouseX - newX)**2 + (self.mouseY - newY)**2 <= 30.0**2:
+                        #self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
+                        #QApplication.setOverrideCursor(self.cursor)
+                        col, row = self.pixelToInt(newX, newY)
+                        if self.go.gameLogic.placeForPlayer[self.go.gameLogic.currentPlayer - 1][col][row]:
+                            self.drawPieces(newX, newY)
+                            #self.pixelToInt(newX, newY)  # affiche la colonne et la ligne de la pièce
+                        if self.go.scoreBoard.currentTurn == "Player 1":
+                            self.go.scoreBoard.currentTurn = "Player 2"
+                        else:
+                            self.go.scoreBoard.currentTurn = "Player 1"
+                        self.go.scoreBoard.updateUi()
         '''
         Equation d'un cercle : (x−h)²+(y−k)²=r².
         Si newX et newY vérifie l'équation alors le point est dans la zone
@@ -282,3 +281,4 @@ class Board(QWidget):  # base the board on a QFrame widget
                 center = QPointF(radius, radius)
                 painter.drawEllipse(center, radius, radius)
                 painter.restore()'''
+

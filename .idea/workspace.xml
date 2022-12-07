@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="479b13f7-e2c4-4d1d-bb7d-065a8c4fcde2" name="Changes" comment="cc">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_11_2022_11_38_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_11_2022_11_38__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/icons/compare-match-icon.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/board.py" beforeDir="false" afterPath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/board.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py" beforeDir="false" afterPath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,7 +37,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/yann0/PycharmProjects/Projet-HCI/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/icons&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/Desktop/HCI&amp;GUI/Projet_HCI/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/__main__.py&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -51,9 +53,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\yann0\anaconda\envs\hgp\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/__main__.py" />
@@ -243,7 +245,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670249770787</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="cc">
+      <created>1670320624353</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1670320624353</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
