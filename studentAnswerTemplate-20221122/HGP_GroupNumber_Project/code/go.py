@@ -36,7 +36,7 @@ class Go(QMainWindow):
         self.resize(850, 850)
         #self.center()
         self.setStyleSheet("background-color: light grey")
-        self.setWindowTitle("Project - Go - Emma&Yann")
+        self.setWindowTitle("GroupProject - Go - HGP-FT02")
         self.setWindowIcon(
             QIcon("./icons/logo.png"))
         self.show()

@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QApplication, QDockWidget, QGridLayout, QMessageBox, QGroupBox, QMenuBar, QProgressBar, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QLabel, QScrollArea
 from PyQt6.QtCore import pyqtSlot, QSize, Qt, QBasicTimer
-from PyQt6.QtGui import QIcon, QAction, QPixmap, QCursor, QPen, QPainter
+from PyQt6.QtGui import QIcon, QAction, QPixmap, QCursor, QPen, QPainter, QFont
 from board import Board
 class ScoreBoard(QWidget):
     '''# base the score_board on a QDockWidget'''
@@ -25,13 +25,13 @@ class ScoreBoard(QWidget):
         #create a widget to hold other widgets
         self.mainWidgetB = QGroupBox()
         self.mainWidgetB.setTitle("Player 1 - Black Stones")
-        self.mainWidgetB.setStyleSheet("color: white;"
-                                       "background-color: black")
+        '''self.mainWidgetB.setStyleSheet("color: white;"
+                                       "background-color: black")'''
 
         self.mainWidgetW = QGroupBox()
         self.mainWidgetW.setTitle("Player 2 - White Stones")
-        self.mainWidgetW.setStyleSheet("color: black;"
-                                       "background-color: white")
+        '''self.mainWidgetW.setStyleSheet("color: black;"
+                                       "background-color: white")'''
         self.mainWidgetM = QGroupBox()
         self.mainWidgetM.setTitle("Others")
         self.mainWidgetM.setStyleSheet("color: black;"
@@ -56,6 +56,7 @@ class ScoreBoard(QWidget):
         self.label_timeRemainingB = QLabel("Time remaining: ")
         self.currentTurn = "Player 1"
         self.playerLabel = QLabel("Current Turn: " + self.currentTurn)
+        self.playerLabel.setStyleSheet("font-weight: bold")
         self.mainLayoutM.addWidget(self.playerLabel)
         self.scoreW = QLabel("Score : ")
         self.scoreB = QLabel("Score : ")
@@ -76,13 +77,13 @@ class ScoreBoard(QWidget):
         self.mainLayoutM.addWidget(resetGame)
         self.timerButtonB = QPushButton('2 Minute Timer', self)
         self.timerButtonW = QPushButton('2 Minute Timer', self)
-        self.timerButtonB.setStyleSheet("color: white;"
+        '''self.timerButtonB.setStyleSheet("color: white;"
                                        "background-color: black;"
                                        "border-style: outset;"
                                        "border-width: 2px;"
                                        #"border-radius: 10px;"
                                        "border-color: white")
-                                       #"font: bold 14px")
+                                       #"font: bold 14px")'''
 
         self.timerButtonB.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.timerButtonW.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
@@ -91,24 +92,24 @@ class ScoreBoard(QWidget):
         self.pbarB = QProgressBar(self)
         self.pbarB.setMaximum(120)
         self.pbarB.setTextVisible(False)
-        self.pbarB.setStyleSheet("border-style: solid;"
+        '''self.pbarB.setStyleSheet("border-style: solid;"
                                         #"border-width: 2px;"
                                         #"border-radius: 7px;"
                                         "text-align: center;"
                                         "background-color: white;"
                                         #"margin: 10px;"
-                                        "border-color: black")
+                                        "border-color: black")'''
         # "font: bold 14px")
         self.pbarW = QProgressBar(self)
         self.pbarW.setMaximum(120)
         self.pbarW.setTextVisible(False)
-        self.pbarW.setStyleSheet("border-style: solid;"
+        '''self.pbarW.setStyleSheet("border-style: solid;"
                                  # "border-width: 2px;"
                                  # "border-radius: 7px;"
                                  "text-align: center;"
                                  "background-color: white;"
                                  # "margin: 10px;"
-                                 "border-color: black")
+                                "border-color: black")'''
         self.stepB = 0
         self.stepW = 0
         self.timer = QBasicTimer()
@@ -122,13 +123,13 @@ class ScoreBoard(QWidget):
         self.mainLayoutW.addWidget(self.label_timeRemainingW)
         self.skipButtonB = QPushButton('Skip Turn')
         self.skipButtonW = QPushButton('Skip Turn')
-        self.skipButtonB.setStyleSheet("color: white;"
+        '''self.skipButtonB.setStyleSheet("color: white;"
                                         "background-color: black;"
                                         "border-style: outset;"
                                         "border-width: 2px;"
                                         #"border-radius: 10px;"
                                         "border-color: white")
-                                        #"font: bold 14px")
+                                        #"font: bold 14px")'''
         self.skipButtonB.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.skipButtonB.clicked.connect(self.buttonSkip_clicked)
         self.mainLayoutB.addWidget(self.skipButtonB)
@@ -269,12 +270,41 @@ class ScoreBoard(QWidget):
         self.label_timeRemainingW.setText(update)
         print('slot ' + update)
 
+        if self.stepB | self.stepW > 100:
+            self.setStyleSheet("""
+                    QProgressBar::chunk
+                    {
+                        background-color: red
+                    }""")
+
         if self.stepB >= 120:
             self.timer.stop()
             self.timerButtonB.setText('Time Over')
+            dialog = QMessageBox(self)
+            dialog.setWindowTitle("Time Over...")
+            dialog.setWindowIcon(QIcon("./icons/timer.png"))
+            text = "Player 1 looses, his time is over.\n" \
+                   "Congratulations to Player 2, you win !"
+
+            dialog.setText(text)
+            button = dialog.exec()
+
+            if button == QMessageBox.StandardButton.Ok:
+                print("OK!")
         elif self.stepW >= 120:
             self.timer.stop()
             self.timerButtonW.setText('Time Over')
+            dialog = QMessageBox(self)
+            dialog.setWindowTitle("Time Over...")
+            dialog.setWindowIcon(QIcon("./icons/timer.png"))
+            text = "Player 2 looses, his time is  over.\n" \
+                   "Congratulations to Player 1, you win !"
+
+            dialog.setText(text)
+            button = dialog.exec()
+
+            if button == QMessageBox.StandardButton.Ok:
+                print("OK!")
 
     def clear(self):
         self.go.board.image = QPixmap("./icons/Board.png")
@@ -310,6 +340,22 @@ class ScoreBoard(QWidget):
             self.timerButtonB.setText('Stop')
             self.firstTimer = True
         self.updateUi()
+        if not self.firstSkip:
+            self.firstSkip = True
+        else:
+            print("end")
+            self.go.board.draw = False
+            dialog = QMessageBox(self)
+            dialog.setWindowTitle("The End")
+            dialog.setWindowIcon(QIcon("./icons/final.jpg"))
+            text = "Click on the pieces you want to delete."
+
+            dialog.setText(text)
+            button = dialog.exec()
+
+            if button == QMessageBox.StandardButton.Ok:
+                print("OK!")
+
 
 
     def matchDetails(self):
@@ -369,46 +415,15 @@ class ScoreBoard(QWidget):
         if button == QMessageBox.StandardButton.Ok:
             print("OK!")
 
+
         # Here I made the updateUI method to update the UI
     def updateUi(self):
         self.playerLabel.setText("Current Turn: " + self.currentTurn)
         self.playerLabel.adjustSize()
         self.borderRed()
 
-    def deletePiece(self, newX, newY):
-        '''delete a piece on the board'''
-        self.brushSize = 5
-        print("aa")
-        painter = QPainter(self.go.board.image)
-        painter.setPen(QPen(Qt.GlobalColor.red, self.brushSize))
-        painter.drawLine(int(newX)-20, int(newY)-20, int(newX)+40, int(newY)+40)
-        painter.drawLine(int(newX) - 20, int(newY) + 40, int(newX) + 40, int(newY) - 20)
-        self.update()
 
-    def final(self):
-        if self.buttonSkip_clicked():
-            self.firstSkip = False
-            print("cc")
-        elif self.buttonSkip_clicked():
-            self.firstSkip = True
-            print("ff")
-        '''if self.firstSkip | self.timerButtonB.text() == 'Timer Over' | self.timerButtonW.text() == 'Timer Over':
-            self.go.board.draw = False
-            dialog = QMessageBox(self)
-            dialog.setWindowTitle("Rules")
-            dialog.setWindowIcon(QIcon("./icons/final.jpg"))
-            text = "Click on the pieces you want to delete."
 
-            dialog.setText(text)
-            button = dialog.exec()
-
-            if button == QMessageBox.StandardButton.Ok:
-                print("OK!")
-            for newX in range(54, 774, 90):
-                for newY in range(64, 944, 110):
-                    if (self.go.board.mouseX - newX) ** 2 + (self.go.board.mouseY - newY) ** 2 <= 30.0 ** 2:
-                        self.deletePiece(newX, newY)
-        self.update()'''
 
 
 
