@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="479b13f7-e2c4-4d1d-bb7d-065a8c4fcde2" name="Changes" comment="aaaaaa">
-      <change beforePath="$PROJECT_DIR$/.idea/Projet-HCI.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Projet-HCI.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_12_2022_13_20__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_12_2022_13_20__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_12_2022_14_07__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_12_2022_14_07__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_12_2022_14_07__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_05_12_2022_14_07__Changes_1.xml" afterDir="false" />
+    <list default="true" id="479b13f7-e2c4-4d1d-bb7d-065a8c4fcde2" name="Changes" comment="ça MARCHE !!!!!!!!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/board.py" beforeDir="false" afterPath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/board.py" afterDir="false" />
     </list>
@@ -268,7 +263,21 @@
       <option name="project" value="LOCAL" />
       <updated>1670420333348</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="ça MARCHE !!!!!!!!">
+      <created>1670545689077</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1670545689077</updated>
+    </task>
+    <task id="LOCAL-00029" summary="ça MARCHE !!!!!!!!">
+      <created>1670545816324</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1670545816324</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -288,6 +297,7 @@
     <MESSAGE value="score1" />
     <MESSAGE value="cc" />
     <MESSAGE value="emmaa" />
-    <option name="LAST_COMMIT_MESSAGE" value="emmaa" />
+    <MESSAGE value="ça MARCHE !!!!!!!!" />
+    <option name="LAST_COMMIT_MESSAGE" value="ça MARCHE !!!!!!!!" />
   </component>
 </project>

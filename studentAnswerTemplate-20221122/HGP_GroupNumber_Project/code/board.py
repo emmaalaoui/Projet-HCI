@@ -327,8 +327,3 @@ class Board(QWidget):  # base the board on a QFrame widget
                         painter.setBrush(QBrush(Qt.GlobalColor.white, Qt.BrushStyle.SolidPattern))
                     painter.drawEllipse(int(newX) - 20, int(newY) - 20, 50, 50)
                     self.update()
-
-        """painter.setPen(QPen(Qt.GlobalColor.green, self.brushSize))
-        painter.setBrush(QBrush(Qt.GlobalColor.green, Qt.BrushStyle.SolidPattern))
-        painter.drawEllipse(150 - 20, 150 - 20, 50, 50)
-        self.update()"""
