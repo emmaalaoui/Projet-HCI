@@ -188,8 +188,8 @@ class Board(QWidget):  # base the board on a QFrame widget
     def tryMove(self):
         '''tries to move a piece'''
         if self.draw:
-            for newX in range(54, 774, 90):
-                for newY in range(64, 944, 110):
+            for newX in range(54, 594, 90):
+                for newY in range(64, 724, 110):
                     if (self.mouseX - newX) ** 2 + (self.mouseY - newY) ** 2 <= 30.0 ** 2:
                         # self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
                         # QApplication.setOverrideCursor(self.cursor)
@@ -214,12 +214,12 @@ class Board(QWidget):  # base the board on a QFrame widget
         countR = -1
         finalC = -1
         finalR = -1
-        for i in range(54, 774, 90):
+        for i in range(54, 594, 90):
             countC += 1
             if i == mouseX:
                 finalC = countC
 
-        for j in range(64, 944, 110):
+        for j in range(64, 724, 110):
             countR += 1
             if j == mouseY:
                 finalR = countR
