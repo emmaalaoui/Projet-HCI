@@ -270,8 +270,14 @@ class ScoreBoard(QWidget):
         self.label_timeRemainingW.setText(update)
         print('slot ' + update)
 
-        if self.stepB | self.stepW > 100:
-            self.setStyleSheet("""
+        if self.stepB > 100:
+            self.pbarB.setStyleSheet("""
+                    QProgressBar::chunk
+                    {
+                        background-color: red
+                    }""")
+        if self.stepW > 100:
+            self.pbarW.setStyleSheet("""
                     QProgressBar::chunk
                     {
                         background-color: red
