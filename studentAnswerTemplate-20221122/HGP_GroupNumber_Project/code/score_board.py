@@ -58,13 +58,9 @@ class ScoreBoard(QWidget):
         self.playerLabel = QLabel("Current Turn: " + self.currentTurn)
         self.playerLabel.setStyleSheet("font-weight: bold")
         self.mainLayoutM.addWidget(self.playerLabel)
-        self.scoreW = QLabel("Score : ")
-        self.scoreB = QLabel("Score : ")
-        self.captureW = QLabel("Captures : " + str(self.go.gameLogic.captured[0]))
-        self.captureB= QLabel("Captures : "+ str(self.go.gameLogic.captured[1]))
+        self.captureW = QLabel("Captures : " + str(self.go.gameLogic.captured[1]))
+        self.captureB= QLabel("Captures : "+ str(self.go.gameLogic.captured[0]))
         #self.mainLayout.addWidget(self.label_clickLocation)
-        self.mainLayoutW.addWidget(self.scoreW)
-        self.mainLayoutB.addWidget(self.scoreB)
         self.mainLayoutW.addWidget(self.captureW)
         self.mainLayoutB.addWidget(self.captureB)
         self.matchButton = QPushButton("Match Details", self)
@@ -202,7 +198,11 @@ class ScoreBoard(QWidget):
 
         # Here I made the buttonEnd_clicked method to close the window when a player cliks on the End button
     def buttonEnd_cliked(self):
-        self.go.close()
+        if self.go.board.draw:
+            self.go.close()
+        else:
+            print("game over")
+            self.go.endGameWindow.show()
 
     def buttonTimerB_clicked(self):
         self.firstTimer = True
@@ -356,7 +356,9 @@ class ScoreBoard(QWidget):
             dialog = QMessageBox(self)
             dialog.setWindowTitle("The End")
             dialog.setWindowIcon(QIcon("./icons/final.jpg"))
-            text = "Click on the pieces you want to delete."
+            text = "The gamer is over.\n" \
+                   "Now, each your turn, click on the pieces you want to delete.\n" \
+                    "When finished, clik on the button END GAME to find out the score and the winner! 😉 "
 
             dialog.setText(text)
             button = dialog.exec()
@@ -429,9 +431,9 @@ class ScoreBoard(QWidget):
     def updateUi(self):
         self.playerLabel.setText("Current Turn: " + self.currentTurn)
         self.playerLabel.adjustSize()
-        self.captureW.setText("Captures : " + str(self.go.gameLogic.captured[0]))
+        self.captureW.setText("Captures : " + str(self.go.gameLogic.captured[1]))
         self.captureW.adjustSize()
-        self.captureB.setText("Captures : " + str(self.go.gameLogic.captured[1]))
+        self.captureB.setText("Captures : " + str(self.go.gameLogic.captured[0]))
         self.captureB.adjustSize()
         self.borderRed()
 
