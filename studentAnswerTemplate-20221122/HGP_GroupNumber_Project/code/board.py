@@ -202,6 +202,11 @@ class Board(QWidget):  # base the board on a QFrame widget
                             else:
                                 self.go.scoreBoard.currentTurn = "Player 1"
                             self.go.scoreBoard.updateUi()
+        else:
+            for newX in range(54, 774, 90):
+                for newY in range(64, 944, 110):
+                    if (self.mouseX - newX) ** 2 + (self.mouseY - newY) ** 2 <= 30.0 ** 2:
+                        self.deletePiece(newX, newY)
         '''
         Equation d'un cercle : (x−h)²+(y−k)²=r².
         Si newX et newY vérifie l'équation alors le point est dans la zone
@@ -307,6 +312,15 @@ class Board(QWidget):  # base the board on a QFrame widget
                 center = QPointF(radius, radius)
                 painter.drawEllipse(center, radius, radius)
                 painter.restore()'''
+
+    def deletePiece(self, newX, newY):
+        '''delete a piece on the board'''
+        self.brushSize = 5
+        painter = QPainter(self.image)
+        painter.setPen(QPen(Qt.GlobalColor.red, self.brushSize))
+        painter.drawLine(int(newX) - 20, int(newY) - 20, int(newX) + 40, int(newY) + 40)
+        painter.drawLine(int(newX) - 20, int(newY) + 40, int(newX) + 40, int(newY) - 20)
+        self.update()
 
     def updateTheBoard(self, painter):
         self.imageOrigin = self.imageOrigin.scaled(self.width(), self.height())

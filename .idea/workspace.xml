@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="479b13f7-e2c4-4d1d-bb7d-065a8c4fcde2" name="Changes" comment="emmaa">
+    <list default="true" id="479b13f7-e2c4-4d1d-bb7d-065a8c4fcde2" name="Changes" comment="emmma">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/board.py" beforeDir="false" afterPath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/board.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py" beforeDir="false" afterPath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/score_board.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -276,7 +278,21 @@
       <option name="project" value="LOCAL" />
       <updated>1670586722757</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="emmma">
+      <created>1670587035262</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1670587035262</updated>
+    </task>
+    <task id="LOCAL-00031" summary="emmma">
+      <created>1670587069389</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1670587069389</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -296,6 +312,7 @@
     <MESSAGE value="score1" />
     <MESSAGE value="cc" />
     <MESSAGE value="emmaa" />
-    <option name="LAST_COMMIT_MESSAGE" value="emmaa" />
+    <MESSAGE value="emmma" />
+    <option name="LAST_COMMIT_MESSAGE" value="emmma" />
   </component>
 </project>

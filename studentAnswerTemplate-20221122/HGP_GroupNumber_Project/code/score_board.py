@@ -316,6 +316,8 @@ class ScoreBoard(QWidget):
         self.go.board.image = QPixmap("./icons/Board.png")
         self.go.board.resize(800, 1000) #à retravailler !
         self.currentTurn = "Player 1"
+        self.go.gameLogic.captured[0] = 0
+        self.go.gameLogic.captured[1] = 0
         self.stepB = 0
         self.pbarB.setValue(self.stepB)
         self.label_timeRemainingB.setText('Time remaining:')
@@ -367,22 +369,23 @@ class ScoreBoard(QWidget):
     def matchDetails(self):
         dialog = QMessageBox(self)
         dialog.setWindowTitle("Match Details")
-        dialog.setWindowIcon(QIcon("./icons/compare-match-icon.webp"))
+        dialog.setWindowIcon(QIcon("./icons/compare-match-icon.png"))
         text = ""
         count = 0
         for i in range(0, 100, 1):
-            #if self.go.board.tryMove():
-                count = i
-                text = str(count) + "."
-
-        text += self.currentTurn
+            if self.go.board.tryMove():
+                count += 1
+                text = str(count) + "." + self.currentTurn + " - " +\
+                       str(self.go.board.pixelToInt(self.go.board.mouseX, self.go.board.mouseX))
         dialog.setText(text)
         button = dialog.exec()
 
         if button == QMessageBox.StandardButton.Ok:
             print("OK!")
+        self.updateUi()
 
     def borderRed(self):
+        #if self.go.board.draw:
         if self.currentTurn == "Player 1":
             self.mainWidgetB.setObjectName("ColoredGroupBox")
             self.mainWidgetB.setStyleSheet("QGroupBox#ColoredGroupBox { border: 1px solid red;}")
@@ -426,6 +429,10 @@ class ScoreBoard(QWidget):
     def updateUi(self):
         self.playerLabel.setText("Current Turn: " + self.currentTurn)
         self.playerLabel.adjustSize()
+        self.captureW.setText("Captures : " + str(self.go.gameLogic.captured[0]))
+        self.captureW.adjustSize()
+        self.captureB.setText("Captures : " + str(self.go.gameLogic.captured[1]))
+        self.captureB.adjustSize()
         self.borderRed()
 
 
