@@ -33,7 +33,6 @@ class GameLogic:
         self.captured = [0, 0]
         self.previousBoards = []
 
-
     def update(self, piece):
         print("new move !!!!!!!!!!!!!!!!!")
 
@@ -96,14 +95,19 @@ class GameLogic:
             if self.boardState[piece.x][piece.y + 1].owner == self.currentPlayer:
                 neighbour = neighbour + 1
                 bottom = True
+        #print(neighbour)
 
         # If the piece is near an existed group, add it to it
         if neighbour > 0:
+            addAble = True
             for i in self.groups[self.currentPlayer - 1]:
-                if self.boardState[piece.x - 1][piece.y] in i.pieces or self.boardState[piece.x + 1][
-                    piece.y] in i.pieces or self.boardState[piece.x][piece.y - 1] in i.pieces or \
-                        self.boardState[piece.x][piece.y + 1] in i.pieces:
-                    i.addPiece(piece)
+                #print(i.pieces)
+                #print(self.boardState[piece.x - 1][piece.y])
+                #print(self.boardState[1][piece.y])
+                if (self.boardState[piece.x - 1][piece.y] in i.pieces or self.boardState[piece.x + 1][piece.y] in i.pieces or self.boardState[piece.x][piece.y - 1] in i.pieces or self.boardState[piece.x][piece.y + 1] in i.pieces) and addAble:
+                    print("dedans")
+                    addAble = False
+                    i.addPiece(self.boardState[piece.x][piece.y])
 
             # Fusion 2 groups if a piece makes the link between them
             if neighbour > 1:
@@ -132,7 +136,7 @@ class GameLogic:
                 for i in range(1, len(fusions)):
                     for j in fusions[i].pieces:
                         fusions[0].addPiece(j)
-                    fusions.pop(i)
+                    self.groups[self.currentPlayer - 1].remove(fusions[i])
 
         # If there is no groups near the new piece, create a new piece group
         else:
@@ -140,7 +144,12 @@ class GameLogic:
 
         # Reset the liberties of each piece groups for each player
         for k in range(0, 2):
+            print("GROUPS of :", k)
+            print("Number of groups:", len(self.groups[k]))
             for i in self.groups[k]:
+                print("pieces in this group:", len(i.pieces))
+                for j in i.pieces:
+                    print("position of the piece:", j.x, j.y)
                 i.liberties = 0
                 libertiescoord = []
                 for j in i.pieces:
@@ -192,7 +201,7 @@ class GameLogic:
                         j.owner = 0
                     self.groups[k].remove(i)
                     print("deleted")
-                    print(self.groups[k][0].pieces[0].x)
+                    print(self.groups[k][0].pieces[0].x, self.groups[k][0].pieces[0].y)
 
         # Update the list of position where the players can play
         self.placeForPlayer = []
@@ -202,7 +211,7 @@ class GameLogic:
                 array = [True] * self.dimensionBoard
                 array2.append(array)
             self.placeForPlayer.append(array2)
-
+        """
         aa = []
         print("After everything")
         for i in range(0, self.dimensionBoard):
@@ -211,20 +220,50 @@ class GameLogic:
         for i in range(0, self.dimensionBoard):
             for j in range(0, self.dimensionBoard):
                 aa[i][j] = self.boardState[i][j].owner
-        print(aa)
+        print(aa)"""
 
         for i in self.boardState:
             for j in i:
                 if j.owner != 0:
                     for k in range(0, 2):
                         self.placeForPlayer[k][j.x][j.y] = False
-        print("place For players after already placed:")
-        print(self.placeForPlayer)
+        """print("place For players after already placed:")
+        print(self.placeForPlayer)"""
 
+        # Disable positions for SuicidRule
         for i in suicideRule:
             self.placeForPlayer[i[0]][i[1]][i[2]] = False
-        print("place For players after suicide rule:")
-        print(self.placeForPlayer)
+
+        for k in range(0, 2):
+            for i in range(0, self.dimensionBoard):
+                for j in range(0, self.dimensionBoard):
+                    if self.placeForPlayer[k][i][j]:
+                        enemies = 0
+                        if i != 0:
+                            if self.boardState[i - 1][j].owner == (k + 1) % 2 + 1:
+                                enemies = enemies + 1
+                        else:
+                            enemies = enemies + 1
+                        if i != self.dimensionBoard - 1:
+                            if self.boardState[i + 1][j].owner == (k + 1) % 2 + 1:
+                                enemies = enemies + 1
+                        else:
+                            enemies = enemies + 1
+                        if j != 0:
+                            if self.boardState[i][j - 1].owner == (k + 1) % 2 + 1:
+                                enemies = enemies + 1
+                        else:
+                            enemies = enemies + 1
+                        if j != self.dimensionBoard - 1:
+                            if self.boardState[i][j + 1].owner == (k + 1) % 2 + 1:
+                                enemies = enemies + 1
+                        else:
+                            enemies = enemies + 1
+                        if enemies == 4:
+                            self.placeForPlayer[k][i][j] = False
+
+        """print("place For players after suicide rule:")
+        print(self.placeForPlayer)"""
         # Test the futures enbale positions for koRule
         for k in range(0, 2):
             for i in range(0, self.dimensionBoard):
@@ -235,8 +274,8 @@ class GameLogic:
                             self.placeForPlayer[k][i][j] = False
                         boardOwners[i][j] = 0
         self.previousBoards.append(temporaryPreviousBoard)
-        print("place For players after ko rule:")
-        print(self.placeForPlayer)
+        """print("place For players after ko rule:")
+        print(self.placeForPlayer)"""
         self.changePlayer()
 
     def changePlayer(self):  # Change the current player

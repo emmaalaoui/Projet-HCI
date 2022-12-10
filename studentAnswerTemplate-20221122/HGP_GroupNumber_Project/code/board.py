@@ -42,6 +42,7 @@ class Board(QWidget):  # base the board on a QFrame widget
             new_size = self.image.scaled(self.width(), self.width())'''
         self.image = self.image.scaled(self.width(), self.height())
 
+
     def initBoard(self):
         '''initiates board'''
         self.timer = QBasicTimer()  # create a timer for the game
@@ -188,8 +189,8 @@ class Board(QWidget):  # base the board on a QFrame widget
     def tryMove(self):
         '''tries to move a piece'''
         if self.draw:
-            for newX in range(54, 594, 90):
-                for newY in range(64, 724, 110):
+            for newX in range(54, 600, 90):
+                for newY in range(64, 800, 110):
                     if (self.mouseX - newX) ** 2 + (self.mouseY - newY) ** 2 <= 30.0 ** 2:
                         # self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
                         # QApplication.setOverrideCursor(self.cursor)
@@ -219,12 +220,12 @@ class Board(QWidget):  # base the board on a QFrame widget
         countR = -1
         finalC = -1
         finalR = -1
-        for i in range(54, 594, 90):
+        for i in range(54, 600, 90):
             countC += 1
             if i == mouseX:
                 finalC = countC
 
-        for j in range(64, 724, 110):
+        for j in range(64, 800, 110):
             countR += 1
             if j == mouseY:
                 finalR = countR
@@ -327,10 +328,10 @@ class Board(QWidget):  # base the board on a QFrame widget
         painter.drawPixmap(QPoint(), self.imageOrigin)
         self.brushSize = 5
         row = -1
-        for newX in range(54, 594, 90):
+        for newX in range(54, 600, 90):
             col = -1
             row = row + 1
-            for newY in range(64, 724, 110):
+            for newY in range(64, 800, 110):
                 col = col + 1
                 if self.go.gameLogic.boardState[row][col].owner != 0:
                     if self.go.gameLogic.boardState[row][col].owner == 1:
