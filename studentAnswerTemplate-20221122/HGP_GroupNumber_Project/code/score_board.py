@@ -16,7 +16,6 @@ class ScoreBoard(QWidget):
 
         self.vboxMain = QVBoxLayout()
         self.firstTimer = False
-        self.firstSkip = False
 
         # Here we create 3 GroupBoxs to hold other widgets : one for Player 1, one for Player 2 and one for other things
         # needed to play the game.
@@ -72,12 +71,6 @@ class ScoreBoard(QWidget):
         self.stepB = 0
         self.stepW = 0
         self.timer = QBasicTimer()
-        # plus joli mais fait un peu beuger la pbar !!!
-        '''self.setStyleSheet("""
-                            QProgressBar::chunk
-                            {
-                                background-color: green
-                            }""")'''
         #self.pbarB.setOrientation(Qt.Orientation.Vertical)
         #self.pbarW.setOrientation(Qt.Orientation.Vertical)
         self.mainLayoutB.addWidget(self.timerButtonB)
@@ -222,12 +215,18 @@ class ScoreBoard(QWidget):
         print('slot ' + update)
 
         if self.stepB > 100:
+            self.pbarB.setFormat('Hurry up!')
+            self.pbarB.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.pbarB.setTextVisible(True)
             self.pbarB.setStyleSheet("""
                     QProgressBar::chunk
                     {
                         background-color: red
                     }""")
         if self.stepW > 100:
+            self.pbarW.setFormat('Hurry up!')
+            self.pbarW.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.pbarW.setTextVisible(True)
             self.pbarW.setStyleSheet("""
                     QProgressBar::chunk
                     {
@@ -289,21 +288,23 @@ class ScoreBoard(QWidget):
     def buttonSkip_clicked(self, s):
         if self.currentTurn == "Player 1":
             self.currentTurn = "Player 2"
+            self.go.gameLogic.currentPlayer = 2
             print(self.currentTurn)
             self.timerButtonB.setText('Start')
             self.timerButtonW.setText('Stop')
             self.firstTimer = False
+            self.go.board.count += 1
 
         else:
             self.currentTurn = "Player 1"
+            self.go.gameLogic.currentPlayer = 1
             print(self.currentTurn)
             self.timerButtonW.setText('Start')
             self.timerButtonB.setText('Stop')
             self.firstTimer = True
+            self.go.board.count += 1
         self.updateUi()
-        if not self.firstSkip:
-            self.firstSkip = True
-        else:
+        if self.go.board.count == 2:
             print("end")
             # Here we turn the boolean draw into false, and we display a MessageBox to explain that the game
             # is over (two consecutive passes terminates the game).
@@ -313,7 +314,7 @@ class ScoreBoard(QWidget):
             dialog.setWindowIcon(QIcon("./icons/final.jpg"))
             text = "The gamer is over.\n" \
                    "Now, each your turn, click on the pieces you want to delete.\n" \
-                    "When finished, clik on the button END GAME to find out the score and the winner! 😉 "
+                   "When finished, clik on the button END GAME to find out the score and the winner! 😉 "
 
             dialog.setText(text)
             button = dialog.exec()

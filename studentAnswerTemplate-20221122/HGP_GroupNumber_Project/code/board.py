@@ -28,6 +28,7 @@ class Board(QWidget):  # base the board on a QFrame widget
         self.setLayout(self.mainLayout)
         self.resize(800, 1000)
         self.draw = True
+        self.count = 0
         '''self.cursor = QCursor()
         # self.image.setCursor(self.cursor)
         #self.cursor.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
@@ -172,7 +173,7 @@ class Board(QWidget):  # base the board on a QFrame widget
         self.mouseY = event.position().y()
         print(self.mouseX, self.mouseY)
         # TODO you could call some game logic here
-        self.clickLocationSignal.emit(clickLoc)
+        #self.clickLocationSignal.emit(clickLoc) #inutile car on n'affiche plus la posiition du click
         # self.drawPieces()
         self.tryMove()
 
@@ -188,6 +189,7 @@ class Board(QWidget):  # base the board on a QFrame widget
 
     def tryMove(self):
         '''tries to move a piece'''
+        self.count = 0
         if self.draw:
             for newX in range(54, 600, 90):
                 for newY in range(64, 800, 110):

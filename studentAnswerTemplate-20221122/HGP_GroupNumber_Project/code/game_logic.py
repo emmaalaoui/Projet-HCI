@@ -366,4 +366,3 @@ class GameLogic:
         self.scores[0] = self.scores[0] - self.captured[1]
         self.scores[1] = self.scores[1] - self.captured[0]
 
-
