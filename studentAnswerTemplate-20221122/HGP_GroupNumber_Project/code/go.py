@@ -52,7 +52,7 @@ class Go(QMainWindow):
         self.setStyleSheet("background-color: light grey")
         self.setWindowTitle("GroupProject - Go - HGP-FT02")
         self.setWindowIcon(
-            QIcon("./icons/logo.png"))
+            QIcon("./icons/go.png"))
         self.show()
 
     def showEndWindow(self):
