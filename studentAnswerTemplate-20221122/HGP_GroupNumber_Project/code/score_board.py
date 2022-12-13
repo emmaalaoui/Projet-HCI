@@ -269,7 +269,6 @@ class ScoreBoard(QWidget):
     # Here we made the clear method to reset the game.
     def clear(self):
         self.go.board.image = QPixmap("./icons/Board.png")
-        self.go.board.resize(800, 1000) #à retravailler !
         self.currentTurn = "Player 1"
         self.go.gameLogic.captured[0] = 0
         self.go.gameLogic.captured[1] = 0
@@ -279,12 +278,10 @@ class ScoreBoard(QWidget):
         self.stepW = 0
         self.pbarW.setValue(self.stepW)
         self.label_timeRemainingW.setText('Time remaining:')
-        self.timer = 0
         self.timerButtonB.setText('2 Minute Timer')
         self.timerButtonW.setText('2 Minute Timer')
-        '''width = self.width()  # get the width of the current QImage in your application
-        height = self.height()  # get the height of the current QImage in your application
-        self.go.board.image = image.scaled(height, height)'''
+        self.timer.stop()
+        #self.go.gameLogic.resize()
         self.update()
         self.updateUi()
 
@@ -298,6 +295,8 @@ class ScoreBoard(QWidget):
             self.timerButtonW.setText('Stop')
             self.firstTimer = False
             self.go.board.count += 1
+            self.go.gameLogic.captured[1] += 1
+
 
         else:
             self.currentTurn = "Player 1"
@@ -307,6 +306,7 @@ class ScoreBoard(QWidget):
             self.timerButtonB.setText('Stop')
             self.firstTimer = True
             self.go.board.count += 1
+            self.go.gameLogic.captured[0] += 1
         self.updateUi()
         if self.go.board.count == 2:
             print("end")
