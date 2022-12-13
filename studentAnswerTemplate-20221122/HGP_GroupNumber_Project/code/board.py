@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QProgressBar, QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget
-from PyQt6.QtCore import Qt, QBasicTimer, pyqtSignal, QPointF, QPoint, QRect, QSize
-from PyQt6.QtGui import QPainter, QPixmap, QPen, QBrush, QCursor, QColor, QImage
+from PyQt6.QtCore import Qt, QBasicTimer, pyqtSignal, QPointF, QPoint, QRect
+from PyQt6.QtGui import QPainter, QPixmap, QPen, QBrush, QCursor, QColor
 from PyQt6.QtTest import QTest
 import time
 from piece import Piece
@@ -22,11 +22,11 @@ class Board(QWidget):  # base the board on a QFrame widget
         self.initBoard()
         self.image = QPixmap("./icons/Board.png")
         self.imageOrigin = QPixmap("./icons/Board.png")
-        self.imageOrigin2 = QImage("./icons/Board.png")
         self.mainLabel = QLabel()
         self.mainLabel.setPixmap(self.image)
         self.mainLayout = QVBoxLayout()
         self.setLayout(self.mainLayout)
+        self.resize(800, 1000)
         self.draw = True
         self.count = 0
         '''self.cursor = QCursor()
@@ -37,7 +37,11 @@ class Board(QWidget):  # base the board on a QFrame widget
         print(self.cursor.shape())'''
 
     def resizeEvent(self, event):
-        self.image = self.image.scaled(QSize(self.width(), self.height()), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.FastTransformation)
+        '''if self.contentsRect().width() > self.contentsRect().height():
+            new_size = self.image.scaled(self.height(), self.height())
+        else:
+            new_size = self.image.scaled(self.width(), self.width())'''
+        self.image = self.image.scaled(self.width(), self.height())
 
 
     def initBoard(self):
@@ -194,7 +198,7 @@ class Board(QWidget):  # base the board on a QFrame widget
                         # QApplication.setOverrideCursor(self.cursor)
                         col, row = self.pixelToInt(newX, newY)
                         if self.go.gameLogic.placeForPlayer[self.go.gameLogic.currentPlayer - 1][col][row]:
-                            self.drawPieces(newX, newY, col, row, True)
+                            self.drawPieces(newX, newY, col, row)
                             # self.pixelToInt(newX, newY)  # affiche la colonne et la ligne de la pièce
                             if self.go.scoreBoard.currentTurn == "Player 1":
                                 self.go.scoreBoard.currentTurn = "Player 2"
@@ -275,27 +279,23 @@ class Board(QWidget):  # base the board on a QFrame widget
                 # TODO change the colour of the brush so that a checkered board is drawn
                 self.brushColor = Qt.GlobalColor.white"""
 
-    def drawPieces(self, newX, newY, col, row, bool):
+    def drawPieces(self, newX, newY, col, row):
         '''draw the pieces on the board'''
         self.brushSize = 5
         painter = QPainter(self.image)
         if self.go.scoreBoard.currentTurn == "Player 1":
             painter.setPen(QPen(Qt.GlobalColor.black, self.brushSize))
             painter.setBrush(QBrush(Qt.GlobalColor.black, Qt.BrushStyle.SolidPattern))
-            if bool:
-                painter.drawEllipse(int(newX) - 20, int(newY) - 20, 50, 50)
+            painter.drawEllipse(int(newX) - 20, int(newY) - 20, 50, 50)
             self.update()
-            if bool:
-                self.go.gameLogic.update(Piece(col, row, self.go.gameLogic.currentPlayer))
+            self.go.gameLogic.update(Piece(col, row, self.go.gameLogic.currentPlayer))
             self.updateTheBoard(painter)
         else:
             painter.setPen(QPen(Qt.GlobalColor.white, self.brushSize))
             painter.setBrush(QBrush(Qt.GlobalColor.white, Qt.BrushStyle.SolidPattern))
-            if bool:
-                painter.drawEllipse(int(newX) - 20, int(newY) - 20, 50, 50)
+            painter.drawEllipse(int(newX) - 20, int(newY) - 20, 50, 50)
             self.update()
-            if bool:
-                self.go.gameLogic.update(Piece(col, row, self.go.gameLogic.currentPlayer))
+            self.go.gameLogic.update(Piece(col, row, self.go.gameLogic.currentPlayer))
             self.updateTheBoard(painter)
 
         # painter.drawEllipse(125, 155, 50, 50)

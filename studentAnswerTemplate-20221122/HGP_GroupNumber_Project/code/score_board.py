@@ -16,6 +16,8 @@ class ScoreBoard(QWidget):
 
         self.vboxMain = QVBoxLayout()
         self.firstTimer = False
+        self.text = ""
+        self.count = 0
 
         # Here we create 3 GroupBoxs to hold other widgets : one for Player 1, one for Player 2 and one for other things
         # needed to play the game.
@@ -324,19 +326,17 @@ class ScoreBoard(QWidget):
             if button == QMessageBox.StandardButton.Ok:
                 print("OK!")
 
+    def history(self, col, row):
+        self.count += 1
+        self.text += str(self.count) + "." + self.currentTurn + " - " +\
+                     "col: "+str(col) +" row: "+ str(row)+"\n"
+
     # Here we made the matchDetails method to display the game history.
     def matchDetails(self):
         dialog = QMessageBox(self)
         dialog.setWindowTitle("Match Details")
         dialog.setWindowIcon(QIcon("./icons/compare-match-icon.png"))
-        text = ""
-        count = 0
-        for i in range(0, 100, 1):
-            if self.go.board.tryMove():
-                count += 1
-                text = str(count) + "." + self.currentTurn + " - " +\
-                       str(self.go.board.pixelToInt(self.go.board.mouseX, self.go.board.mouseX))
-        dialog.setText(text)
+        dialog.setText(self.text)
         button = dialog.exec()
 
         if button == QMessageBox.StandardButton.Ok:
