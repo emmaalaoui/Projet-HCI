@@ -287,6 +287,7 @@ class ScoreBoard(QWidget):
 
     # Here we made the buttonSkip_clicked method to skip your turn and change the current player.
     def buttonSkip_clicked(self, s):
+        self.history("a", "a")
         if self.currentTurn == "Player 1":
             self.currentTurn = "Player 2"
             self.go.gameLogic.currentPlayer = 2
@@ -328,8 +329,12 @@ class ScoreBoard(QWidget):
 
     def history(self, col, row):
         self.count += 1
-        self.text += str(self.count) + "." + self.currentTurn + " - " +\
-                     "col: "+str(col) +" row: "+ str(row)+"\n"
+        if col == "a" and row == "a":
+            self.text += str(self.count) + "." + self.currentTurn + ":\t" + \
+                     "skipped\n"
+        else:
+            self.text += str(self.count) + "." + self.currentTurn + ":\t" + \
+                     "col: " + str(col) + "\trow: " + str(row) + "\n"
 
     # Here we made the matchDetails method to display the game history.
     def matchDetails(self):

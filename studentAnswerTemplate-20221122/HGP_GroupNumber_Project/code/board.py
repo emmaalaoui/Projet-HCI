@@ -191,13 +191,14 @@ class Board(QWidget):  # base the board on a QFrame widget
         '''tries to move a piece'''
         self.count = 0
         if self.draw:
-            for newX in range(54, 600, 90):
-                for newY in range(64, 800, 110):
+            for newX in range(int(8.434*self.image.width()/100), int(92*self.image.width()/100), int(13.855*self.image.width()/100)):
+                for newY in range(int(8.434*self.image.width()/100), int(92*self.image.width()/100), int(13.855*self.image.width()/100)):
                     if (self.mouseX - newX) ** 2 + (self.mouseY - newY) ** 2 <= 30.0 ** 2:
                         # self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
                         # QApplication.setOverrideCursor(self.cursor)
                         col, row = self.pixelToInt(newX, newY)
                         if self.go.gameLogic.placeForPlayer[self.go.gameLogic.currentPlayer - 1][col][row]:
+                            self.go.scoreBoard.history(col, row)
                             self.drawPieces(newX, newY, col, row)
                             # self.pixelToInt(newX, newY)  # affiche la colonne et la ligne de la pièce
                             if self.go.scoreBoard.currentTurn == "Player 1":
@@ -206,8 +207,8 @@ class Board(QWidget):  # base the board on a QFrame widget
                                 self.go.scoreBoard.currentTurn = "Player 1"
                             self.go.scoreBoard.updateUi()
         else:
-            for newX in range(54, 774, 90):
-                for newY in range(64, 944, 110):
+            for newX in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100), int(13.855 * self.image.width() / 100)):
+                for newY in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100), int(13.855 * self.image.width() / 100)):
                     if (self.mouseX - newX) ** 2 + (self.mouseY - newY) ** 2 <= 30.0 ** 2:
                         self.deletePiece(newX, newY)
         '''
@@ -222,12 +223,12 @@ class Board(QWidget):  # base the board on a QFrame widget
         countR = -1
         finalC = -1
         finalR = -1
-        for i in range(54, 600, 90):
+        for i in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100), int(13.855 * self.image.width() / 100)):
             countC += 1
             if i == mouseX:
                 finalC = countC
 
-        for j in range(64, 800, 110):
+        for j in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100), int(13.855 * self.image.width() / 100)):
             countR += 1
             if j == mouseY:
                 finalR = countR
@@ -330,10 +331,10 @@ class Board(QWidget):  # base the board on a QFrame widget
         painter.drawPixmap(QPoint(), self.imageOrigin)
         self.brushSize = 5
         row = -1
-        for newX in range(54, 600, 90):
+        for newX in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100), int(13.855 * self.image.width() / 100)):
             col = -1
             row = row + 1
-            for newY in range(64, 800, 110):
+            for newY in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100), int(13.855 * self.image.width() / 100)):
                 col = col + 1
                 if self.go.gameLogic.boardState[row][col].owner != 0:
                     if self.go.gameLogic.boardState[row][col].owner == 1:
