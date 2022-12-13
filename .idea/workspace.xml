@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="479b13f7-e2c4-4d1d-bb7d-065a8c4fcde2" name="Changes" comment="design doc student number">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/board.py" beforeDir="false" afterPath="$PROJECT_DIR$/studentAnswerTemplate-20221122/HGP_GroupNumber_Project/code/board.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -345,7 +346,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670947716974</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="design doc student number">
+      <created>1670950603995</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1670950603995</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -369,8 +377,8 @@
     <MESSAGE value="emmmmmmaaa" />
     <MESSAGE value="ça MARCHE !!!!!!!!" />
     <MESSAGE value="scoreboardd" />
-    <MESSAGE value="design doc student number" />
     <MESSAGE value="ccccc" />
-    <option name="LAST_COMMIT_MESSAGE" value="ccccc" />
+    <MESSAGE value="design doc student number" />
+    <option name="LAST_COMMIT_MESSAGE" value="design doc student number" />
   </component>
 </project>

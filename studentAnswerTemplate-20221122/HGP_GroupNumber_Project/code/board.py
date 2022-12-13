@@ -26,7 +26,6 @@ class Board(QWidget):  # base the board on a QFrame widget
         self.mainLabel.setPixmap(self.image)
         self.mainLayout = QVBoxLayout()
         self.setLayout(self.mainLayout)
-        self.resize(800, 1000)
         self.draw = True
         self.count = 0
         '''self.cursor = QCursor()
@@ -200,6 +199,7 @@ class Board(QWidget):  # base the board on a QFrame widget
                         if self.go.gameLogic.placeForPlayer[self.go.gameLogic.currentPlayer - 1][col][row]:
                             self.go.scoreBoard.history(col, row)
                             self.drawPieces(newX, newY, col, row)
+                            print(self.image.width())
                             # self.pixelToInt(newX, newY)  # affiche la colonne et la ligne de la pièce
                             if self.go.scoreBoard.currentTurn == "Player 1":
                                 self.go.scoreBoard.currentTurn = "Player 2"
@@ -287,14 +287,16 @@ class Board(QWidget):  # base the board on a QFrame widget
         if self.go.scoreBoard.currentTurn == "Player 1":
             painter.setPen(QPen(Qt.GlobalColor.black, self.brushSize))
             painter.setBrush(QBrush(Qt.GlobalColor.black, Qt.BrushStyle.SolidPattern))
-            painter.drawEllipse(int(newX) - 20, int(newY) - 20, 50, 50)
+            radius = int(25 * self.image.width() / 490)
+            painter.drawEllipse(int(newX) - int(radius ** 0.5), int(newY) - int(radius ** 0.5), radius * 2, radius * 2)
             self.update()
             self.go.gameLogic.update(Piece(col, row, self.go.gameLogic.currentPlayer))
             self.updateTheBoard(painter)
         else:
             painter.setPen(QPen(Qt.GlobalColor.white, self.brushSize))
             painter.setBrush(QBrush(Qt.GlobalColor.white, Qt.BrushStyle.SolidPattern))
-            painter.drawEllipse(int(newX) - 20, int(newY) - 20, 50, 50)
+            radius = int(25 * self.image.width() / 490)
+            painter.drawEllipse(int(newX) - int(radius / 2 ** 0.5), int(newY) - int(radius / 2 ** 0.5), radius * 2, radius * 2)
             self.update()
             self.go.gameLogic.update(Piece(col, row, self.go.gameLogic.currentPlayer))
             self.updateTheBoard(painter)
@@ -334,7 +336,7 @@ class Board(QWidget):  # base the board on a QFrame widget
         for newX in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100), int(13.855 * self.image.width() / 100)):
             col = -1
             row = row + 1
-            for newY in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100), int(13.855 * self.image.width() / 100)):
+            for newY in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100), int(0.96*13.855 * self.image.width() / 100)):
                 col = col + 1
                 if self.go.gameLogic.boardState[row][col].owner != 0:
                     if self.go.gameLogic.boardState[row][col].owner == 1:
@@ -343,5 +345,10 @@ class Board(QWidget):  # base the board on a QFrame widget
                     else:
                         painter.setPen(QPen(Qt.GlobalColor.white, self.brushSize))
                         painter.setBrush(QBrush(Qt.GlobalColor.white, Qt.BrushStyle.SolidPattern))
-                    painter.drawEllipse(int(newX) - 20, int(newY) - 20, 50, 50)
+                    radius = int(25*self.image.width()/490)
+                    print(radius)
+                    painter.drawEllipse(int(newX) - int(radius/2**0.5), int(newY) - int(radius/2**0.5), radius*2, radius*2)
+                    print(int(radius/2**0.5))
+                    print(radius*2)
+                    #painter.drawEllipse(int(newX) - 20, int(newY) - 20, 50, 50)
                     self.update()
