@@ -11,7 +11,7 @@ class Go(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.widthMinusHeight = 138
+        self.widthMinusHeight = 180  # 138
         self.formerWidth = 675
         self.formerHeight = self.formerWidth - self.widthMinusHeight
         self.firstResize = True
@@ -58,6 +58,9 @@ class Go(QMainWindow):
     def showEndWindow(self):
         self.hide()
         self.endGameWindow.show()
+
+    def updateEndWindow(self):
+        self.endGameWindow.updateEndGameWindow()
 
     def resizeEvent(self, event):
         if not self.firstResize:

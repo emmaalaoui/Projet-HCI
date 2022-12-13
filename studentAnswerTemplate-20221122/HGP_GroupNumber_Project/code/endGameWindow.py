@@ -17,9 +17,20 @@ class EndGameWindow(QWidget):
         self.fontTitle.setPixelSize(16)
 
         # Determine the winner
+
+
+        # Set this window layout
+        self.setFixedSize(300, 100)
+        self.go.center()
+        self.setWindowTitle("And the winner is...")
+        self.setWindowIcon(QIcon("./icons/win.png"))
+        self.hide()
+
+    def updateEndGameWindow(self):
+
         if self.go.gameLogic.scores[0] > self.go.gameLogic.scores[1]:
             self.winner = "black"
-        elif self.go.gameLogic.scores[0] > self.go.gameLogic.scores[1]:
+        elif self.go.gameLogic.scores[0] < self.go.gameLogic.scores[1]:
             self.winner = "white"
 
         # Set this window widgets
@@ -27,9 +38,9 @@ class EndGameWindow(QWidget):
             self.text1 = QLabel("You are both winners !!!")
         else:
             self.text1 = QLabel("The winner is " + self.winner + " !!!")
-        self.text2 = QLabel("Scores: " + str(self.go.gameLogic.scores[0]) + " vs " + str(self.go.gameLogic.scores[1]))
         self.text3 = QLabel("Congratulations !")
         self.text1.setFont(self.fontTitle)
+        self.text2 = QLabel("Scores: " + str(self.go.gameLogic.scores[0]) + " vs " + str(self.go.gameLogic.scores[1]))
         self.text3.setFont(self.fontTitle)
         self.fontTitle.setUnderline(False)
         self.text2.setFont(self.fontTitle)
@@ -39,24 +50,10 @@ class EndGameWindow(QWidget):
         self.vbox.addStretch()
         self.vbox.addWidget(self.text3)
         self.vbox.addStretch(6)
-
-        # Set this window layout
-        self.setFixedSize(300, 100)
-        self.go.center()
-        self.setWindowTitle("And the winner is...")
-        self.setWindowIcon(QIcon("./icons/win.png"))
         self.setLayout(self.vbox)
-        self.hide()
 
-    def updateEndGameWindow(self):
         print("ouais ouais")
-        if self.go.gameLogic.scores[0] > self.go.gameLogic.scores[1]:
-            self.winner = "black"
-        elif self.go.gameLogic.scores[0] > self.go.gameLogic.scores[1]:
-            self.winner = "white"
-        self.text2 = QLabel("Scores: " + str(self.go.gameLogic.scores[0]) + " vs " + str(self.go.gameLogic.scores[1]))
+
         print(self.go.gameLogic.scores)
         print(self.winner)
         print(self.text2.text())
-
-        self.setLayout(self.vbox)
