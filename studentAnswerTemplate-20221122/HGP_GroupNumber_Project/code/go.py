@@ -12,7 +12,7 @@ class Go(QMainWindow):
     def __init__(self):
         super().__init__()
         self.widthMinusHeight = 138
-        self.formerWidth = 690
+        self.formerWidth = 675
         self.formerHeight = self.formerWidth - self.widthMinusHeight
         self.firstResize = True
         self.widthResizement = False
@@ -23,7 +23,7 @@ class Go(QMainWindow):
         self.resize(self.formerWidth, self.formerHeight)
         print(self.width(), self.height())
         self.setMinimumSize(self.formerWidth - 5, self.formerHeight - 5)
-        self.setMaximumSize(660+138, 660)
+        self.setMaximumSize(1080, 1080-138)
         self.initUI()
 
     def getBoard(self):
@@ -40,7 +40,7 @@ class Go(QMainWindow):
         self.endGameWindow = EndGameWindow(self)
         # self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.scoreBoard)
         self.myScoreBoard = QHBoxLayout()
-        self.myScoreBoard.addWidget(self.board, 6)
+        self.myScoreBoard.addWidget(self.board, 7)
         self.myScoreBoard.addWidget(self.scoreBoard, 1)
         mainWidget = QWidget()
         mainWidget.setLayout(self.myScoreBoard)
@@ -79,7 +79,6 @@ class Go(QMainWindow):
                         self.count = self.count + 1
 
         elif self.firstResize:
-            print(self.firstResize)
             self.firstResize = False
 
 

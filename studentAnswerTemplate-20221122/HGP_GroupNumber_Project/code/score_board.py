@@ -143,6 +143,8 @@ class ScoreBoard(QWidget):
             self.go.close()
         else:
             print("game over")
+            self.go.gameLogic.scoreCount()
+            self.go.endGameWindow.updateEndGameWindow()
             self.go.close()
             self.go.endGameWindow.show()
 

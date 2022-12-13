@@ -47,3 +47,16 @@ class EndGameWindow(QWidget):
         self.setWindowIcon(QIcon("./icons/win.png"))
         self.setLayout(self.vbox)
         self.hide()
+
+    def updateEndGameWindow(self):
+        print("ouais ouais")
+        if self.go.gameLogic.scores[0] > self.go.gameLogic.scores[1]:
+            self.winner = "black"
+        elif self.go.gameLogic.scores[0] > self.go.gameLogic.scores[1]:
+            self.winner = "white"
+        self.text2 = QLabel("Scores: " + str(self.go.gameLogic.scores[0]) + " vs " + str(self.go.gameLogic.scores[1]))
+        print(self.go.gameLogic.scores)
+        print(self.winner)
+        print(self.text2.text())
+
+        self.setLayout(self.vbox)
