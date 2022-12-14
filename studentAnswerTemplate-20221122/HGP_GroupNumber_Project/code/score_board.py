@@ -282,7 +282,7 @@ class ScoreBoard(QWidget):
         self.timer.stop()
         self.go.gameLogic.__init__()
         self.go.board.__init__()"""
-        self.go.hide()
+        self.go.close()
         self.go.__init__()
         """painter = QPainter(self.go.board.image)
         self.go.board.updateTheBoard(painter)

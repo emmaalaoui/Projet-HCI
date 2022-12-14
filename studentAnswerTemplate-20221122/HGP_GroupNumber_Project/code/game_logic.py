@@ -389,7 +389,7 @@ class GameLogic:
         print(self.scores)
 
         self.scores[0] = self.scores[0] - self.captured[1]
-        self.scores[1] = self.scores[1] - self.captured[0]
+        self.scores[1] = self.scores[1] - self.captured[0] + 7.5
 
     """def reset(self):
         self.scores = [0, 0]

@@ -209,6 +209,8 @@ class Board(QWidget):  # base the board on a QFrame widget
             for newX in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100), int(13.855 * self.image.width() / 100)):
                 for newY in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100), int(13.855 * self.image.width() / 100)):
                     if (self.mouseX - newX) ** 2 + (self.mouseY - newY) ** 2 <= 30.0 ** 2:
+                        col, row = self.pixelToInt(newX, newY)
+                        self.go.gameLogic.boardState[col][row].owner = 0
                         self.deletePiece(newX, newY)
         '''
         Equation d'un cercle : (x−h)²+(y−k)²=r².
@@ -323,8 +325,9 @@ class Board(QWidget):  # base the board on a QFrame widget
         self.brushSize = 5
         painter = QPainter(self.image)
         painter.setPen(QPen(Qt.GlobalColor.red, self.brushSize))
-        painter.drawLine(int(newX) - 20, int(newY) - 20, int(newX) + 40, int(newY) + 40)
-        painter.drawLine(int(newX) - 20, int(newY) + 40, int(newX) + 40, int(newY) - 20)
+        radius = int(20 * self.image.width() / 490)
+        painter.drawLine(int(newX) - int(radius), int(newY) - int(radius), int(newX) + 2*int(radius), int(newY) + 2*int(radius))
+        painter.drawLine(int(newX) - int(radius), int(newY) + 2*int(radius), int(newX) + 2*int(radius), int(newY) - int(radius))
         self.update()
 
     def updateTheBoard(self, painter):
