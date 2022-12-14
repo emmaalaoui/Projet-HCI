@@ -391,3 +391,24 @@ class GameLogic:
         self.scores[0] = self.scores[0] - self.captured[1]
         self.scores[1] = self.scores[1] - self.captured[0]
 
+    """def reset(self):
+        self.scores = [0, 0]
+
+        self.boardState = []
+        for i in range(0, self.dimensionBoard):
+            array = [0] * self.dimensionBoard
+            self.boardState.append(array)
+        for i in range(0, self.dimensionBoard):
+            for j in range(0, self.dimensionBoard):
+                self.boardState[i][j] = Piece(i, j, 0)
+        self.placeForPlayer = []
+        for k in range(0, 2):
+            array2 = []
+            for i in range(0, self.dimensionBoard):
+                array = [True] * self.dimensionBoard
+                array2.append(array)
+            self.placeForPlayer.append(array2)
+        self.currentPlayer = 1
+        self.groups = [[], []]
+        self.captured = [0, 0]
+        self.previousBoards = []"""

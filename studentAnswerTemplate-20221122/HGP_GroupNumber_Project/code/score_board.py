@@ -268,10 +268,9 @@ class ScoreBoard(QWidget):
 
     # Here we made the clear method to reset the game.
     def clear(self):
-        self.go.board.image = QPixmap("./icons/Board.png")
+        """self.go.board.image = QPixmap("./icons/Board.png")
+        self.go.board.image = self.go.board.image.scaled(self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatioByExpanding)
         self.currentTurn = "Player 1"
-        self.go.gameLogic.captured[0] = 0
-        self.go.gameLogic.captured[1] = 0
         self.stepB = 0
         self.pbarB.setValue(self.stepB)
         self.label_timeRemainingB.setText('Time remaining:')
@@ -281,9 +280,14 @@ class ScoreBoard(QWidget):
         self.timerButtonB.setText('2 Minute Timer')
         self.timerButtonW.setText('2 Minute Timer')
         self.timer.stop()
-        #self.go.gameLogic.resize()
+        self.go.gameLogic.__init__()
+        self.go.board.__init__()"""
+        self.go.hide()
+        self.go.__init__()
+        """painter = QPainter(self.go.board.image)
+        self.go.board.updateTheBoard(painter)
         self.update()
-        self.updateUi()
+        self.updateUi()"""
 
     # Here we made the buttonSkip_clicked method to skip your turn and change the current player.
     def buttonSkip_clicked(self, s):

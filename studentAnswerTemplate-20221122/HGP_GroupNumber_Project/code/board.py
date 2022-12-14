@@ -40,8 +40,7 @@ class Board(QWidget):  # base the board on a QFrame widget
             new_size = self.image.scaled(self.height(), self.height())
         else:
             new_size = self.image.scaled(self.width(), self.width())'''
-        self.image = self.image.scaled(self.width(), self.height())
-
+        self.image = self.image.scaled(self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatioByExpanding)
 
     def initBoard(self):
         '''initiates board'''
