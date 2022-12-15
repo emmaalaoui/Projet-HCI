@@ -1,8 +1,6 @@
-from PyQt6.QtWidgets import QProgressBar, QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget
-from PyQt6.QtCore import Qt, QBasicTimer, pyqtSignal, QPointF, QPoint, QRect
+from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget
+from PyQt6.QtCore import Qt, QBasicTimer, pyqtSignal, QPoint, QRect
 from PyQt6.QtGui import QPainter, QPixmap, QPen, QBrush, QCursor, QColor, QMouseEvent
-from PyQt6.QtTest import QTest
-import time
 from piece import Piece
 
 

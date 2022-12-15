@@ -1,5 +1,4 @@
-from PyQt6.QtWidgets import QMainWindow, QHBoxLayout, QWidget, QLayout
-from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QMainWindow, QHBoxLayout, QWidget
 from PyQt6.QtGui import QIcon
 from board import Board
 from score_board import ScoreBoard

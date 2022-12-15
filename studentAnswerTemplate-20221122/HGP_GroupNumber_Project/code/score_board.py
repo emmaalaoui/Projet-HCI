@@ -1,7 +1,6 @@
-from PyQt6.QtWidgets import QApplication, QDockWidget, QGridLayout, QMessageBox, QGroupBox, QMenuBar, QProgressBar, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QLabel, QScrollArea
-from PyQt6.QtCore import pyqtSlot, QSize, Qt, QBasicTimer, QPoint
-from PyQt6.QtGui import QIcon, QAction, QPixmap, QCursor, QPen, QPainter, QFont
-from board import Board
+from PyQt6.QtWidgets import QMessageBox, QGroupBox, QProgressBar, QVBoxLayout, QPushButton, QWidget, QLabel
+from PyQt6.QtCore import pyqtSlot, Qt, QBasicTimer, QPoint
+from PyQt6.QtGui import QIcon, QCursor
 class ScoreBoard(QWidget):
     '''# base the score_board on a QWidget'''
 
