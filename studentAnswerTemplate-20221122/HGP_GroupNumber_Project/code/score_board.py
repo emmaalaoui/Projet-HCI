@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QApplication, QDockWidget, QGridLayout, QMessageBox, QGroupBox, QMenuBar, QProgressBar, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QLabel, QScrollArea
-from PyQt6.QtCore import pyqtSlot, QSize, Qt, QBasicTimer
+from PyQt6.QtCore import pyqtSlot, QSize, Qt, QBasicTimer, QPoint
 from PyQt6.QtGui import QIcon, QAction, QPixmap, QCursor, QPen, QPainter, QFont
 from board import Board
 class ScoreBoard(QWidget):
@@ -283,7 +283,7 @@ class ScoreBoard(QWidget):
         self.go.gameLogic.__init__()
         self.go.board.__init__()"""
         self.go.close()
-        self.go.__init__()
+        self.go.__init__(self.go.formerWidth, False, [self.go.mapToGlobal(QPoint(0, 0)).x(), self.go.mapToGlobal(QPoint(0, 0)).y()])
         """painter = QPainter(self.go.board.image)
         self.go.board.updateTheBoard(painter)
         self.update()

@@ -9,22 +9,21 @@ from endGameWindow import EndGameWindow
 
 class Go(QMainWindow):
 
-    def __init__(self):
+    def __init__(self, startWidth, bool, pos):
         super().__init__()
+        print(self.y())
         self.widthMinusHeight = 180  # 138
-        self.formerWidth = 675
+        self.formerWidth = startWidth
         self.formerHeight = self.formerWidth - self.widthMinusHeight
         self.firstResize = True
         self.widthResizement = False
         self.heightResizement = False
-        self.con = True
-        self.count = 0
         print(self.width(), self.height())
         self.resize(self.formerWidth, self.formerHeight)
         print(self.width(), self.height())
         self.setMinimumSize(self.formerWidth - 5, self.formerHeight - 5)
         self.setMaximumSize(1080, 1080-138)
-        self.initUI()
+        self.initUI(bool, pos)
 
     def getBoard(self):
         return self.board
@@ -32,7 +31,7 @@ class Go(QMainWindow):
     def getScoreBoard(self):
         return self.scoreBoard
 
-    def initUI(self):
+    def initUI(self, bool, pos):
         '''initiates application UI'''
         self.gameLogic = GameLogic()
         self.scoreBoard = ScoreBoard(self)
@@ -47,8 +46,10 @@ class Go(QMainWindow):
         self.setCentralWidget(mainWidget)
         self.scoreBoard.make_connection(self.board)
 
-
-        # self.center()
+        if bool:
+            self.center()
+        else:
+            self.move(pos[0], pos[1])
         self.setStyleSheet("background-color: light grey")
         self.setWindowTitle("GroupProject - Go - HGP-FT02")
         self.setWindowIcon(
@@ -73,13 +74,11 @@ class Go(QMainWindow):
                 if self.width() - self.height() != self.widthMinusHeight:
                     self.formerWidth = self.width()
                     self.resize(self.width(), self.width() - self.widthMinusHeight)
-                    self.count = self.count + 1
             else:
                 if self.formerWidth == self.width():
                     if self.width() - self.height() != self.widthMinusHeight:
                         self.formerHeight = self.height()
                         self.resize(self.height() + self.widthMinusHeight, self.height())
-                        self.count = self.count + 1
 
         elif self.firstResize:
             self.firstResize = False

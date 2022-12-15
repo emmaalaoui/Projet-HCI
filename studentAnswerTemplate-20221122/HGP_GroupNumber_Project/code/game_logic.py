@@ -95,16 +95,30 @@ class GameLogic:
             if self.boardState[piece.x][piece.y + 1].owner == self.currentPlayer:
                 neighbour = neighbour + 1
                 bottom = True
-        #print(neighbour)
+        print(neighbour)
 
         # If the piece is near an existed group, add it to it
         if neighbour > 0:
             addAble = True
             for i in self.groups[self.currentPlayer - 1]:
-                #print(i.pieces)
-                #print(self.boardState[piece.x - 1][piece.y])
-                #print(self.boardState[1][piece.y])
-                if (self.boardState[piece.x - 1][piece.y] in i.pieces or self.boardState[piece.x + 1][piece.y] in i.pieces or self.boardState[piece.x][piece.y - 1] in i.pieces or self.boardState[piece.x][piece.y + 1] in i.pieces) and addAble:
+                print(addAble)
+                print(i.pieces)
+                print(self.boardState[piece.x][piece.y - 1])
+                print(self.boardState[piece.x][piece.y])
+                addList = False
+                if piece.x != 0:
+                    if self.boardState[piece.x - 1][piece.y] in i.pieces:
+                        addList = True
+                if piece.x != self.dimensionBoard - 1:
+                    if self.boardState[piece.x + 1][piece.y] in i.pieces:
+                        addList = True
+                if piece.y != 0:
+                    if self.boardState[piece.x][piece.y - 1] in i.pieces:
+                        addList = True
+                if piece.y != self.dimensionBoard - 1:
+                    if self.boardState[piece.x][piece.y + 1] in i.pieces:
+                        addList = True
+                if addList and addAble:
                     print("dedans")
                     addAble = False
                     i.addPiece(self.boardState[piece.x][piece.y])

@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QProgressBar, QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget
 from PyQt6.QtCore import Qt, QBasicTimer, pyqtSignal, QPointF, QPoint, QRect
-from PyQt6.QtGui import QPainter, QPixmap, QPen, QBrush, QCursor, QColor
+from PyQt6.QtGui import QPainter, QPixmap, QPen, QBrush, QCursor, QColor, QMouseEvent
 from PyQt6.QtTest import QTest
 import time
 from piece import Piece
@@ -28,6 +28,12 @@ class Board(QWidget):  # base the board on a QFrame widget
         self.setLayout(self.mainLayout)
         self.draw = True
         self.count = 0
+        self.setMouseTracking(True)
+        self.whiteCursor = QCursor(QPixmap("./icons/White.png"))
+        self.blackCursor = QCursor(QPixmap("./icons/Black.png"))
+        self.normalCursor = QCursor(QPixmap("./icons/Cursor.png"))
+        self.crossCursor = QCursor(QPixmap("./icons/Cross.png"))
+        self.setCursor(self.normalCursor)
         '''self.cursor = QCursor()
         # self.image.setCursor(self.cursor)
         #self.cursor.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
@@ -174,6 +180,36 @@ class Board(QWidget):  # base the board on a QFrame widget
         #self.clickLocationSignal.emit(clickLoc) #inutile car on n'affiche plus la posiition du click
         # self.drawPieces()
         self.tryMove()
+
+    def mouseMoveEvent(self, a0: QMouseEvent) -> None:
+        col = -1
+        itIsIn = False
+        forCross = False
+        for newX in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100),
+                          int(13.855 * self.image.width() / 100)):
+            col = col + 1
+            row = -1
+            for newY in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100),
+                              int(13.855 * self.image.width() / 100)):
+                row = row + 1
+
+                if (a0.position().x() - newX) ** 2 + (a0.position().y() - newY) ** 2 <= 30.0 ** 2 and self.go.gameLogic.placeForPlayer[self.go.gameLogic.currentPlayer - 1][col][row]:
+                    itIsIn = True
+                if (a0.position().x() - newX) ** 2 + (a0.position().y() - newY) ** 2 <= 30.0 ** 2 and self.go.gameLogic.boardState[col][row].owner != 0:
+                    forCross = True
+        if not self.draw:
+            if forCross and self.cursor() != self.crossCursor:
+                self.setCursor(self.crossCursor)
+            elif not forCross and self.cursor() != self.normalCursor:
+                self.setCursor(self.normalCursor)
+        else:
+            if itIsIn and self.cursor() == self.normalCursor:
+                if self.go.gameLogic.currentPlayer == 2:
+                    self.setCursor(self.whiteCursor)
+                else:
+                    self.setCursor(self.blackCursor)
+            elif not itIsIn and self.cursor() != self.normalCursor:
+                    self.setCursor(self.normalCursor)
 
     def resetGame(self):
         '''clears pieces from the board'''
@@ -353,4 +389,4 @@ class Board(QWidget):  # base the board on a QFrame widget
                     print(int(radius/2**0.5))
                     print(radius*2)
                     #painter.drawEllipse(int(newX) - 20, int(newY) - 20, 50, 50)
-                    self.update()
+        self.update()
