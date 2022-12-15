@@ -246,8 +246,9 @@ class Board(QWidget):  # base the board on a QFrame widget
                 for newY in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100), int(13.855 * self.image.width() / 100)):
                     if (self.mouseX - newX) ** 2 + (self.mouseY - newY) ** 2 <= 30.0 ** 2:
                         col, row = self.pixelToInt(newX, newY)
-                        self.go.gameLogic.boardState[col][row].owner = 0
-                        self.deletePiece(newX, newY)
+                        if self.go.gameLogic.boardState[col][row].owner != 0:
+                            self.go.gameLogic.boardState[col][row].owner = 0
+                            self.deletePiece(newX, newY)
         '''
         Equation d'un cercle : (x−h)²+(y−k)²=r².
         Si newX et newY vérifie l'équation alors le point est dans la zone
