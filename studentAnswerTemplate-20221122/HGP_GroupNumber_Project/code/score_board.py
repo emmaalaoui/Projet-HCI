@@ -46,9 +46,13 @@ class ScoreBoard(QWidget):
         self.playerLabel.setStyleSheet("font-weight: bold")
         self.mainLayoutM.addWidget(self.playerLabel)
         self.captureW = QLabel("Captures : " + str(self.go.gameLogic.captured[1]))
-        self.captureB= QLabel("Captures : " + str(self.go.gameLogic.captured[0]))
+        self.captureB = QLabel("Captures : " + str(self.go.gameLogic.captured[0]))
         self.mainLayoutW.addWidget(self.captureW)
         self.mainLayoutB.addWidget(self.captureB)
+        self.territoryW = QLabel("Territory : " + str(self.go.gameLogic.captured[1]))
+        self.territoryB = QLabel("Territory : " + str(self.go.gameLogic.captured[0]))
+        self.mainLayoutW.addWidget(self.territoryW)
+        self.mainLayoutB.addWidget(self.territoryB)
         self.matchButton = QPushButton("Match Details", self)
         self.matchButton.clicked.connect(self.matchDetails)
         self.matchButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
@@ -123,7 +127,7 @@ class ScoreBoard(QWidget):
         self.label_clickLocation.setText("Click Location:" + clickLoc)
         print('slot ' + clickLoc)
 
-    '''Méthode de la prof pour afficher le timer de board
+    '''
     @pyqtSlot(int)
     def setTimeRemaining(self, timeRemainng):
         updates the time remaining label to show the time remaining
@@ -267,26 +271,8 @@ class ScoreBoard(QWidget):
 
     # Here we made the clear method to reset the game.
     def clear(self):
-        """self.go.board.image = QPixmap("./icons/Board.png")
-        self.go.board.image = self.go.board.image.scaled(self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatioByExpanding)
-        self.currentTurn = "Player 1"
-        self.stepB = 0
-        self.pbarB.setValue(self.stepB)
-        self.label_timeRemainingB.setText('Time remaining:')
-        self.stepW = 0
-        self.pbarW.setValue(self.stepW)
-        self.label_timeRemainingW.setText('Time remaining:')
-        self.timerButtonB.setText('2 Minute Timer')
-        self.timerButtonW.setText('2 Minute Timer')
-        self.timer.stop()
-        self.go.gameLogic.__init__()
-        self.go.board.__init__()"""
         self.go.close()
         self.go.__init__(self.go.formerWidth, False, [self.go.mapToGlobal(QPoint(0, 0)).x(), self.go.mapToGlobal(QPoint(0, 0)).y()])
-        """painter = QPainter(self.go.board.image)
-        self.go.board.updateTheBoard(painter)
-        self.update()
-        self.updateUi()"""
 
     # Here we made the buttonSkip_clicked method to skip your turn and change the current player.
     def buttonSkip_clicked(self, s):
@@ -354,7 +340,6 @@ class ScoreBoard(QWidget):
     # Here we made the borderRed method to change the GroupBox's border in red.
     # It changes depending on the current player.
     def borderRed(self):
-        #if self.go.board.draw:
         if self.currentTurn == "Player 1":
             self.mainWidgetB.setObjectName("ColoredGroupBox")
             self.mainWidgetB.setStyleSheet("QGroupBox#ColoredGroupBox { border: 2px solid red;}")
@@ -368,25 +353,26 @@ class ScoreBoard(QWidget):
             self.mainWidgetB.setObjectName("ColoredGroupBox")
             self.mainWidgetB.setStyleSheet("QGroupBox#ColoredGroupBox { border: 2px solid black;}")
 
+
     # Here we made the rules method to display a message box with the rules of the game.
     def rules(self):
         dialog = QMessageBox(self)
         dialog.setWindowTitle("Rules")
         dialog.setWindowIcon(QIcon("./icons/rules.png"))
         text = "A game of Go starts with an empty board.\n" \
-                "Each player has an effectively unlimited supply\n" \
-                "of pieces (called stones), one taking the black stones,\n" \
-                "the other taking white ones. The main object of the game\n" \
-                "is to use your stones to form territories by surrounding\n" \
-                "vacant areas of the board. It is also possible to capture\n" \
-                "your opponent's stones by completely surrounding them.\n" \
-                "Players take turns, placing one of their stones\n" \
-                "on a vacant point at each turn, with Black playing first.\n" \
-                "Note that stones are placed on the intersections of the lines\n" \
-                "rather than in the squares and once played stones are not moved.\n" \
-                "However they may be captured, in which case they are removed,\n" \
-                "and kept by the capturing player as prisoners.\n" \
-                "Let the games begin ! 😊"
+                "Player 1 taking the black stones, Player 2 taking white ones.\n" \
+                "The main object of the game is to use your stones to form territories by surrounding vacant areas of the board. \n" \
+                "It is also possible to capture your opponent's stones by completely surrounding them.\n" \
+                "Players take turns, placing one of their stones on a vacant point at each turn.\n" \
+                "Note that stones are placed on the intersections of the lines.\n" \
+                " \n" \
+                "If you want to play to Speed Go, click on the “Two Minute Timer” to start your timer." " \n" \
+                "When you have finished your move, he clicks on his timer’s button to stop it.\n" \
+                " \n" \
+                "There are 2 ways to win the game: \n"\
+                "- If both players pass consecutively, the game stops and the score will be calculated.\n"\
+                "- If a player has his time over, he loses the game."
+
 
         dialog.setText(text)
         button = dialog.exec()
@@ -402,6 +388,10 @@ class ScoreBoard(QWidget):
         self.captureW.adjustSize()
         self.captureB.setText("Captures : " + str(self.go.gameLogic.captured[0]))
         self.captureB.adjustSize()
+        self.territoryW.setText("Territory : " + str(self.go.gameLogic.captured[1]))
+        self.territoryW.adjustSize()
+        self.territoryB.setText("Territory : " + str(self.go.gameLogic.captured[0]))
+        self.territoryB.adjustSize()
         self.borderRed()
 
 
