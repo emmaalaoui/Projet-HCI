@@ -5,5 +5,5 @@ import sys
 
 
 app = QApplication([])
-myGo = Go(675, True, [0, 0])
+myGo = Go(750, True, [0, 0])
 sys.exit(app.exec())

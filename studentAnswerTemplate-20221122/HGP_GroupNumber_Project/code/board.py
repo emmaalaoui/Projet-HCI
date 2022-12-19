@@ -163,8 +163,10 @@ class Board(QWidget):  # base the board on a QFrame widget
                     if (self.mouseX - newX) ** 2 + (self.mouseY - newY) ** 2 <= 30.0 ** 2:
                         col, row = self.pixelToInt(newX, newY)
                         if self.go.gameLogic.boardState[col][row].owner != 0:
+                            self.go.gameLogic.captured[self.go.gameLogic.boardState[col][row].owner % 2] += 1
                             self.go.gameLogic.boardState[col][row].owner = 0
                             self.deletePiece(newX, newY)
+                            self.go.scoreBoard.updateUi()
         '''
         Equation of a circle : (x−h)²+(y−k)²=r².
         '''
