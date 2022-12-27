@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget
-from PyQt6.QtCore import Qt, QBasicTimer, pyqtSignal, QPoint, QRect
-from PyQt6.QtGui import QPainter, QPixmap, QPen, QBrush, QCursor, QColor, QMouseEvent
+from PyQt6.QtCore import Qt, QBasicTimer, pyqtSignal, QPoint
+from PyQt6.QtGui import QPainter, QPixmap, QPen, QBrush, QCursor, QMouseEvent
 from piece import Piece
 
 
@@ -8,9 +8,6 @@ class Board(QWidget):  # base the board on a QFrame widget
     updateTimerSignal = pyqtSignal(int)  # signal sent when timer is updated
     clickLocationSignal = pyqtSignal(str)  # signal sent when there is a new click location
 
-    # TODO set the board width and height to be square
-    boardWidth = 6  # board is 0 squares wide # TODO this needs updating
-    boardHeight = 6  #
     timerSpeed = 1000  # the timer updates every 1 millisecond
     counter = 120  # the number the counter will count down from
 
@@ -43,14 +40,6 @@ class Board(QWidget):  # base the board on a QFrame widget
         self.timer = QBasicTimer()  # create a timer for the game
         self.isStarted = False  # game is not currently started
         self.boardArray = self.go.gameLogic.boardState  # TODO - create a 2d int/Piece array to store the state of the game
-
-    def squareWidth(self):
-        '''returns the width of one square in the board'''
-        return self.contentsRect().width() / self.boardWidth
-
-    def squareHeight(self):
-        '''returns the height of one square of the board'''
-        return self.contentsRect().height() / self.boardHeight
 
     def start(self):
         '''starts game'''
@@ -112,11 +101,7 @@ class Board(QWidget):  # base the board on a QFrame widget
                 else:
                     self.setCursor(self.blackCursor)
             elif not itIsIn and self.cursor() != self.normalCursor:
-                    self.setCursor(self.normalCursor)
-
-    def resetGame(self):
-        '''clears pieces from the board'''
-        # TODO write code to reset game
+                self.setCursor(self.normalCursor)
 
     # Here we create the method tryMove to allow the player to make a move.
     def tryMove(self):
@@ -126,13 +111,10 @@ class Board(QWidget):  # base the board on a QFrame widget
             for newX in range(int(8.434*self.image.width()/100), int(92*self.image.width()/100), int(13.855*self.image.width()/100)):
                 for newY in range(int(8.434*self.image.width()/100), int(92*self.image.width()/100), int(13.855*self.image.width()/100)):
                     if (self.mouseX - newX) ** 2 + (self.mouseY - newY) ** 2 <= 30.0 ** 2:
-                        # self.cursor.setShape(Qt.CursorShape.PointingHandCursor)
-                        # QApplication.setOverrideCursor(self.cursor)
                         col, row = self.pixelToInt(newX, newY)
                         if self.go.gameLogic.placeForPlayer[self.go.gameLogic.currentPlayer - 1][col][row]:
                             self.go.scoreBoard.history(col, row)
                             self.drawPieces(newX, newY, col, row)
-                            # self.pixelToInt(newX, newY)  # affiche la colonne et la ligne de la pièce
                             if self.go.scoreBoard.currentTurn == "Player 1":
                                 self.go.scoreBoard.currentTurn = "Player 2"
                             else:
@@ -148,9 +130,6 @@ class Board(QWidget):  # base the board on a QFrame widget
                             self.go.gameLogic.boardState[col][row].owner = 0
                             self.deletePiece(newX, newY)
                             self.go.scoreBoard.updateUi()
-        '''
-        Equation of a circle : (x−h)²+(y−k)²=r².
-        '''
 
     # Here we create the method pixelToInt to convert the position of the mouse (in pixel) in one column and one row.
     def pixelToInt(self, mouseX, mouseY):
@@ -169,55 +148,14 @@ class Board(QWidget):  # base the board on a QFrame widget
                 finalR = countR
         return finalC, finalR
 
-    def drawBoardSquares(self, painter):
-        '''draw all the square on the board'''
-        self.brushSize = 3
-        self.brushColor = Qt.GlobalColor.black
-        painter.setPen(QPen(self.brushColor, self.brushSize))
-        painter.fillRect(QRect(0, 0, self.contentsRect().width(), self.contentsRect().height()),
-                         self.go.backgroundColor)
-
-        if self.squareWidth() <= self.squareHeight():
-            squareSide = self.squareWidth()
-        else:
-            squareSide = self.squareHeight()
-        for row in range(0, Board.boardHeight):
-            for col in range(0, Board.boardWidth):
-                painter.save()
-                colTransformation = squareSide * 0.5 + squareSide * col
-                rowTransformation = squareSide * 0.5 + squareSide * row
-                painter.fillRect(
-                    QRect(int(colTransformation), int(rowTransformation), int(squareSide), int(squareSide)),
-                    QColor("#E0BD6B"))
-                painter.drawRect(
-                    QRect(int(colTransformation), int(rowTransformation), int(squareSide), int(squareSide)))
-                painter.restore()
-                self.brushColor = self.go.backgroundColor
-
-        # TODO set the default colour of the brush
-        # draw settings (default)
-
     # Here we create the method drawPieces to draw the pieces (black and white).
     def drawPieces(self, newX, newY, col, row):
         '''draw the pieces on the board'''
         self.brushSize = 5
         painter = QPainter(self.image)
-        if self.go.scoreBoard.currentTurn == "Player 1":
-            painter.setPen(QPen(Qt.GlobalColor.black, self.brushSize))
-            painter.setBrush(QBrush(Qt.GlobalColor.black, Qt.BrushStyle.SolidPattern))
-            radius = int(25 * self.image.width() / 490)
-            painter.drawEllipse(int(newX) - int(radius ** 0.5), int(newY) - int(radius ** 0.5), radius * 2, radius * 2)
-            self.update()
-            self.go.gameLogic.update(Piece(col, row, self.go.gameLogic.currentPlayer))
-            self.updateTheBoard(painter)
-        else:
-            painter.setPen(QPen(Qt.GlobalColor.white, self.brushSize))
-            painter.setBrush(QBrush(Qt.GlobalColor.white, Qt.BrushStyle.SolidPattern))
-            radius = int(25 * self.image.width() / 490)
-            painter.drawEllipse(int(newX) - int(radius / 2 ** 0.5), int(newY) - int(radius / 2 ** 0.5), radius * 2, radius * 2)
-            self.update()
-            self.go.gameLogic.update(Piece(col, row, self.go.gameLogic.currentPlayer))
-            self.updateTheBoard(painter)
+        self.update()
+        self.go.gameLogic.update(Piece(col, row, self.go.gameLogic.currentPlayer))
+        self.updateTheBoard(painter)
 
     # Here we create the method deletePiece to allow the player to delete the pieces he wants at the end of the game.
     def deletePiece(self, newX, newY):
