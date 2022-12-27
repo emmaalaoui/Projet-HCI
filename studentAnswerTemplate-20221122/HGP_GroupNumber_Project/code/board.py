@@ -15,6 +15,7 @@ class Board(QWidget):  # base the board on a QFrame widget
         super().__init__(parent)
         self.go = parent
         self.initBoard()
+        self.brushSize = 5
         self.image = QPixmap("./icons/Board.png")
         self.imageOrigin = QPixmap("./icons/Board.png")
         self.mainLabel = QLabel()
@@ -39,7 +40,7 @@ class Board(QWidget):  # base the board on a QFrame widget
         '''initiates board'''
         self.timer = QBasicTimer()  # create a timer for the game
         self.isStarted = False  # game is not currently started
-        self.boardArray = self.go.gameLogic.boardState  # TODO - create a 2d int/Piece array to store the state of the game
+        self.boardArray = self.go.gameLogic.boardState
 
     def start(self):
         '''starts game'''
@@ -49,7 +50,6 @@ class Board(QWidget):  # base the board on a QFrame widget
 
     def timerEvent(self, event):
         '''this event is automatically called when the timer is updated. based on the timerSpeed variable '''
-        # TODO adapt this code to handle your timers
         if event.timerId() == self.timer.timerId():  # if the timer that has 'ticked' is the one in this class
             if self.counter == 1:
                 self.timer.stop()
@@ -68,8 +68,6 @@ class Board(QWidget):  # base the board on a QFrame widget
         '''this event is automatically called when the mouse is pressed'''
         self.mouseX = event.position().x()
         self.mouseY = event.position().y()
-        # TODO you could call some game logic here
-        # self.drawPieces()
         self.tryMove()
 
     # Here we create the mouseMoveEvent to put the conditions to the cursors.
@@ -150,8 +148,7 @@ class Board(QWidget):  # base the board on a QFrame widget
 
     # Here we create the method drawPieces to draw the pieces (black and white).
     def drawPieces(self, newX, newY, col, row):
-        '''draw the pieces on the board'''
-        self.brushSize = 5
+        # draw the pieces on the board
         painter = QPainter(self.image)
         self.update()
         self.go.gameLogic.update(Piece(col, row, self.go.gameLogic.currentPlayer))
@@ -159,8 +156,7 @@ class Board(QWidget):  # base the board on a QFrame widget
 
     # Here we create the method deletePiece to allow the player to delete the pieces he wants at the end of the game.
     def deletePiece(self, newX, newY):
-        '''delete a piece on the board'''
-        self.brushSize = 5
+        # delete a piece on the board
         painter = QPainter(self.image)
         painter.setPen(QPen(Qt.GlobalColor.red, self.brushSize))
         radius = int(20 * self.image.width() / 490)
@@ -172,7 +168,6 @@ class Board(QWidget):  # base the board on a QFrame widget
     def updateTheBoard(self, painter):
         self.imageOrigin = self.imageOrigin.scaled(self.width(), self.height())
         painter.drawPixmap(QPoint(), self.imageOrigin)
-        self.brushSize = 5
         row = -1
         for newX in range(int(8.434 * self.image.width() / 100), int(92 * self.image.width() / 100), int(13.855 * self.image.width() / 100)):
             col = -1
