@@ -50,6 +50,7 @@ class GameLogic:
         voidGroups = []  # List of non-piece groups (groups of pieces with 0 as owner)
         self.territories = [0, 0]  # Reset the variable to recalculate the territories at every updates
         notSuicide = []  # Variable containing the localisation of the square where a player can actualy play and respect the suicide rule because playing here will eat some enemies pieces
+        deleted = False
 
         self.boardState[piece.x][piece.y].owner = self.currentPlayer  # Change the owner of the piece (add the new piece to the board)
 
@@ -189,7 +190,36 @@ class GameLogic:
                         j.owner = 0
                     toDelete.append(i)
             for i in toDelete:
+                deleted = True
                 self.groups[k].remove(i)
+
+        # If a piece has been deleted, recalculate the liberties of groups
+        if deleted:
+            for k in range(0, 2):
+                for i in self.groups[k]:
+                    i.liberties = 0
+                    libertiescoord = []
+                    for j in i.pieces:
+                        if j.x != 0:
+                            if self.boardState[j.x - 1][j.y].owner == 0:
+                                if [j.x - 1, j.y] not in libertiescoord:
+                                    libertiescoord.append([j.x - 1, j.y])
+                                    i.liberties = i.liberties + 1
+                        if j.x != self.dimensionBoard - 1:
+                            if self.boardState[j.x + 1][j.y].owner == 0:
+                                if [j.x + 1, j.y] not in libertiescoord:
+                                    libertiescoord.append([j.x + 1, j.y])
+                                    i.liberties = i.liberties + 1
+                        if j.y != 0:
+                            if self.boardState[j.x][j.y - 1].owner == 0:
+                                if [j.x, j.y - 1] not in libertiescoord:
+                                    libertiescoord.append([j.x, j.y - 1])
+                                    i.liberties = i.liberties + 1
+                        if j.y != self.dimensionBoard - 1:
+                            if self.boardState[j.x][j.y + 1].owner == 0:
+                                if [j.x, j.y + 1] not in libertiescoord:
+                                    libertiescoord.append([j.x, j.y + 1])
+                                    i.liberties = i.liberties + 1
 
         # Update the list of position where the players can play
         # Reset the list which indicates the places where players can play
