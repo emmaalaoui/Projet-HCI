@@ -43,15 +43,6 @@ class Board(QWidget):  # base the board on a QFrame widget
         self.timer = QBasicTimer()  # create a timer for the game
         self.isStarted = False  # game is not currently started
         self.boardArray = self.go.gameLogic.boardState  # TODO - create a 2d int/Piece array to store the state of the game
-        self.printBoardArray()  # TODO - uncomment this method after creating the array above
-
-    def printBoardArray(self):
-        '''prints the boardArray in an attractive way'''
-        print("boardArray:")
-        print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.boardArray]))
-
-    def mousePosToColRow(self, event):
-        '''convert the mouse click event to a row and column'''
 
     def squareWidth(self):
         '''returns the width of one square in the board'''
@@ -66,19 +57,15 @@ class Board(QWidget):  # base the board on a QFrame widget
         self.isStarted = True  # set the boolean which determines if the game has started to TRUE
         self.resetGame()  # reset the game
         self.timer.start(self.timerSpeed, self)  # start the timer with the correct speed
-        print("start () - timer is started")
 
     def timerEvent(self, event):
         '''this event is automatically called when the timer is updated. based on the timerSpeed variable '''
         # TODO adapt this code to handle your timers
         if event.timerId() == self.timer.timerId():  # if the timer that has 'ticked' is the one in this class
             if self.counter == 1:
-                print("Game over")
                 self.timer.stop()
             self.counter -= 1
-            print('timerEvent()', self.counter)
             self.updateTimerSignal.emit(self.counter)
-            # self.go.scoreBoard.setTimeRemaining(self.counter)
         else:
             super(Board, self).timerEvent(event)  # if we do not handle an event we should pass it to the super
             # class for handling
@@ -90,14 +77,9 @@ class Board(QWidget):  # base the board on a QFrame widget
 
     def mousePressEvent(self, event):
         '''this event is automatically called when the mouse is pressed'''
-        clickLoc = "click location [" + str(event.position().x()) + "," + str(
-            event.position().y()) + "]"  # the location where a mouse click was registered
-        print("mousePressEvent() - " + clickLoc)
         self.mouseX = event.position().x()
         self.mouseY = event.position().y()
-        print(self.mouseX, self.mouseY)
         # TODO you could call some game logic here
-        #self.clickLocationSignal.emit(clickLoc) #inutile car on n'affiche plus la posiition du click
         # self.drawPieces()
         self.tryMove()
 
@@ -150,7 +132,6 @@ class Board(QWidget):  # base the board on a QFrame widget
                         if self.go.gameLogic.placeForPlayer[self.go.gameLogic.currentPlayer - 1][col][row]:
                             self.go.scoreBoard.history(col, row)
                             self.drawPieces(newX, newY, col, row)
-                            print(self.image.width())
                             # self.pixelToInt(newX, newY)  # affiche la colonne et la ligne de la pièce
                             if self.go.scoreBoard.currentTurn == "Player 1":
                                 self.go.scoreBoard.currentTurn = "Player 2"
@@ -186,7 +167,6 @@ class Board(QWidget):  # base the board on a QFrame widget
             countR += 1
             if j == mouseY:
                 finalR = countR
-        print(finalC, finalR)
         return finalC, finalR
 
     def drawBoardSquares(self, painter):
@@ -250,7 +230,7 @@ class Board(QWidget):  # base the board on a QFrame widget
         painter.drawLine(int(newX) - int(radius), int(newY) + 2*int(radius), int(newX) + 2*int(radius), int(newY) - int(radius))
         self.update()
 
-    # Here we create the method updateTheBoard to update the board when a piece is captured for example.
+    # Here we create the method updateTheBoard to update the board when a piece is placed or captured for example.
     def updateTheBoard(self, painter):
         self.imageOrigin = self.imageOrigin.scaled(self.width(), self.height())
         painter.drawPixmap(QPoint(), self.imageOrigin)
@@ -269,9 +249,5 @@ class Board(QWidget):  # base the board on a QFrame widget
                         painter.setPen(QPen(Qt.GlobalColor.white, self.brushSize))
                         painter.setBrush(QBrush(Qt.GlobalColor.white, Qt.BrushStyle.SolidPattern))
                     radius = int(25*self.image.width()/490)
-                    print(radius)
                     painter.drawEllipse(int(newX) - int(radius/2**0.5), int(newY) - int(radius/2**0.5), radius*2, radius*2)
-                    print(int(radius/2**0.5))
-                    print(radius*2)
-                    #painter.drawEllipse(int(newX) - 20, int(newY) - 20, 50, 50)
         self.update()

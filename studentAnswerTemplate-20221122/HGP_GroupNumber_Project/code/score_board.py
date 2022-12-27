@@ -131,20 +131,6 @@ class ScoreBoard(QWidget):
     def setClickLocation(self, clickLoc):
         '''updates the label to show the click location'''
         self.label_clickLocation.setText("Click Location:" + clickLoc)
-        print('slot ' + clickLoc)
-
-    '''
-    @pyqtSlot(int)
-    def setTimeRemaining(self, timeRemainng):
-        updates the time remaining label to show the time remaining
-        if timeRemainng > 60:
-            update = "Time Remaining:" + "1 min " + str(timeRemainng - 60) + " s"
-        else:
-            update = "Time Remaining:" + str(timeRemainng) +" s"
-
-        self.label_timeRemainingB.setText(update)
-        print('slot '+update)
-        #self.redraw()'''
 
     # Here we made the buttonEnd_clicked method to close the window when a player cliks on the End button and
     # to display the End Game Window if it is the end of the game.
@@ -153,7 +139,6 @@ class ScoreBoard(QWidget):
         if self.go.board.draw:
             self.go.close()
         else:
-            print("game over")
             self.go.gameLogic.scoreCount()
             self.go.updateEndWindow()
             self.go.close()
@@ -169,11 +154,7 @@ class ScoreBoard(QWidget):
         elif self.timerButtonB.text() == 'Time Over':
             self.pbarB.setValue(0)
             self.stepB = 0
-            self.pbarB.setStyleSheet("""
-                                QProgressBar::chunk
-                                {
-                                    background-color: green
-                                }""")
+            self.pbarB.setStyleSheet()
             self.timer.start(1000, self)
             self.timerButtonB.setText('Stop')
         else:
@@ -190,11 +171,7 @@ class ScoreBoard(QWidget):
         elif self.timerButtonW.text() == 'Time Over':
             self.pbarW.setValue(0)
             self.stepW = 0
-            self.pbarW.setStyleSheet("""
-                                QProgressBar::chunk
-                                {
-                                    background-color: green
-                                }""")
+            self.pbarW.setStyleSheet()
             self.timer.start(1200, self)
             self.timerButtonW.setText('Stop')
         else:
@@ -217,7 +194,6 @@ class ScoreBoard(QWidget):
             update = "Time Remaining: " + str(120 - self.stepB) + " s"
 
         self.label_timeRemainingB.setText(update)
-        print('slot ' + update)
 
         if self.stepW < 60:
             update = "Time Remaining: " + "1 min " + str(60 - self.stepW) + " s"
@@ -225,26 +201,17 @@ class ScoreBoard(QWidget):
             update = "Time Remaining: " + str(120 - self.stepW) + " s"
 
         self.label_timeRemainingW.setText(update)
-        print('slot ' + update)
 
         if self.stepB > 100:
             self.pbarB.setFormat('Hurry up!')
             self.pbarB.setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.pbarB.setTextVisible(True)
-            self.pbarB.setStyleSheet("""
-                    QProgressBar::chunk
-                    {
-                        background-color: red
-                    }""")
+            self.pbarB.setStyleSheet()
         if self.stepW > 100:
             self.pbarW.setFormat('Hurry up!')
             self.pbarW.setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.pbarW.setTextVisible(True)
-            self.pbarW.setStyleSheet("""
-                    QProgressBar::chunk
-                    {
-                        background-color: red
-                    }""")
+            self.pbarW.setStyleSheet()
 
         if self.stepB >= 120:
             self.timer.stop()
@@ -258,8 +225,6 @@ class ScoreBoard(QWidget):
             dialog.setText(text)
             button = dialog.exec()
 
-            if button == QMessageBox.StandardButton.Ok:
-                print("OK!")
         elif self.stepW >= 120:
             self.timer.stop()
             self.timerButtonW.setText('Time Over')
@@ -272,9 +237,6 @@ class ScoreBoard(QWidget):
             dialog.setText(text)
             button = dialog.exec()
 
-            if button == QMessageBox.StandardButton.Ok:
-                print("OK!")
-
     # Here we made the clear method to reset the game.
     def clear(self):
         self.go.close()
@@ -286,7 +248,6 @@ class ScoreBoard(QWidget):
         if self.currentTurn == "Player 1":
             self.currentTurn = "Player 2"
             self.go.gameLogic.currentPlayer = 2
-            print(self.currentTurn)
             self.timerButtonB.setText('Start')
             self.timerButtonW.setText('Stop')
             self.firstTimer = False
@@ -297,7 +258,6 @@ class ScoreBoard(QWidget):
         else:
             self.currentTurn = "Player 1"
             self.go.gameLogic.currentPlayer = 1
-            print(self.currentTurn)
             self.timerButtonW.setText('Start')
             self.timerButtonB.setText('Stop')
             self.firstTimer = True
@@ -305,7 +265,6 @@ class ScoreBoard(QWidget):
             self.go.gameLogic.captured[0] += 1
         self.updateUi()
         if self.go.board.count == 2:
-            print("end")
             # Here we turn the boolean draw into false, and we display a MessageBox to explain that the game
             # is over (two consecutive passes terminates the game).
             self.go.board.draw = False
@@ -319,8 +278,6 @@ class ScoreBoard(QWidget):
             dialog.setText(text)
             button = dialog.exec()
 
-            if button == QMessageBox.StandardButton.Ok:
-                print("OK!")
 
     def history(self, col, row):
         self.count += 1
@@ -339,8 +296,6 @@ class ScoreBoard(QWidget):
         dialog.setText(self.text)
         button = dialog.exec()
 
-        if button == QMessageBox.StandardButton.Ok:
-            print("OK!")
         self.updateUi()
 
     # Here we made the borderRed method to change the GroupBox's border in red.
@@ -382,9 +337,6 @@ class ScoreBoard(QWidget):
 
         dialog.setText(text)
         button = dialog.exec()
-
-        if button == QMessageBox.StandardButton.Ok:
-            print("OK!")
 
     # Here we made the updateUI method to update the UI.
     def updateUi(self):

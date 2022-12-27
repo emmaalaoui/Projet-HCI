@@ -8,21 +8,22 @@ from endGameWindow import EndGameWindow
 
 class Go(QMainWindow):
 
-    def __init__(self, startWidth, bool, pos):
+    def __init__(self, startWidth, bool, pos):  # Set the window's size
         super().__init__()
-        print(self.y())
-        self.widthMinusHeight = 180  # 138
+        self.widthMinusHeight = 180
         self.formerWidth = startWidth
         self.formerHeight = self.formerWidth - self.widthMinusHeight
         self.firstResize = True
         self.widthResizement = False
         self.heightResizement = False
-        print(self.width(), self.height())
-        self.resize(self.formerWidth, self.formerHeight)
-        print(self.width(), self.height())
         self.setMinimumSize(self.formerWidth - 5, self.formerHeight - 5)
-        self.setMaximumSize(1080, 1080-138)
-        self.initUI(bool, pos)
+        self.resize(self.formerWidth, self.formerHeight)
+        self.setMaximumSize(1080, 1080-self.widthMinusHeight)
+        if bool:
+            self.center()
+        else:
+            self.move(pos[0], pos[1])
+        self.initUI()
 
     def getBoard(self):
         return self.board
@@ -30,7 +31,7 @@ class Go(QMainWindow):
     def getScoreBoard(self):
         return self.scoreBoard
 
-    def initUI(self, bool, pos):
+    def initUI(self):  # Create all instances of the main classes and set the main display
         '''initiates application UI'''
         self.gameLogic = GameLogic()
         self.scoreBoard = ScoreBoard(self)
@@ -45,14 +46,9 @@ class Go(QMainWindow):
         self.setCentralWidget(mainWidget)
         self.scoreBoard.make_connection(self.board)
 
-        if bool:
-            self.center()
-        else:
-            self.move(pos[0], pos[1])
         self.setStyleSheet("background-color: light grey")
         self.setWindowTitle("GroupProject - Go - HGP-FT02")
-        self.setWindowIcon(
-            QIcon("./icons/go.png"))
+        self.setWindowIcon(QIcon("./icons/go.png"))
         self.show()
 
     def showEndWindow(self):
@@ -62,7 +58,7 @@ class Go(QMainWindow):
     def updateEndWindow(self):
         self.endGameWindow.updateEndGameWindow()
 
-    def resizeEvent(self, event):
+    def resizeEvent(self, event):  # Require the resize to have diagonal proprotions
         if not self.firstResize:
             if self.formerHeight != self.height() and self.formerWidth != self.width():
                 if abs(self.formerHeight - self.height()) < abs(self.formerWidth - self.width()):
@@ -83,12 +79,10 @@ class Go(QMainWindow):
             self.firstResize = False
 
 
-    def center(self):
+    def center(self):  # When the user open the app, center the window
         '''centers the window on the screen'''
         gr = self.frameGeometry()
         screen = self.screen().availableGeometry().center()
 
         gr.moveCenter(screen)
         self.move(gr.topLeft())
-        # size = self.geometry()
-        # self.move((screen.width() - size.width()) / 2,(screen.height() - size.height()) / 2)

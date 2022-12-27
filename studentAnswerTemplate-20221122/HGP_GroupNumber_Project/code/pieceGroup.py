@@ -1,5 +1,4 @@
 class PieceGroup:
-    print("A group of piece has been created")
 
     def __init__(self, originalPiece):
         super().__init__()

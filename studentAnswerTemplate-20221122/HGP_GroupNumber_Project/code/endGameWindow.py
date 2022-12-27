@@ -2,7 +2,6 @@ from PyQt6.QtWidgets import QVBoxLayout, QWidget, QLabel
 from PyQt6.QtGui import QIcon, QFont
 
 class EndGameWindow(QWidget):
-    print("A group of piece has been created")
 
     def __init__(self, go):
         super().__init__()
@@ -51,9 +50,3 @@ class EndGameWindow(QWidget):
         self.vbox.addWidget(self.text3)
         self.vbox.addStretch(6)
         self.setLayout(self.vbox)
-
-        print("ouais ouais")
-
-        print(self.go.gameLogic.scores)
-        print(self.winner)
-        print(self.text2.text())
